@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n-text="extensionName">cReturn</title>
+  <link rel="stylesheet" href="popup.css">
+  <script type="module" src="popup.js" defer></script>
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Domain display -->
+    <div class="domain-section">
+      <div id="site-domain-display">
+        <span class="site-domain" id="current-domain">example.com</span>
+      </div>
+    </div>
+
+    <!-- Toggle button -->
+    <div class="toggle-section">
+      <div id="site-toggle-container" style="display:none">
+        <label class="toggle large-toggle">
+          <input type="checkbox" id="site-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div id="site-not-supported" style="display:none">
+        <div class="not-supported-message">
+          <p id="unsupported-message"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer section -->
+    <div class="footer-section">
+      <div class="brand" data-i18n-text="extensionName">cReturn</div>
+      <div class="controls">
+        <button id="open-options" class="btn options-btn" data-i18n-title="settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2" />
+              <circle cx="12" cy="12" r="3" />
+            </g>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

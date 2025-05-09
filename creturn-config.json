@@ -1,0 +1,98 @@
+{
+  "updated": "2025-05-07",
+  "license": "MIT ©︎ 2025 cojiso",
+  "contact": "creturn_support@googlegroups.com",
+  "services": {
+    "poe.com": {
+      "name": "Poe",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "chat.mistral.ai": {
+      "name": "Mistral AI",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "www.perplexity.ai": {
+      "name": "Perplexity AI",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "you.com": {
+      "name": "You.com",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "v0.dev": {
+      "name": "v0.dev",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "dashboard.cohere.com": {
+      "name": "Cohere Playground",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "copilot.microsoft.com": {
+      "name": "Microsoft Copilot",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "chat.openai.com": {
+      "name": "ChatGPT",
+      "selectors": [
+        "#prompt-textarea"
+      ]
+    },
+    "claude.ai": {
+      "name": "Claude",
+      "selectors": [
+        "div[contenteditable='true']",
+        "div.ProseMirror" 
+      ]
+    },
+    "gemini.google.com": {
+      "name": "Google Gemini",
+      "selectors": [
+        "div.ql-editor[contenteditable='true']"
+      ]
+    },
+    "notebooklm.google.com": {
+      "name": "NotebookLM",
+      "selectors": [
+        "textarea.query-box-input"
+      ]
+    },
+    "www.phind.com": {
+      "name": "Phind",
+      "selectors": [
+        "div.public-DraftEditor-content[contenteditable='true']"
+      ]
+    },
+    "chat.deepseek.com": {
+      "name": "DeepSeek",
+      "selectors": [
+        "#chat-input"
+      ]
+    },
+    "grok.com": {
+      "name": "Grok",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "github.com": {
+      "name": "GitHub Copilot",
+      "selectors": [
+        "textarea[placeholder='Ask Copilot']"
+      ]
+    }
+  }
+}
