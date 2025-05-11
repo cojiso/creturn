@@ -1,8 +1,58 @@
 {
-  "updated": "2025-05-07",
+  "updated": "2025-05-11",
   "license": "MIT ©︎ 2025 cojiso",
   "contact": "creturn_support@googlegroups.com",
   "services": {
+    "*.openai.com": {
+      "name": "ChatGPT",
+      "selectors": [
+        "#prompt-textarea"
+      ]
+    },
+    "chatgpt.com": {
+      "name": "ChatGPT",
+      "selectors": [
+        "#prompt-textarea"
+      ]
+    },
+    "claude.ai": {
+      "name": "Claude",
+      "selectors": [
+        "div[contenteditable='true']",
+        "textarea"
+      ]
+    },
+    "gemini.google.com": {
+      "name": "Google Gemini",
+      "selectors": [
+        "div.ql-editor[contenteditable='true']",
+        "div.mat-mdc-form-field-infix"
+      ]
+    },
+    "www.perplexity.ai": {
+      "name": "Perplexity AI",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "notebooklm.google.com": {
+      "name": "NotebookLM",
+      "selectors": [
+        "textarea.query-box-input"
+      ]
+    },
+    "github.com": {
+      "name": "GitHub Copilot",
+      "selectors": [
+        "textarea[placeholder='Ask Copilot']"
+      ]
+    },
+    "v0.dev": {
+      "name": "v0.dev",
+      "selectors": [
+        "textarea"
+      ]
+    },
     "poe.com": {
       "name": "Poe",
       "selectors": [
@@ -15,20 +65,8 @@
         "textarea"
       ]
     },
-    "www.perplexity.ai": {
-      "name": "Perplexity AI",
-      "selectors": [
-        "textarea"
-      ]
-    },
     "you.com": {
       "name": "You.com",
-      "selectors": [
-        "textarea"
-      ]
-    },
-    "v0.dev": {
-      "name": "v0.dev",
       "selectors": [
         "textarea"
       ]
@@ -43,31 +81,6 @@
       "name": "Microsoft Copilot",
       "selectors": [
         "textarea"
-      ]
-    },
-    "chat.openai.com": {
-      "name": "ChatGPT",
-      "selectors": [
-        "#prompt-textarea"
-      ]
-    },
-    "claude.ai": {
-      "name": "Claude",
-      "selectors": [
-        "div[contenteditable='true']",
-        "div.ProseMirror" 
-      ]
-    },
-    "gemini.google.com": {
-      "name": "Google Gemini",
-      "selectors": [
-        "div.ql-editor[contenteditable='true']"
-      ]
-    },
-    "notebooklm.google.com": {
-      "name": "NotebookLM",
-      "selectors": [
-        "textarea.query-box-input"
       ]
     },
     "www.phind.com": {
@@ -86,12 +99,6 @@
       "name": "Grok",
       "selectors": [
         "textarea"
-      ]
-    },
-    "github.com": {
-      "name": "GitHub Copilot",
-      "selectors": [
-        "textarea[placeholder='Ask Copilot']"
       ]
     }
   }

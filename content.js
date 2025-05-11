@@ -32,7 +32,7 @@ function loadSettings() {
       document.addEventListener('keydown', handleKeyDown, { capture: true });
       document.cReturnListenerInitialized = true;
     }
-    // console.log('cReturn: 設定を読み込みました', state);
+    // // console.log('cReturn: 設定を読み込みました', state);
   });
 }
 
@@ -40,17 +40,25 @@ function loadSettings() {
  * キーダウンイベントを処理
  */
 function handleKeyDown(event) {
-  // 1. Enterキーでない場合は即座にリターン
+  // 0. Enterキーでない場合は即座にリターン
   if (event.key !== 'Enter') return;
+  // console.log('cReturn: pass 0');
+
+  // 1. 自分で発火させたイベントの場合は無視
+  if (event.fromCReturn) return;
+  // console.log('cReturn: pass 1');
 
   // 2. IME入力中はブラウザに任せる
   if (event.isComposing) return;
+  // console.log('cReturn: pass 2');
 
   // 3. メタデータフラグのチェック
-  if (!state.enabled || !event.isTrusted || event.fromCReturn) return;
+  if (!state.enabled || !event.isTrusted) return;
+  // console.log('cReturn: pass 3');
 
   // 4. serviceConfigがない場合は処理しない
   if (!state.serviceConfig) return;
+  // console.log('cReturn: pass 4');
   
   // 5. 対象elementかどうかをチェック
   let isTargetElement = state.targetElements.includes(event.target);
@@ -71,7 +79,8 @@ function handleKeyDown(event) {
     }
   };
   if (!isTargetElement) return;
-  
+  // console.log('cReturn: pass 5');
+
   // デバッグ用: どのセレクタがマッチしたかを確認（重い処理なのでログが必要な時だけ有効に）
   // if (state.serviceConfig.selectors && console.debug) {
   //   const matchingSelectors = state.serviceConfig.selectors.filter(selector => {
@@ -83,56 +92,47 @@ function handleKeyDown(event) {
   //   });
     
   //   if (matchingSelectors.length > 0) {
-  //     console.log(`cReturn: 要素がマッチしたセレクタ:`, matchingSelectors);
+  //     // console.log(`cReturn: 要素がマッチしたセレクタ:`, matchingSelectors);
   //   }
   // }
 
   // 6. 単独のEnterキー押下時の処理
   const isOnlyEnter = (!event.shiftKey && !event.ctrlKey && !event.metaKey && !event.altKey);
   if (isOnlyEnter) {
-    event.stopPropagation();
     event.preventDefault();
-    
-    // テキストエリアやcontentEditableな要素に改行を挿入する
-    const element = event.target;
-    
-    if (element.tagName === 'TEXTAREA' || element.tagName === 'INPUT') {
-      // テキストエリアやインプットの場合
-      const start = element.selectionStart;
-      const end = element.selectionEnd;
-      const value = element.value;
-      const newValue = value.substring(0, start) + '\n' + value.substring(end);
-      // 値を更新
-      element.value = newValue;
-      // カーソルを適切な位置に設定
-      element.selectionStart = element.selectionEnd = start + 1;
-      // 変更イベント発火（リアクティブUIのため）
-      element.dispatchEvent(new Event('input', { bubbles: true }));
+    // event.stopPropagation();
+    event.stopImmediatePropagation();
 
-    } else if (element.contentEditable === 'true' || element.contentEditable === 'plaintext-only') {
-      // contentEditableな要素の場合
-      try {
-        // ドキュメント編集コマンドを使用
-        document.execCommand('insertText', false, '\n');
-      } catch (error) {
-        console.error('cReturn: Failed to insert line break', error);
-        
-        // フォールバック: 選択範囲にテキストノードを挿入
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-          const range = selection.getRangeAt(0);
-          const textNode = document.createTextNode('\n');
-          range.insertNode(textNode);
-          range.setStartAfter(textNode);
-          range.setEndAfter(textNode);
-          selection.removeAllRanges();
-          selection.addRange(range);
-        }
-      }
+    if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'INPUT') {
+      // console.log('cReturn: pass 6.1');
+      // リアクティブUIのための処理
+      const start = event.target.selectionStart;
+      const end = event.target.selectionEnd;
+      const value = event.target.value;
+      const newValue = value.substring(0, start) + '\n' + value.substring(end);
+      event.target.value = newValue;
+      event.target.selectionStart = event.target.selectionEnd = start + 1;
+      event.target.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+      // console.log('cReturn: pass 6.2');
+      // contentEditableなど他の要素の場合はshift+Enterを発火
+      const shiftEnterEvent = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        // code: "Enter",
+        keyCode: 13,
+        // which: 13,
+        shiftKey: true,
+        bubbles: true,
+        cancelable: true,
+        // composed: true
+      });
+      shiftEnterEvent.fromCReturn = true;
+      event.target.dispatchEvent(shiftEnterEvent);
     }
-    
+    // console.log('cReturn: pass 6.3');
     return;
-  }
+  } 
+  // console.log('cReturn: pass 6.0');
   
   // 7. 送信キーの組み合わせが押された場合
   const isModifierEnter = (event.ctrlKey || event.metaKey);
@@ -142,16 +142,20 @@ function handleKeyDown(event) {
     
     const eventConfig = {
       key: 'Enter',
+      // code: "Enter",
+      keyCode: 13,
+      // which: 13,
       bubbles: true,
       cancelable: true,
-      composed: true,
+      // composed: true
     };
     
     const newEvent = new KeyboardEvent('keydown', eventConfig);
-    newEvent.fromCReturn = true; // 自分自身で発火させたイベントであることをマーク
+    newEvent.fromCReturn = true;
     
     event.target.dispatchEvent(newEvent);
   }
+  // console.log('cReturn: pass 7');
 }
 
 // chrome storage の変更を監視
