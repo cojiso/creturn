@@ -53,6 +53,12 @@
         "textarea"
       ]
     },
+    "felo.ai": {
+      "name": "Felo",
+      "selectors": [
+        "textarea"
+      ]
+    },
     "poe.com": {
       "name": "Poe",
       "selectors": [
