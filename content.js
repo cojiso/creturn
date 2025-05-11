@@ -120,7 +120,6 @@ function handleKeyDown(event) {
         key: 'Enter',
         // code: "Enter",
         keyCode: 13,
-        // which: 13,
         shiftKey: true,
         bubbles: true,
         cancelable: true,
@@ -140,19 +139,15 @@ function handleKeyDown(event) {
     event.preventDefault();
     event.stopPropagation();
     
-    const eventConfig = {
+    const newEvent = new KeyboardEvent('keydown', {
       key: 'Enter',
       // code: "Enter",
       keyCode: 13,
-      // which: 13,
       bubbles: true,
       cancelable: true,
       // composed: true
-    };
-    
-    const newEvent = new KeyboardEvent('keydown', eventConfig);
+    });
     newEvent.fromCReturn = true;
-    
     event.target.dispatchEvent(newEvent);
   }
   // console.log('cReturn: pass 7');
