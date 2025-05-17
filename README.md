@@ -73,8 +73,8 @@ The `selectors` field defines CSS selectors that identify text input areas on ea
 ## Installation
 
 ### Chrome
-1. Visit the Chrome Web Store
-2. Search for "cReturn"
+1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/dpfkfjilfchkjcohjfmdnlmecgbpakfd)
+2. Or search for "cReturn" in the Chrome Web Store
 3. Click "Add to Chrome"
 
 ### Firefox (In Development)
