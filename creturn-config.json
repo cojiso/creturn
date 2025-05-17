@@ -59,6 +59,12 @@
         "textarea"
       ]
     },
+    "manus.im": {
+      "name": "Manus",
+      "selectors": [
+        "textarea"
+      ]
+    },
     "poe.com": {
       "name": "Poe",
       "selectors": [
