@@ -10,7 +10,7 @@ import { IconManager } from './lib/icons.js';
 
 // 基本設定
 const CONFIGS = {
-  configUrl: "",
+  configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/creturn-config.json",
   services: {}
 };
 

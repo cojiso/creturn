@@ -1,5 +1,5 @@
 {
-  "updated": "2025-05-11",
+  "updated": "2025-05-31",
   "license": "MIT ©︎ 2025 cojiso",
   "contact": "creturn_support@googlegroups.com",
   "services": {
@@ -61,6 +61,12 @@
     },
     "manus.im": {
       "name": "Manus",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    "bolt.new": {
+      "name": "Bolt",
       "selectors": [
         "textarea"
       ]

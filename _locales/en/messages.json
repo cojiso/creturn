@@ -20,11 +20,15 @@
     "description": "Configuration file section title"
   },
   "useDefaultConfig": {
-    "message": "Use default settings",
+    "message": "Use Default Configuration (Stable)",
     "description": "Option to use default configuration"
   },
+  "useDefaultLatestConfig": {
+    "message": "Use Default Configuration (Latest)",
+    "description": "Option to use latest default configuration"
+  },
   "useGithubConfig": {
-    "message": "Get settings from GitHub",
+    "message": "Use GitHub Configuration",
     "description": "Option to use GitHub configuration"
   },
   "load": {

@@ -2,11 +2,10 @@
  * cReturn - Options page script
  */
 
-import { fetchDefaultConfig, fetchCustomConfig, resetToDefaults } from '../lib/config.js';
-
 // DOM element references
 const elements = {
   configTypeDefault: document.getElementById('default-config'),
+  configTypeDefaultLatest: document.getElementById('default-latest-config'),
   configTypeGithub: document.getElementById('github-config'),
   configUrl: document.getElementById('config-url'),
   urlPrefix: document.getElementById('url-prefix'),
@@ -50,47 +49,70 @@ function initializeI18n() {
 
 // ベースURLの設定
 const BASE_URL = "https://raw.githubusercontent.com/";
+const DEFAULT_LATEST_PATH = "cojiso/creturn/main/creturn-config.json";
 
 // 現在の設定を保持する変数
 let currentSettings = {
-  configType: "default", // デフォルト、githubのどちらか
-  configUrl: "",
+  configUrl: BASE_URL + DEFAULT_LATEST_PATH,
   services: {}
 };
+
+/**
+ * configUrlの値から設定タイプを判定する
+ * @param {string} configUrl - 設定URL
+ * @returns {string} - "default", "default-latest", "github"
+ */
+function getConfigType(configUrl) {
+  if (!configUrl || configUrl === "") {
+    return "default"; // デフォルトはlatest
+  } else if (configUrl === BASE_URL + DEFAULT_LATEST_PATH) {
+    return "default-latest";
+  } else {
+    return "github";
+  }
+}
 
 /**
  * 設定をロードしてUIに表示
  */
 function loadSettings() {
   chrome.storage.sync.get(null, (data) => {
-    currentSettings = data || { configType: "default", configUrl: "", services: {} };
+    currentSettings = data || { configUrl: BASE_URL + DEFAULT_LATEST_PATH, services: {} };
     
-    // configTypeが未設定の場合はデフォルトに
-    if (!currentSettings.configType) {
-      currentSettings.configType = currentSettings.configUrl ? "github" : "default";
-    }
+    // configUrlの値で設定タイプを判定
+    const configType = getConfigType(currentSettings.configUrl);
     
     // 設定タイプに合わせてラジオボタンを設定
-    if (currentSettings.configType === "default") {
+    elements.configTypeDefault.checked = false;
+    elements.configTypeDefaultLatest.checked = false;
+    elements.configTypeGithub.checked = false;
+    
+    if (configType === "default") {
       elements.configTypeDefault.checked = true;
       elements.configUrl.disabled = true;
       elements.urlPrefix.classList.add('disabled');
       elements.loadConfig.disabled = true;
-    } else {
-      // githubとして扱う
+      elements.configUrl.value = "";
+    } else if (configType === "default-latest") {
+      elements.configTypeDefaultLatest.checked = true;
+      elements.configUrl.disabled = true;
+      elements.urlPrefix.classList.add('disabled');
+      elements.loadConfig.disabled = false;
+      elements.configUrl.value = ""; // プレースホルダーのまま表示
+    } else { // github
       elements.configTypeGithub.checked = true;
       elements.urlPrefix.textContent = BASE_URL;
       elements.configUrl.disabled = false;
       elements.urlPrefix.classList.remove('disabled');
       elements.loadConfig.disabled = false;
-    }
-    
-    // 設定URL（ベースURL部分は除外）
-    const fullUrl = currentSettings.configUrl || '';
-    if (fullUrl.startsWith(BASE_URL)) {
-      elements.configUrl.value = fullUrl.substring(BASE_URL.length);
-    } else {
-      elements.configUrl.value = fullUrl;
+      
+      // 設定URL（ベースURL部分は除外）
+      const fullUrl = currentSettings.configUrl || '';
+      if (fullUrl.startsWith(BASE_URL)) {
+        elements.configUrl.value = fullUrl.substring(BASE_URL.length);
+      } else {
+        elements.configUrl.value = fullUrl;
+      }
     }
     
     // サービスリストを表示
@@ -203,19 +225,31 @@ function updateDomainStatus(domain, enabled) {
 /**
  * 設定をデフォルト値にリセット
  */
+/**
+ * 設定をデフォルト値にリセット
+ */
 async function resetSettings() {
   if (confirm(chrome.i18n.getMessage('confirmReset'))) {
     try {
-      const result = await resetToDefaults();
-      
-      if (result.success) {
+      // ストレージをクリア
+      chrome.storage.sync.clear(() => {
+        // デフォルト設定を再適用
+        currentSettings = {
+          configUrl: BASE_URL + DEFAULT_LATEST_PATH,
+          services: {}
+        };
+        
+        // 設定を再読み込み
         loadSettings();
+        
         elements.saveStatus.textContent = chrome.i18n.getMessage('settingsResetSuccess');
         elements.saveStatus.className = 'status success';
-      } else {
-        elements.saveStatus.textContent = chrome.i18n.getMessage('settingsResetError');
-        elements.saveStatus.className = 'status error';
-      }
+        
+        setTimeout(() => {
+          elements.saveStatus.textContent = '';
+          elements.saveStatus.className = 'status';
+        }, 3000);
+      });
     } catch (error) {
       console.error('An error occurred during reset process:', error);
       elements.saveStatus.textContent = chrome.i18n.getMessage('settingsResetError');
@@ -230,17 +264,43 @@ async function resetSettings() {
  */
 async function getCustomConfig(url) {
   try {
-    return await fetchCustomConfig(url);
+    if (!url.toLowerCase().endsWith('.json')) {
+      throw new Error('設定ファイルはJSONファイルである必要があります');
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const jsonContent = await response.text();
+    const parsedConfig = JSON.parse(jsonContent);
+    
+    if (!parsedConfig || !parsedConfig.services) {
+      throw new Error('設定ファイルの形式が正しくありません');
+    }
+
+    return parsedConfig.services;
   } catch (error) {
     throw new Error('Failed to retrieve configuration file: ' + error.message);
   }
 }
 
 /**
+ * デフォルト設定を取得
+ * @returns {Object} - サービス設定オブジェクト
+ */
+async function fetchDefaultConfig() {
+  const response = await fetch(chrome.runtime.getURL('creturn-config.json'));
+  const configData = await response.json();
+  return configData.services;
+}
+
+/**
  * リモート設定ファイルを読み込む
  */
 async function loadRemoteConfig() {
-  const urlPath = elements.configUrl.value;
+  let urlPath = elements.configUrl.value;
   
   if (!urlPath) {
     elements.configStatus.textContent = chrome.i18n.getMessage('enterUrl');
@@ -252,22 +312,14 @@ async function loadRemoteConfig() {
   elements.configStatus.className = 'status';
   
   // GitHub URLを構築
-  const fullUrl = currentSettings.configType !== "default" ? BASE_URL + urlPath : "";
+  const fullUrl = BASE_URL + urlPath;
   
   try {
-    // 直接モジュールから設定ファイルを取得
-    let newServices;
-    
-    // URLが指定されている場合はリモート設定を取得
-    if (urlPath) {
-      newServices = await getCustomConfig(fullUrl);
-    } else {
-      // URLが指定されていない場合はデフォルト設定を使用
-      newServices = await fetchDefaultConfig();
-    }
+    // リモート設定を取得
+    const newServices = await getCustomConfig(fullUrl);
     
     if (!newServices) {
-      throw new Error('Faild to retrive configuration file');
+      throw new Error('Failed to retrieve configuration file');
     }
     
     // 既存のサービスからenabledフラグを引き継ぐ
@@ -313,12 +365,11 @@ elements.resetDefaults.addEventListener('click', resetSettings);
 // 設定タイプ変更時のイベントリスナー
 elements.configTypeDefault.addEventListener('change', async () => {
   if (elements.configTypeDefault.checked) {
-    currentSettings.configType = "default";
-    
     // URLフィールドを無効化
     elements.configUrl.disabled = true;
     elements.urlPrefix.classList.add('disabled');
     elements.loadConfig.disabled = true;
+    elements.configUrl.value = "";
     
     // デフォルト設定を読み込む
     elements.servicesLoading.style.display = 'block';
@@ -334,6 +385,7 @@ elements.configTypeDefault.addEventListener('change', async () => {
           });
         }
         currentSettings.services = services;
+        currentSettings.configUrl = ""; // ローカル設定の場合は空文字
           
         // Chrome Storageに即時保存
         chrome.storage.sync.set(currentSettings, () => {
@@ -353,14 +405,36 @@ elements.configTypeDefault.addEventListener('change', async () => {
   }
 });
 
+elements.configTypeDefaultLatest.addEventListener('change', () => {
+  if (elements.configTypeDefaultLatest.checked) {
+    currentSettings.configUrl = BASE_URL + DEFAULT_LATEST_PATH;
+    
+    // URLフィールドを固定値で無効化
+    elements.configUrl.disabled = true;
+    elements.urlPrefix.classList.add('disabled');
+    elements.loadConfig.disabled = false;
+    elements.configUrl.value = ""; // プレースホルダーを表示
+    
+    // 設定を保存
+    chrome.storage.sync.set(currentSettings, () => {
+      elements.saveStatus.textContent = chrome.i18n.getMessage('clickToLoad');
+      elements.saveStatus.className = 'status warning';
+    });
+  }
+});
+
 elements.configTypeGithub.addEventListener('change', () => {
   if (elements.configTypeGithub.checked) {
-    currentSettings.configType = "github";
-    
     // URLフィールドを有効化
     elements.configUrl.disabled = false;
     elements.urlPrefix.classList.remove('disabled');
     elements.loadConfig.disabled = false;
+    
+    // default-latestのURLが設定されている場合はクリア
+    if (currentSettings.configUrl === BASE_URL + DEFAULT_LATEST_PATH) {
+      elements.configUrl.value = "";
+      currentSettings.configUrl = "";
+    }
     
     elements.urlPrefix.textContent = BASE_URL;
     elements.saveStatus.textContent = chrome.i18n.getMessage('clickToLoad');
@@ -370,6 +444,16 @@ elements.configTypeGithub.addEventListener('change', () => {
 
 // 設定変更時のイベントリスナー
 elements.configUrl.addEventListener('change', () => {
+  // GitHub設定の場合のみ、configUrlを更新
+  if (elements.configTypeGithub.checked) {
+    const urlPath = elements.configUrl.value;
+    if (urlPath) {
+      currentSettings.configUrl = BASE_URL + urlPath;
+    } else {
+      currentSettings.configUrl = "";
+    }
+  }
+  
   elements.saveStatus.textContent = chrome.i18n.getMessage('unsavedChanges');
   elements.saveStatus.className = 'status warning';
 });

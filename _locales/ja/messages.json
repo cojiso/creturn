@@ -20,8 +20,12 @@
     "description": "設定ファイルのセクションタイトル"
   },
   "useDefaultConfig": {
-    "message": "デフォルト設定を使用",
+    "message": "デフォルト設定を使用 (安定版)",
     "description": "デフォルト設定を使用するオプション"
+  },
+  "useDefaultLatestConfig": {
+    "message": "デフォルト設定を使用 (最新版)",
+    "description": "最新のデフォルト設定を使用するオプション"
   },
   "useGithubConfig": {
     "message": "GitHub から設定を取得",

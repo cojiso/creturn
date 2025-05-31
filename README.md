@@ -125,6 +125,48 @@ cReturn:
 - Contains no analytics or tracking code
 - Only accesses webpage content needed for input field functionality
 
+## Development & Release Strategy
+
+This project uses a simplified Trunk-Based Development approach that streamlines both store releases and configuration updates.
+
+### Branch Structure
+
+- `main` - Single primary branch for all development
+- `feature/name` - Optional short-lived feature branches when needed
+
+### Update Workflows
+
+#### Configuration Updates (Weekly)
+Configuration updates don't require store approval and can be deployed quickly:
+
+1. Make changes directly to `creturn-config.json` in `main` (or via short-lived feature branch if needed)
+2. After commit/merge, tag with `config-vYYYYMMDD`
+3. Update the hosted config file on GitHub
+
+#### Store Releases (Quarterly)
+Store releases require Chrome Web Store approval:
+
+1. When ready for release, ensure all changes are complete in `main`
+2. Update version in `manifest.json`
+3. Commit changes with message "Release vX.Y.Z"
+4. Tag with `vX.Y.Z`
+5. Package and submit to Chrome Web Store
+
+### Version Scheme
+
+- Extension versions: Semantic versioning (`X.Y.Z`)
+  - `X`: Major version (significant changes)
+  - `Y`: Minor version (new features)
+  - `Z`: Patch version (bugfixes)
+- Config updates: Date-based versioning (`config-vYYYYMMDD`)
+
+### Release Artifacts
+
+- Store releases: ZIP archive built from `main` at tag `vX.Y.Z`
+- Config file: JSON file hosted on GitHub, referenced in extension options
+
+This workflow allows for rapid config updates while maintaining stable store releases.
+
 ## Support
 
 If you encounter issues or have suggestions:
