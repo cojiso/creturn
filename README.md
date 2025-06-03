@@ -107,10 +107,6 @@ Fast deployment without store approval:
 3. Tag with `vX.Y.Z`
 4. Package and submit to Chrome Web Store
 
-### Version Scheme
-- **Extension**: Semantic versioning (`X.Y.Z`)
-- **Config**: Date-based versioning (`config-vYYYYMMDD`)
-
 ## Privacy
 
 cReturn:
