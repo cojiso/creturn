@@ -2,22 +2,32 @@
 
 ![cReturn Icon](assets/icon.png)
 
-## Prevent Accidental Message Sending During IME Text Input
+## Prevent Accidental Message Sending During Character Conversion
 
-cReturn is a lightweight browser extension that solves a common problem for users of IME (Input Method Editor) systems such as Japanese, Chinese, and Korean input methods.
+cReturn is a lightweight browser extension that prevents accidental message sending when typing languages that require character conversion or composition, such as:
+- **Converting to kanji** (Japanese, Chinese)
+- **Composing Hangul** (Korean)
+- **Combining Indic scripts** (Hindi, Bengali, Tamil, etc.)
+- **Combining Arabic scripts**
 
 **The Problem:**
-- When using IME to type text in AI chat services (ChatGPT, Claude, etc.), pressing Enter to confirm text conversion often accidentally sends incomplete messages
-- Both IME text confirmation and message sending use the same Enter/Return key, causing conflicts
+When using these input methods in AI chat services, pressing Enter to confirm character conversion often accidentally sends incomplete messages, since both text confirmation and message sending use the same Enter key.
 
 **The Solution:**
-- cReturn separates these actions by intercepting Enter keypresses during IME input
-- Use Ctrl+Enter (Windows/Linux) or Command+Enter (macOS) to send messages
-- Normal Enter keypresses insert a line break instead of sending
+- Use **Ctrl+Enter** (Windows/Linux) or **Command+Enter** (macOS) to send messages
+- **Enter** key inserts line breaks and confirms character conversion
+- Custom configuration support via GitHub
+
+## Installation
+
+### Chrome
+1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/dpfkfjilfchkjcohjfmdnlmecgbpakfd)
+2. Click "Add to Chrome"
+
+### Firefox
+*Coming soon*
 
 ## Supported AI Chat Services
-
-The extension supports many popular AI chat services including:
 
 - ChatGPT (chat.openai.com)
 - Claude (claude.ai)
@@ -33,15 +43,21 @@ The extension supports many popular AI chat services including:
 - Grok (grok.com)
 - And many others!
 
+## Usage
+
+- **Extension icon**: Colored when active, gray when inactive
+- **Click icon**: Toggle on/off for current site or access options
+- **Typing**: Enter for line breaks/character conversion, Ctrl+Enter to send
+
 ## Custom Configuration
 
-You can customize cReturn with your own configuration file:
+Add support for additional sites by creating a JSON configuration file:
 
-1. Create a JSON configuration file (see format below)
-2. Host it on GitHub
-3. Enter the URL (raw.​githubusercontent.​com) in the extension options page
+1. Create a configuration file (format below)
+2. Host it on GitHub (raw.githubusercontent.com URL)
+3. Enter the URL in extension options
 
-### Configuration File Format
+### Configuration Format
 
 ```json
 {
@@ -63,109 +79,112 @@ You can customize cReturn with your own configuration file:
         "div.ProseMirror" 
       ]
     }
-    // Add more domains as needed
   }
 }
 ```
 
-The `selectors` field defines CSS selectors that identify text input areas on each domain. You can add multiple selectors per domain to cover all possible input areas.
-
-## Installation
-
-### Chrome
-1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/dpfkfjilfchkjcohjfmdnlmecgbpakfd)
-2. Or search for "cReturn" in the Chrome Web Store
-3. Click "Add to Chrome"
-
-### Firefox (In Development)
-1. Visit the Firefox Add-ons website
-2. Search for "cReturn"
-3. Click "Add to Firefox"
-
-## Using cReturn
-
-Once installed:
-
-1. The extension icon indicates whether cReturn is active on the current site
-   - Colored: Active
-   - Gray: Inactive or site not supported
-
-2. Click the extension icon to:
-   - Enable/disable cReturn for the current site
-   - Open extension options
-
-3. When typing with IME on supported sites:
-   - Press Enter to confirm text conversion or insert line breaks
-   - Press Ctrl+Enter (Windows/Linux) or Command+Enter (macOS) to send messages
-
-## Options
-
-Access extension options by right-clicking the extension icon and selecting "Options" or through your browser's extension management page.
-
-In the options page you can:
-- Enable/disable cReturn for specific domains
-- Add a custom configuration URL
-- View currently supported services
-
-## Troubleshooting
-
-If cReturn doesn't work on a supported site:
-
-1. Refresh the page
-2. Check if cReturn is enabled for the domain (click extension icon)
-3. Make sure you're using a supported input area
-4. If using a custom configuration, verify your JSON format
-
-## Privacy
-
-cReturn:
-- Stores your settings locally in Chrome storage
-- Does not collect or transmit your personal data
-- Does not send any information to remote servers
-- Contains no analytics or tracking code
-- Only accesses webpage content needed for input field functionality
+The `selectors` field defines CSS selectors for text input areas on each domain.
 
 ## Development & Release Strategy
 
-This project uses a simplified Trunk-Based Development approach that streamlines both store releases and configuration updates.
+This project uses simplified Trunk-Based Development for streamlined releases and configuration updates.
 
 ### Branch Structure
-
-- `main` - Single primary branch for all development
-- `feature/name` - Optional short-lived feature branches when needed
+- `main` - Primary development branch
+- `feature/name` - Optional short-lived feature branches
 
 ### Update Workflows
 
 #### Configuration Updates (Weekly)
-Configuration updates don't require store approval and can be deployed quickly:
-
-1. Make changes directly to `creturn-config.json` in `main` (or via short-lived feature branch if needed)
-2. After commit/merge, tag with `config-vYYYYMMDD`
-3. Update the hosted config file on GitHub
+Fast deployment without store approval:
+1. Update `creturn-config.json` in `main`
+2. Tag with `config-vYYYYMMDD`
+3. Update hosted config file on GitHub
 
 #### Store Releases (Quarterly)
-Store releases require Chrome Web Store approval:
-
-1. When ready for release, ensure all changes are complete in `main`
-2. Update version in `manifest.json`
-3. Commit changes with message "Release vX.Y.Z"
-4. Tag with `vX.Y.Z`
-5. Package and submit to Chrome Web Store
+1. Update version in `manifest.json`
+2. Commit with "Release vX.Y.Z"
+3. Tag with `vX.Y.Z`
+4. Package and submit to Chrome Web Store
 
 ### Version Scheme
+- **Extension**: Semantic versioning (`X.Y.Z`)
+- **Config**: Date-based versioning (`config-vYYYYMMDD`)
 
-- Extension versions: Semantic versioning (`X.Y.Z`)
-  - `X`: Major version (significant changes)
-  - `Y`: Minor version (new features)
-  - `Z`: Patch version (bugfixes)
-- Config updates: Date-based versioning (`config-vYYYYMMDD`)
+## Privacy
 
-### Release Artifacts
+cReturn:
+- Stores settings locally only
+- No data collection or transmission
+- No analytics or tracking
+- Minimal webpage access for input field functionality
 
-- Store releases: ZIP archive built from `main` at tag `vX.Y.Z`
-- Config file: JSON file hosted on GitHub, referenced in extension options
+## Troubleshooting
 
-This workflow allows for rapid config updates while maintaining stable store releases.
+If cReturn doesn't work:
+1. Refresh the page
+2. Check if enabled (click icon)
+3. Verify supported input area
+4. For custom configs, check JSON format
+
+## Store Descriptions
+
+**Short Description:**
+```
+Stop accidental message sending when typing and converting kanji, composing Hangul, or combining Indic/Arabic scripts. Use Ctrl+Enter to send. Add custom sites with GitHub config.
+```
+
+**Full Description:**
+```
+Use Ctrl+Enter to send messages in AI chat apps like ChatGPT and Claude. This stops accidental sending when you type languages that need character conversion or composition, like:
+- Converting to kanji (Japanese, Chinese)
+- Composing Hangul (Korean)
+- Combining Indic scripts (Hindi, Bengali, Tamil, etc.)
+- Combining Arabic scripts
+
+Key features:
+- Press Enter = new line and finish character conversion/composition
+- Press Ctrl+Enter (Windows/Linux) or Command+Enter (Mac) = send message
+- Click the icon to turn on/off easily
+- You can make your own config file on GitHub to add more websites.
+
+Works on these sites:
+- ChatGPT (chat.openai.com)
+- Claude (claude.ai)
+- Google Gemini (gemini.google.com)
+- Perplexity AI
+- Microsoft Copilot
+- Many other AI chat sites
+
+Questions or problems? Visit our GitHub page.
+https://github.com/cojiso/creturn
+```
+
+**説明文：**
+```
+ChatGPTやClaudeなどのAIチャットサービスでメッセージ送信を「Ctrl+Enter」に割り当て、文字変換・合成が必要な言語での誤送信を防ぎます。以下のような言語入力時に最適です：
+- 漢字変換（日本語・中国語）
+- ハングル合成（韓国語）
+- インド系文字の結合（ヒンディー語・ベンガル語・タミル語等）
+- アラビア系文字の結合
+
+主な機能：
+- Enterキーで改行・文字変換/合成確定
+- Ctrl+Enter（Windows/Linux）またはCommand+Enter（macOS）でメッセージ送信
+- 拡張機能アイコンクリックで簡単にオン/オフ切り替え
+- GitHubでカスタム設定ファイルを作成・読み込みすることで、標準対応サイト以外も追加可能
+
+対応サイト：
+- ChatGPT (chat.openai.com)
+- Claude (claude.ai)
+- Google Gemini (gemini.google.com)
+- Perplexity AI
+- Microsoft Copilot
+- その他多数のAIチャットサービス
+
+不具合やご要望は GitHubリポジトリまで。
+https://github.com/cojiso/creturn
+```
 
 ## Support
 
