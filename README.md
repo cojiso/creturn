@@ -107,6 +107,11 @@ Fast deployment without store approval:
 3. Tag with `vX.Y.Z`
 4. Package and submit to Chrome Web Store
 
+#### How to use tag
+1. git commit
+2. git tag TAG_NAME
+3. git push origin main --tags
+
 ## Privacy
 
 cReturn:
@@ -125,14 +130,14 @@ If cReturn doesn't work:
 
 ## Store Descriptions
 
-**Short Description:**
+**Short Description (max 132　words):**
 ```
-Prevent accidental message sending when typing and converting kanji, composing Hangul, or combining Indic/Arabic scripts. Use Ctrl+Enter to send messages. And you can also add a custom configuration file from GitHub.
+Prevent accidental message sending when typing and converting kanji. Use Ctrl+Enter to send. And you can also add custom configs.
 ```
 
 **Full Description:**
 ```
-Use Ctrl+Enter to send messages in AI chat apps like ChatGPT and Claude. This stops accidental sending when you type languages that need character conversion or composition, like:
+Use Ctrl+Enter to send messages in AI chat apps like ChatGPT and Claude. This prevents accidental sending when you type languages that need character conversion or composition, like:
 - Converting to kanji (Japanese, Chinese)
 - Composing Hangul (Korean)
 - Combining Indic scripts (Hindi, Bengali, Tamil, etc.)
@@ -158,7 +163,7 @@ https://github.com/cojiso/creturn
 
 **短文説明:**
 ```
-AIチャットでのEnterキー挙動を変更します。Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJsonファイルを読み込むことでカスタムのサイト設定を追加できます。
+AIチャットでのキー挙動を変更し、Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJSONファイルを読み込むことでカスタムのサイト設定を追加できます。
 ```
 
 **説明文：**

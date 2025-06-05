@@ -4,7 +4,7 @@
     "description": "拡張機能の名前"
   },
   "extensionDescription": {
-    "message": "AIチャットでのEnterキー挙動を変更します。Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJsonファイルを読み込むことでカスタムのサイト設定を追加できます。",
+    "message": "AIチャットでのキー挙動を変更し、Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJSONファイルを読み込むことでカスタムのサイト設定を追加できます。",
     "description": "拡張機能の説明"
   },
   "unsupportedDomain": {

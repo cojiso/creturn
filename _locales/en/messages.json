@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "extensionDescription": {
-    "message": "Prevent accidental message sending when typing and converting kanji, composing Hangul, or combining Indic/Arabic scripts. Use Ctrl+Enter to send messages. And you can also add a custom configuration file from GitHub.",
+    "message": "Prevent accidental message sending when typing and converting kanji. Use Ctrl+Enter to send. And you can also add custom configs.",
     "description": "Extension description"
   },
   "unsupportedDomain": {
