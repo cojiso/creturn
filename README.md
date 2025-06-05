@@ -132,7 +132,7 @@ If cReturn doesn't work:
 
 **Short Description (max 132　words):**
 ```
-Prevent accidental message sending when typing and converting kanji. Use Ctrl+Enter to send. And you can also add custom configs.
+Prevent accidental sending when pressing Enter for line breaks/kanji conversion. Use Ctrl+Enter to send. Custom configs available.
 ```
 
 **Full Description:**
@@ -163,7 +163,7 @@ https://github.com/cojiso/creturn
 
 **短文説明:**
 ```
-AIチャットでのキー挙動を変更し、Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJSONファイルを読み込むことでカスタムのサイト設定を追加できます。
+チャットでのキー挙動を変更し、Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJSONファイルを読み込むことでカスタムのサイト設定を追加できます。
 ```
 
 **説明文：**
