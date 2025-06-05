@@ -127,7 +127,7 @@ If cReturn doesn't work:
 
 **Short Description:**
 ```
-Stop accidental message sending when typing and converting kanji, composing Hangul, or combining Indic/Arabic scripts. Use Ctrl+Enter to send. Add custom sites with GitHub config.
+Prevent accidental message sending when typing and converting kanji, composing Hangul, or combining Indic/Arabic scripts. Use Ctrl+Enter to send messages. And you can also add a custom configuration file from GitHub.
 ```
 
 **Full Description:**
@@ -150,10 +150,15 @@ Works on these sites:
 - Google Gemini (gemini.google.com)
 - Perplexity AI
 - Microsoft Copilot
-- Many other AI chat sites
+- Many other AI chat sites. See: https://github.com/cojiso/creturn/blob/main/creturn-config.json
 
 Questions or problems? Visit our GitHub page.
 https://github.com/cojiso/creturn
+```
+
+**短文説明:**
+```
+AIチャットでのEnterキー挙動を変更します。Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJsonファイルを読み込むことでカスタムのサイト設定を追加できます。
 ```
 
 **説明文：**
@@ -176,7 +181,7 @@ ChatGPTやClaudeなどのAIチャットサービスでメッセージ送信を�
 - Google Gemini (gemini.google.com)
 - Perplexity AI
 - Microsoft Copilot
-- その他多数のAIチャットサービス
+- その他多数のAIチャットサービス: https://github.com/cojiso/creturn/blob/main/creturn-config.json
 
 不具合やご要望は GitHubリポジトリまで。
 https://github.com/cojiso/creturn

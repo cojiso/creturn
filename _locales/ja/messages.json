@@ -4,7 +4,7 @@
     "description": "拡張機能の名前"
   },
   "extensionDescription": {
-    "message": "1つのEnter/Returnキーに割り当てられた変換確定とメッセージ送信の操作を分離し、代替キーによる送信を実現します",
+    "message": "AIチャットでのEnterキー挙動を変更します。Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJsonファイルを読み込むことでカスタムのサイト設定を追加できます。",
     "description": "拡張機能の説明"
   },
   "unsupportedDomain": {

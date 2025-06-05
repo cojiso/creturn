@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "extensionDescription": {
-    "message": "Separates IME confirmation and message sending operations assigned to a single Enter/Return key, enabling alternative key sending.",
+    "message": "Prevent accidental message sending when typing and converting kanji, composing Hangul, or combining Indic/Arabic scripts. Use Ctrl+Enter to send messages. And you can also add a custom configuration file from GitHub.",
     "description": "Extension description"
   },
   "unsupportedDomain": {
