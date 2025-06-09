@@ -71,6 +71,12 @@
         "textarea"
       ]
     },
+    "drive.google.com": {
+      "name": "Gemini in Google drive",
+      "selectors": [
+        "div[aria-label='ここにプロンプトを入力']"
+      ]
+    },
     "poe.com": {
       "name": "Poe",
       "selectors": [
