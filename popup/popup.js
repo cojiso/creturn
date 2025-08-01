@@ -2,6 +2,8 @@
  * cReturn - ポップアップUIのスクリプト
  */
 
+import { findMatchingService } from '../lib/utils.js';
+
 // DOM要素の参照
 const elements = {
   siteNotSupported: document.getElementById('site-not-supported'),
@@ -94,8 +96,8 @@ async function initializeUI() {
     // 設定を読み込む
     await loadSettings();
     
-    // 現在のドメインに対応するサービス設定を検索
-    currentService = currentSettings.services?.[domain];
+    // 現在のドメインに対応するサービス設定を検索（ワイルドカード対応）
+    currentService = findMatchingService(domain, currentSettings.services);
     
     // サポートされているサイトかどうかで表示を切り替え
     if (currentService) {

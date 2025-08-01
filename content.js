@@ -3,6 +3,33 @@
  * テキストエリアの検出、IME状態の監視、キーボードイベント処理を担当
  */
 
+/**
+ * ドメインマッチング（ワイルドカード対応）
+ * @param {string} currentDomain - 現在のドメイン
+ * @param {Object} services - サービス設定オブジェクト
+ * @returns {Object|null} - マッチしたサービス設定、またはnull
+ */
+function findMatchingService(currentDomain, services) {
+  if (!services || !currentDomain) return null;
+  
+  // 完全一致を優先
+  if (services[currentDomain]) {
+    return services[currentDomain];
+  }
+  
+  // ワイルドカードマッチング
+  for (const [domain, service] of Object.entries(services)) {
+    if (domain.startsWith('*.')) {
+      const baseDomain = domain.substring(2); // "*.example.com" -> "example.com"
+      if (currentDomain.endsWith('.' + baseDomain) || currentDomain === baseDomain) {
+        return service;
+      }
+    }
+  }
+  
+  return null;
+}
+
 // 現在の状態を保持するオブジェクト
 const state = {
   enabled: false,
@@ -17,8 +44,8 @@ const state = {
  */
 function loadSettings() {
   chrome.storage.sync.get(null, (data) => {
-    // 現在のドメインに対応するサービス設定を見つける
-    state.serviceConfig = data.services?.[state.currentDomain];
+    // 現在のドメインに対応するサービス設定を見つける（ワイルドカード対応）
+    state.serviceConfig = findMatchingService(state.currentDomain, data.services);
     if (!state.serviceConfig?.selectors) return;
     
     state.enabled = state.serviceConfig?.enabled;

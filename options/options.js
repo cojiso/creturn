@@ -2,6 +2,14 @@
  * cReturn - Options page script
  */
 
+import { 
+  resetToDefaults, 
+  loadConfig, 
+  loadLocalConfig, 
+  loadRemoteCustomConfig,
+  CONFIG_SOURCES 
+} from '../lib/config.js';
+
 // DOM element references
 const elements = {
   configTypeDefault: document.getElementById('default-config'),
@@ -225,20 +233,13 @@ function updateDomainStatus(domain, enabled) {
 /**
  * 設定をデフォルト値にリセット
  */
-/**
- * 設定をデフォルト値にリセット
- */
 async function resetSettings() {
   if (confirm(chrome.i18n.getMessage('confirmReset'))) {
     try {
-      // ストレージをクリア
-      chrome.storage.sync.clear(() => {
-        // デフォルト設定を再適用
-        currentSettings = {
-          configUrl: BASE_URL + DEFAULT_LATEST_PATH,
-          services: {}
-        };
-        
+      // config.jsのリセット機能を使用
+      const resetResult = await resetToDefaults();
+      
+      if (resetResult.success) {
         // 設定を再読み込み
         loadSettings();
         
@@ -249,51 +250,15 @@ async function resetSettings() {
           elements.saveStatus.textContent = '';
           elements.saveStatus.className = 'status';
         }, 3000);
-      });
+      } else {
+        throw new Error(resetResult.message || 'Reset failed');
+      }
     } catch (error) {
       console.error('An error occurred during reset process:', error);
       elements.saveStatus.textContent = chrome.i18n.getMessage('settingsResetError');
       elements.saveStatus.className = 'status error';
     }
   }
-}
-
-/**
- * カスタム設定を取得するためのヘルパー関数
- * 直接config.jsモジュールを利用
- */
-async function getCustomConfig(url) {
-  try {
-    if (!url.toLowerCase().endsWith('.json')) {
-      throw new Error('設定ファイルはJSONファイルである必要があります');
-    }
-    
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const jsonContent = await response.text();
-    const parsedConfig = JSON.parse(jsonContent);
-    
-    if (!parsedConfig || !parsedConfig.services) {
-      throw new Error('設定ファイルの形式が正しくありません');
-    }
-
-    return parsedConfig.services;
-  } catch (error) {
-    throw new Error('Failed to retrieve configuration file: ' + error.message);
-  }
-}
-
-/**
- * デフォルト設定を取得
- * @returns {Object} - サービス設定オブジェクト
- */
-async function fetchDefaultConfig() {
-  const response = await fetch(chrome.runtime.getURL('creturn-config.json'));
-  const configData = await response.json();
-  return configData.services;
 }
 
 /**
@@ -315,8 +280,8 @@ async function loadRemoteConfig() {
   const fullUrl = BASE_URL + urlPath;
   
   try {
-    // リモート設定を取得
-    const newServices = await getCustomConfig(fullUrl);
+    // config.jsのloadRemoteCustomConfig関数を使用
+    const newServices = await loadRemoteCustomConfig(fullUrl);
     
     if (!newServices) {
       throw new Error('Failed to retrieve configuration file');
@@ -371,36 +336,36 @@ elements.configTypeDefault.addEventListener('change', async () => {
     elements.loadConfig.disabled = true;
     elements.configUrl.value = "";
     
-    // デフォルト設定を読み込む
+    // ローカル設定を読み込む
     elements.servicesLoading.style.display = 'block';
     try {
-      // 直接モジュールから設定ファイルを取得
-      fetchDefaultConfig().then(services => {
-        // 既存のサービスからenabledフラグを引き継ぐ
-        if (currentSettings.services) {
-          Object.entries(services).forEach(([domain, service]) => {
-            if (currentSettings.services[domain]) {
-              service.enabled = currentSettings.services[domain].enabled;
-            }
-          });
-        }
-        currentSettings.services = services;
-        currentSettings.configUrl = ""; // ローカル設定の場合は空文字
-          
-        // Chrome Storageに即時保存
-        chrome.storage.sync.set(currentSettings, () => {
-          displayServices(currentSettings.services);
-          elements.saveStatus.textContent = chrome.i18n.getMessage('defaultSettingsApplied');
-          elements.saveStatus.className = 'status success';
-          
-          setTimeout(() => {
-            elements.saveStatus.textContent = '';
-            elements.saveStatus.className = 'status';
-          }, 1500);
+      // ローカル設定ファイルを取得
+      const services = await loadLocalConfig();
+      
+      // 既存のサービスからenabledフラグを引き継ぐ
+      if (currentSettings.services) {
+        Object.entries(services).forEach(([domain, service]) => {
+          if (currentSettings.services[domain]) {
+            service.enabled = currentSettings.services[domain].enabled;
+          }
         });
+      }
+      currentSettings.services = services;
+      currentSettings.configUrl = ""; // ローカル設定の場合は空文字
+        
+      // Chrome Storageに即時保存
+      chrome.storage.sync.set(currentSettings, () => {
+        displayServices(currentSettings.services);
+        elements.saveStatus.textContent = chrome.i18n.getMessage('defaultSettingsApplied');
+        elements.saveStatus.className = 'status success';
+        
+        setTimeout(() => {
+          elements.saveStatus.textContent = '';
+          elements.saveStatus.className = 'status';
+        }, 1500);
       });
     } catch (error) {
-      console.error('Default configuration loading error:', error);
+      console.error('Local configuration loading error:', error);
     }
   }
 });

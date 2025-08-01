@@ -5,32 +5,44 @@
  */
 
 // 関連モジュールをインポート
-import { migrateDomainEnabledStates, fetchDefaultConfig, fetchCustomConfig } from './lib/config.js';
+import { migrateDomainEnabledStates, loadConfig, DEFAULT_CONFIG, CONFIG_SOURCES, getConfigSource } from './lib/config.js';
 import { IconManager } from './lib/icons.js';
-
-// 基本設定
-const CONFIGS = {
-  configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/creturn-config.json",
-  services: {}
-};
 
 // 拡張機能のインストール時やアップデート時に実行
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (reason === 'install') {
-    CONFIGS.services = await fetchDefaultConfig();
-    const updatedConfig = await migrateDomainEnabledStates(CONFIGS);
+    // 初回インストール時はデフォルトのリモート設定を使用
+    const services = await loadConfig(DEFAULT_CONFIG.configUrl);
+    const config = {
+      configUrl: DEFAULT_CONFIG.configUrl,
+      services: services
+    };
+    const updatedConfig = await migrateDomainEnabledStates(config);
     chrome.storage.sync.set(updatedConfig);
   }
   
   if (reason === 'update') {
     chrome.storage.sync.get(null, async (syncStorage) => {
-      if (syncStorage.configUrl) {
-        CONFIGS.services = await fetchCustomConfig(syncStorage.configUrl);
-      } else {
-        CONFIGS.services = await fetchDefaultConfig();
+      try {
+        const configUrl = syncStorage.configUrl || DEFAULT_CONFIG.configUrl;
+        const services = await loadConfig(configUrl);
+        const config = {
+          configUrl: configUrl,
+          services: services
+        };
+        const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
+        chrome.storage.sync.set(updatedConfig);
+      } catch (error) {
+        console.error('設定の更新中にエラーが発生しました:', error);
+        // エラー時はデフォルト設定にフォールバック
+        const services = await loadConfig(DEFAULT_CONFIG.configUrl);
+        const config = {
+          configUrl: DEFAULT_CONFIG.configUrl,
+          services: services
+        };
+        const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
+        chrome.storage.sync.set(updatedConfig);
       }
-      const updatedConfig = await migrateDomainEnabledStates(CONFIGS, syncStorage);
-      chrome.storage.sync.set(updatedConfig);
     });
   }
 });
