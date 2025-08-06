@@ -1,0 +1,118 @@
+{
+  "extensionName": {
+    "message": "cReturn",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Prevent accidental sending when pressing Enter for line breaks/kanji conversion. Use Ctrl+Enter to send. Custom configs available.",
+    "description": "Extension description"
+  },
+  "unsupportedDomain": {
+    "message": "Unsupported domain.",
+    "description": "Message shown when domain is not supported"
+  },
+  "settings": {
+    "message": "Settings",
+    "description": "Settings button text"
+  },
+  "configFile": {
+    "message": "Configuration File",
+    "description": "Configuration file section title"
+  },
+  "useDefaultConfig": {
+    "message": "Use Default Configuration (Stable)",
+    "description": "Option to use default configuration"
+  },
+  "useDefaultLatestConfig": {
+    "message": "Use Default Configuration (Latest)",
+    "description": "Option to use latest default configuration"
+  },
+  "useGithubConfig": {
+    "message": "Use GitHub Configuration",
+    "description": "Option to use GitHub configuration"
+  },
+  "load": {
+    "message": "Load",
+    "description": "Load button text"
+  },
+  "loading": {
+    "message": "Loading...",
+    "description": "Loading indicator text"
+  },
+  "supportedServices": {
+    "message": "Supported Services",
+    "description": "Supported services section title"
+  },
+  "noServices": {
+    "message": "No services configured.",
+    "description": "Message shown when no services are configured"
+  },
+  "selector": {
+    "message": "Selector: $SELECTORS$",
+    "description": "Selector information",
+    "placeholders": {
+      "SELECTORS": {
+        "content": "$1",
+        "example": ".input, .textarea"
+      }
+    }
+  },
+  "resetToDefaults": {
+    "message": "Reset to defaults",
+    "description": "Reset to defaults button text"
+  },
+  "confirmReset": {
+    "message": "Are you sure you want to reset all settings to their default values?",
+    "description": "Confirmation message for reset"
+  },
+  "settingsResetSuccess": {
+    "message": "Settings have been reset to default values",
+    "description": "Success message for settings reset"
+  },
+  "settingsResetError": {
+    "message": "Failed to reset settings",
+    "description": "Error message for settings reset"
+  },
+  "enterUrl": {
+    "message": "Please enter URL",
+    "description": "Message shown when URL is empty"
+  },
+  "loadingSettings": {
+    "message": "Loading settings...",
+    "description": "Message shown when loading settings"
+  },
+  "loadingError": {
+    "message": "Error: $ERROR$",
+    "description": "Error message for loading settings",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1",
+        "example": "Failed to load configuration"
+      }
+    }
+  },
+  "settingsLoaded": {
+    "message": "Settings loaded and saved successfully",
+    "description": "Success message for loading settings"
+  },
+  "settingsSaved": {
+    "message": "Service settings saved",
+    "description": "Success message for saving settings"
+  },
+  "defaultSettingsApplied": {
+    "message": "Default settings applied",
+    "description": "Success message for applying default settings"
+  },
+  "clickToLoad": {
+    "message": "Click 'Load' to apply settings",
+    "description": "Message to remind user to load settings"
+  },
+  "unsavedChanges": {
+    "message": "Changes are not saved",
+    "description": "Warning about unsaved changes"
+  },
+  "options": {
+    "message": "Settings",
+    "description": "Settings page title"
+  }
+}
