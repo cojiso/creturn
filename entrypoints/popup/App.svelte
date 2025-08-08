@@ -36,8 +36,11 @@
    */
   async function getCurrentTab(): Promise<chrome.tabs.Tab | null> {
     try {
-      if (!chrome?.tabs) return null;
-      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+      // WXTのbrowser polyfill または chrome API を使用
+      const api = (globalThis as any).browser || chrome;
+      if (!api?.tabs) return null;
+      
+      const tabs = await api.tabs.query({ active: true, currentWindow: true });
       return tabs.length > 0 ? tabs[0] : null;
     } catch (error) {
       console.error('Failed to get current tab:', error);
@@ -51,11 +54,14 @@
   function loadSettings(): Promise<any> {
     return new Promise((resolve) => {
       try {
-        if (!chrome?.storage) {
+        // WXTのbrowser polyfill または chrome API を使用
+        const api = (globalThis as any).browser || chrome;
+        if (!api?.storage) {
           resolve({});
           return;
         }
-        chrome.storage.sync.get(null, (data) => {
+        
+        api.storage.sync.get(null, (data: any) => {
           currentSettings = data;
           resolve(data);
         });
@@ -70,14 +76,17 @@
    * サイトごとの有効/無効を切り替え
    */
   function toggleSiteEnabled() {
-    if (!currentService || !currentTab?.url || !chrome?.storage) return;
+    if (!currentService || !currentTab?.url) return;
+    
+    const api = (globalThis as any).browser || chrome;
+    if (!api?.storage) return;
     
     const tabDomain = new URL(currentTab.url).hostname;
     
     // サービスに直接enabledフラグを設定して保存
     if (currentSettings.services) {
       currentSettings.services[tabDomain].enabled = isEnabled;
-      chrome.storage.sync.set({ services: currentSettings.services });
+      api.storage.sync.set({ services: currentSettings.services });
     }
   }
 
@@ -85,8 +94,9 @@
    * 詳細設定を開く
    */
   function openOptionsPage() {
-    if (chrome?.runtime) {
-      chrome.runtime.openOptionsPage();
+    const api = (globalThis as any).browser || chrome;
+    if (api?.runtime) {
+      api.runtime.openOptionsPage();
     }
   }
 
@@ -138,17 +148,79 @@
     }
   }
 
-  // onMountの問題を回避するため、setTimeoutで初期化
-  setTimeout(() => {
-    initializeUI();
-  }, 10);
+  // WXT スタイルのコンテキスト管理（ctx風）
+  class PopupContext {
+    private _isValid = true;
+    private _timeouts: number[] = [];
+    private _intervals: number[] = [];
+
+    get isValid() { return this._isValid; }
+    get isInvalid() { return !this._isValid; }
+
+    // WXT ctx風のsetTimeout
+    setTimeout(callback: Function, delay: number) {
+      if (this._isValid) {
+        const id = setTimeout(() => {
+          if (this._isValid) callback();
+        }, delay);
+        this._timeouts.push(id);
+        return id;
+      }
+    }
+
+    // WXT ctx風のsetInterval  
+    setInterval(callback: Function, delay: number) {
+      if (this._isValid) {
+        const id = setInterval(() => {
+          if (this._isValid) callback();
+        }, delay);
+        this._intervals.push(id);
+        return id;
+      }
+    }
+
+    // クリーンアップ
+    invalidate() {
+      this._isValid = false;
+      this._timeouts.forEach(id => clearTimeout(id));
+      this._intervals.forEach(id => clearInterval(id));
+      this._timeouts = [];
+      this._intervals = [];
+    }
+  }
+
+  // ポップアップ用のコンテキスト
+  const popupCtx = new PopupContext();
+
+  // WXT スタイルの初期化 - ブラウザAPI待機
+  async function initializeWXT(): Promise<void> {
+    if (popupCtx.isInvalid) return; // コンテキストが無効な場合は終了
+
+    // ブラウザAPIが利用可能になるまで再帰的に待機
+    const api = (globalThis as any).browser || chrome;
+    if (typeof api === 'undefined' || !api?.tabs) {
+      return new Promise<void>(resolve => 
+        popupCtx.setTimeout(() => resolve(initializeWXT()), 10)
+      );
+    }
+    
+    await initializeUI();
+  }
+  
+  // 即座に初期化開始
+  initializeWXT();
   
   // フォールバック用のonMount
   onMount(() => {
     // 既に初期化されている場合はスキップ
-    if (domain === 'Loading...') {
-      initializeUI();
+    if (domain === 'Loading...' && popupCtx.isValid) {
+      initializeWXT();
     }
+
+    // クリーンアップ関数を返す
+    return () => {
+      popupCtx.invalidate();
+    };
   });
 </script>
 
