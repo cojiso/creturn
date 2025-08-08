@@ -1,35 +1,48 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  
   import { findMatchingService } from '~/lib/utils';
 
   // State variables
   let currentTab: chrome.tabs.Tab | null = null;
   let currentSettings: any = null;
   let currentService: any = null;
-  let domain = '';
+  let domain = 'Loading...';
   let isSupported = false;
   let isEnabled = false;
 
-  // I18n messages
-  let extensionName = '';
-  let unsupportedMessage = '';
-  let settingsTitle = '';
+  // I18n messages - デフォルト値を設定
+  let extensionName = 'cReturn';
+  let unsupportedMessage = 'This site is not supported';
+  let settingsTitle = 'Settings';
 
   /**
    * Initialize text using i18n
    */
   function initializeI18n() {
-    extensionName = chrome.i18n.getMessage('extensionName');
-    unsupportedMessage = chrome.i18n.getMessage('unsupportedDomain');
-    settingsTitle = chrome.i18n.getMessage('settings');
+    try {
+      if (chrome?.i18n) {
+        extensionName = chrome.i18n.getMessage('extensionName') || 'cReturn';
+        unsupportedMessage = chrome.i18n.getMessage('unsupportedDomain') || 'This site is not supported';
+        settingsTitle = chrome.i18n.getMessage('settings') || 'Settings';
+      }
+    } catch (error) {
+      console.warn('i18n initialization failed:', error);
+    }
   }
 
   /**
    * 現在のタブの情報を取得
    */
   async function getCurrentTab(): Promise<chrome.tabs.Tab | null> {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    return tabs.length > 0 ? tabs[0] : null;
+    try {
+      if (!chrome?.tabs) return null;
+      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+      return tabs.length > 0 ? tabs[0] : null;
+    } catch (error) {
+      console.error('Failed to get current tab:', error);
+      return null;
+    }
   }
 
   /**
@@ -37,10 +50,19 @@
    */
   function loadSettings(): Promise<any> {
     return new Promise((resolve) => {
-      chrome.storage.sync.get(null, (data) => {
-        currentSettings = data;
-        resolve(data);
-      });
+      try {
+        if (!chrome?.storage) {
+          resolve({});
+          return;
+        }
+        chrome.storage.sync.get(null, (data) => {
+          currentSettings = data;
+          resolve(data);
+        });
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+        resolve({});
+      }
     });
   }
 
@@ -48,13 +70,13 @@
    * サイトごとの有効/無効を切り替え
    */
   function toggleSiteEnabled() {
-    if (!currentService || !currentTab?.url) return;
+    if (!currentService || !currentTab?.url || !chrome?.storage) return;
     
-    const domain = new URL(currentTab.url).hostname;
+    const tabDomain = new URL(currentTab.url).hostname;
     
     // サービスに直接enabledフラグを設定して保存
     if (currentSettings.services) {
-      currentSettings.services[domain].enabled = isEnabled;
+      currentSettings.services[tabDomain].enabled = isEnabled;
       chrome.storage.sync.set({ services: currentSettings.services });
     }
   }
@@ -63,7 +85,9 @@
    * 詳細設定を開く
    */
   function openOptionsPage() {
-    chrome.runtime.openOptionsPage();
+    if (chrome?.runtime) {
+      chrome.runtime.openOptionsPage();
+    }
   }
 
   /**
@@ -77,20 +101,27 @@
       // 現在のタブ情報を取得
       currentTab = await getCurrentTab();
       
-      if (!currentTab) {
-        console.error('Cannot retrieve tab information');
+      if (!currentTab || !currentTab.url) {
+        domain = 'Unknown domain';
+        isSupported = false;
         return;
       }
       
       // タブのURLからドメインを取得
-      const url = new URL(currentTab.url);
-      domain = url.hostname;
+      try {
+        const url = new URL(currentTab.url);
+        domain = url.hostname;
+      } catch (urlError) {
+        domain = 'Invalid URL';
+        isSupported = false;
+        return;
+      }
       
       // 設定を読み込む
       await loadSettings();
       
       // 現在のドメインに対応するサービス設定を検索（ワイルドカード対応）
-      currentService = findMatchingService(domain, currentSettings.services);
+      currentService = findMatchingService(domain, currentSettings?.services);
       
       // サポートされているサイトかどうかで表示を切り替え
       if (currentService) {
@@ -102,18 +133,29 @@
       
     } catch (error) {
       console.error('An error occurred during initialization:', error);
+      domain = 'Error loading';
+      isSupported = false;
     }
   }
 
-  onMount(() => {
+  // onMountの問題を回避するため、setTimeoutで初期化
+  setTimeout(() => {
     initializeUI();
+  }, 10);
+  
+  // フォールバック用のonMount
+  onMount(() => {
+    // 既に初期化されている場合はスキップ
+    if (domain === 'Loading...') {
+      initializeUI();
+    }
   });
 </script>
 
 <div class="popup-container">
   <!-- Domain display -->
   <div class="domain-section">
-    <div id="site-domain-display">
+    <div class="site-domain-display">
       <span class="site-domain">{domain}</span>
     </div>
   </div>

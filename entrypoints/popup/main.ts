@@ -3,8 +3,12 @@ import App from './App.svelte';
 
 const target = document.getElementById('app');
 
+if (!target) {
+  throw new Error('Could not find app element');
+}
+
 const app = new App({
-  target: target as Element,
+  target: target,
 });
 
 export default app;

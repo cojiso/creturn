@@ -21,5 +21,10 @@ export default defineConfig({
         matches: ['<all_urls>']
       }
     ]
-  }
+  },
+  vite: () => ({
+    build: {
+      sourcemap: true
+    }
+  })
 });
