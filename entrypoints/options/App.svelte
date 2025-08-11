@@ -35,33 +35,66 @@
    * Initialize internationalization
    */
   function initializeI18n() {
-    extensionName = chrome.i18n.getMessage('extensionName');
-    options = chrome.i18n.getMessage('options');
+    try {
+      const api = (globalThis as any).browser || chrome;
+      if (!api?.i18n) return;
+      
+      extensionName = api.i18n.getMessage('extensionName') || 'cReturn';
+      options = api.i18n.getMessage('options') || 'Options';
     
-    // Initialize all i18n messages
-    messages = {
-      configFile: chrome.i18n.getMessage('configFile'),
-      useDefaultConfig: chrome.i18n.getMessage('useDefaultConfig'),
-      useDefaultLatestConfig: chrome.i18n.getMessage('useDefaultLatestConfig'),
-      useGithubConfig: chrome.i18n.getMessage('useGithubConfig'),
-      load: chrome.i18n.getMessage('load'),
-      supportedServices: chrome.i18n.getMessage('supportedServices'),
-      loading: chrome.i18n.getMessage('loading'),
-      resetToDefaults: chrome.i18n.getMessage('resetToDefaults'),
-      noServices: chrome.i18n.getMessage('noServices'),
-      selector: chrome.i18n.getMessage('selector'),
-      settingsSaved: chrome.i18n.getMessage('settingsSaved'),
-      confirmReset: chrome.i18n.getMessage('confirmReset'),
-      settingsResetSuccess: chrome.i18n.getMessage('settingsResetSuccess'),
-      settingsResetError: chrome.i18n.getMessage('settingsResetError'),
-      enterUrl: chrome.i18n.getMessage('enterUrl'),
-      loadingSettings: chrome.i18n.getMessage('loadingSettings'),
-      settingsLoaded: chrome.i18n.getMessage('settingsLoaded'),
-      loadingError: chrome.i18n.getMessage('loadingError'),
-      defaultSettingsApplied: chrome.i18n.getMessage('defaultSettingsApplied'),
-      clickToLoad: chrome.i18n.getMessage('clickToLoad'),
-      unsavedChanges: chrome.i18n.getMessage('unsavedChanges')
-    };
+      // Initialize all i18n messages
+      messages = {
+        configFile: api.i18n.getMessage('configFile') || 'Config File',
+        useDefaultConfig: api.i18n.getMessage('useDefaultConfig') || 'Use Default Config',
+        useDefaultLatestConfig: api.i18n.getMessage('useDefaultLatestConfig') || 'Use Default Latest Config',
+        useGithubConfig: api.i18n.getMessage('useGithubConfig') || 'Use GitHub Config',
+        load: api.i18n.getMessage('load') || 'Load',
+        supportedServices: api.i18n.getMessage('supportedServices') || 'Supported Services',
+        loading: api.i18n.getMessage('loading') || 'Loading...',
+        resetToDefaults: api.i18n.getMessage('resetToDefaults') || 'Reset to Defaults',
+        noServices: api.i18n.getMessage('noServices') || 'No Services',
+        selector: api.i18n.getMessage('selector') || 'Selector: {0}',
+        settingsSaved: api.i18n.getMessage('settingsSaved') || 'Settings Saved',
+        confirmReset: api.i18n.getMessage('confirmReset') || 'Confirm Reset',
+        settingsResetSuccess: api.i18n.getMessage('settingsResetSuccess') || 'Settings Reset Successfully',
+        settingsResetError: api.i18n.getMessage('settingsResetError') || 'Settings Reset Error',
+        enterUrl: api.i18n.getMessage('enterUrl') || 'Enter URL',
+        loadingSettings: api.i18n.getMessage('loadingSettings') || 'Loading Settings...',
+        settingsLoaded: api.i18n.getMessage('settingsLoaded') || 'Settings Loaded',
+        loadingError: api.i18n.getMessage('loadingError') || 'Loading Error: {0}',
+        defaultSettingsApplied: api.i18n.getMessage('defaultSettingsApplied') || 'Default Settings Applied',
+        clickToLoad: api.i18n.getMessage('clickToLoad') || 'Click to Load',
+        unsavedChanges: api.i18n.getMessage('unsavedChanges') || 'Unsaved Changes'
+      };
+    } catch (error) {
+      console.warn('i18n initialization failed:', error);
+      // Set fallback values
+      extensionName = 'cReturn';
+      options = 'Options';
+      messages = {
+        configFile: 'Config File',
+        useDefaultConfig: 'Use Default Config',
+        useDefaultLatestConfig: 'Use Default Latest Config',
+        useGithubConfig: 'Use GitHub Config',
+        load: 'Load',
+        supportedServices: 'Supported Services',
+        loading: 'Loading...',
+        resetToDefaults: 'Reset to Defaults',
+        noServices: 'No Services',
+        selector: 'Selector: {0}',
+        settingsSaved: 'Settings Saved',
+        confirmReset: 'Confirm Reset',
+        settingsResetSuccess: 'Settings Reset Successfully',
+        settingsResetError: 'Settings Reset Error',
+        enterUrl: 'Enter URL',
+        loadingSettings: 'Loading Settings...',
+        settingsLoaded: 'Settings Loaded',
+        loadingError: 'Loading Error: {0}',
+        defaultSettingsApplied: 'Default Settings Applied',
+        clickToLoad: 'Click to Load',
+        unsavedChanges: 'Unsaved Changes'
+      };
+    }
   }
 
   /**
@@ -81,7 +114,11 @@
    * 設定をロードしてUIに表示
    */
   function loadSettings() {
-    chrome.storage.sync.get(null, (data) => {
+    try {
+      const api = (globalThis as any).browser || chrome;
+      if (!api?.storage) return;
+      
+      api.storage.sync.get(null, (data) => {
       currentSettings = data || { configUrl: BASE_URL + DEFAULT_LATEST_PATH, services: {} };
       
       // configUrlの値で設定タイプを判定
@@ -100,9 +137,12 @@
         }
       }
       
-      // サービスリストを表示
-      displayServices(currentSettings.services || {});
-    });
+        // サービスリストを表示
+        displayServices(currentSettings.services || {});
+      });
+    } catch (error) {
+      console.error('Failed to load settings:', error);
+    }
   }
 
   /**
@@ -128,7 +168,10 @@
     currentSettings.services[domain].enabled = enabled;
     
     // 現在の設定をすべてChrome Storageに即時保存
-    chrome.storage.sync.set(currentSettings, () => {
+    const api = (globalThis as any).browser || chrome;
+    if (!api?.storage) return;
+    
+    api.storage.sync.set(currentSettings, () => {
       saveStatus = messages.settingsSaved;
       saveStatusClass = 'status success';
       
@@ -210,7 +253,10 @@
       currentSettings.configUrl = fullUrl;
       
       // Chrome Storageに保存してからUI を更新
-      chrome.storage.sync.set(currentSettings, () => {
+      const storageApi = (globalThis as any).browser || chrome;
+      if (!storageApi?.storage) return;
+      
+      storageApi.storage.sync.set(currentSettings, () => {
         displayServices(currentSettings.services);
         
         configStatus = messages.settingsLoaded;
@@ -251,7 +297,10 @@
         currentSettings.configUrl = "";
           
         // Chrome Storageに即時保存
-        chrome.storage.sync.set(currentSettings, () => {
+        const storageApi = (globalThis as any).browser || chrome;
+        if (!storageApi?.storage) return;
+        
+        storageApi.storage.sync.set(currentSettings, () => {
           displayServices(currentSettings.services);
           saveStatus = messages.defaultSettingsApplied;
           saveStatusClass = 'status success';
@@ -268,7 +317,10 @@
       currentSettings.configUrl = BASE_URL + DEFAULT_LATEST_PATH;
       configUrl = "";
       
-      chrome.storage.sync.set(currentSettings, () => {
+      const storageApi = (globalThis as any).browser || chrome;
+      if (!storageApi?.storage) return;
+      
+      storageApi.storage.sync.set(currentSettings, () => {
         saveStatus = messages.clickToLoad;
         saveStatusClass = 'status warning';
       });
@@ -301,9 +353,81 @@
     saveStatusClass = 'status warning';
   }
 
-  onMount(() => {
+  // WXT スタイルのコンテキスト管理（ctx風）
+  class OptionsContext {
+    private _isValid = true;
+    private _timeouts: number[] = [];
+    private _intervals: number[] = [];
+
+    get isValid() { return this._isValid; }
+    get isInvalid() { return !this._isValid; }
+
+    // WXT ctx風のsetTimeout
+    setTimeout(callback: Function, delay: number) {
+      if (this._isValid) {
+        const id = setTimeout(() => {
+          if (this._isValid) callback();
+        }, delay);
+        this._timeouts.push(id);
+        return id;
+      }
+    }
+
+    // WXT ctx風のsetInterval  
+    setInterval(callback: Function, delay: number) {
+      if (this._isValid) {
+        const id = setInterval(() => {
+          if (this._isValid) callback();
+        }, delay);
+        this._intervals.push(id);
+        return id;
+      }
+    }
+
+    // クリーンアップ
+    invalidate() {
+      this._isValid = false;
+      this._timeouts.forEach(id => clearTimeout(id));
+      this._intervals.forEach(id => clearInterval(id));
+      this._timeouts = [];
+      this._intervals = [];
+    }
+  }
+
+  // オプション用のコンテキスト
+  const optionsCtx = new OptionsContext();
+
+  // WXT スタイルの初期化 - ブラウザAPI待機
+  async function initializeWXT(): Promise<void> {
+    if (optionsCtx.isInvalid) return; // コンテキストが無効な場合は終了
+
+    // ブラウザAPIが利用可能になるまで再帰的に待機
+    const api = (globalThis as any).browser || chrome;
+    if (typeof api === 'undefined' || !api?.storage || !api?.i18n) {
+      return new Promise<void>(resolve => 
+        optionsCtx.setTimeout(() => resolve(initializeWXT()), 10)
+      );
+    }
+    
+    // 初期化実行
     initializeI18n();
     loadSettings();
+  }
+  
+  // 即座に初期化開始
+  initializeWXT();
+
+  // フォールバック用のonMount
+  onMount(() => {
+    // 既に初期化されている場合はスキップ
+    if (extensionName === '' && optionsCtx.isValid) {
+      initializeWXT();
+    }
+
+    // クリーンアップ関数を返す
+    return () => {
+      optionsCtx.invalidate();
+    };
   });
 </script>
 
