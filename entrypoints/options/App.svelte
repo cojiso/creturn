@@ -9,6 +9,17 @@
     CONFIG_SOURCES 
   } from '~/lib/config';
 
+  // 型定義
+  interface ServiceConfig {
+    name: string;
+    selectors: string[];
+    enabled?: boolean;
+  }
+  
+  interface ServicesData {
+    [domain: string]: ServiceConfig;
+  }
+
   // State variables
   let currentSettings: any = {
     configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.json",
@@ -22,7 +33,7 @@
   let saveStatus = '';
   let saveStatusClass = '';
   let servicesLoading = true;
-  let services: any = {};
+  let services: ServicesData = {};
 
   // I18n messages
   let extensionName = '';
@@ -113,6 +124,7 @@
    */
   function loadSettings() {
     try {
+      const api = (globalThis as any).browser || chrome;
       if (!api?.storage) return;
       
       api.storage.sync.get(null, (data) => {
@@ -134,8 +146,16 @@
         }
       }
       
-        // サービスリストを表示
-        displayServices(currentSettings.services || {});
+      // サービスリストを表示
+      const services = currentSettings.services || {};
+      if (Object.keys(services).length === 0) {
+        // サービス設定が空の場合は設定タイプに応じて自動ロード
+        servicesLoading = true;
+        autoLoadConfigByType();
+      } else {
+        // サービス設定がある場合は表示
+        displayServices(services);
+      }
       });
     } catch (error) {
       console.error('Failed to load settings:', error);
@@ -145,9 +165,66 @@
   /**
    * サービスのリストを表示
    */
-  function displayServices(servicesData: any) {
+  function displayServices(servicesData: ServicesData) {
     servicesLoading = false;
     services = servicesData;
+  }
+
+  /**
+   * 設定タイプに応じて自動的に設定をロード
+   */
+  async function autoLoadConfigByType() {
+    try {
+      if (configType === 'default') {
+        // ローカル設定を読み込む
+        const servicesData = await loadLocalConfig() as ServicesData;
+        
+        // 既存のサービスからenabledフラグを引き継ぐ
+        if (currentSettings.services) {
+          Object.entries(servicesData).forEach(([domain, service]) => {
+            if (currentSettings.services[domain]) {
+              service.enabled = currentSettings.services[domain].enabled;
+            }
+          });
+        }
+        currentSettings.services = servicesData;
+        currentSettings.configUrl = "";
+        
+        // Chrome Storageに保存してからUIを更新
+        browser.storage.sync.set(currentSettings, () => {
+          displayServices(currentSettings.services);
+        });
+      } else if (configType === 'default-latest') {
+        // リモート最新設定を読み込む
+        const newServices = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH) as ServicesData;
+        
+        if (newServices) {
+          // 既存のサービスからenabledフラグを引き継ぐ
+          if (currentSettings.services) {
+            Object.entries(newServices).forEach(([domain, service]) => {
+              if (currentSettings.services[domain]) {
+                service.enabled = currentSettings.services[domain].enabled;
+              } else {
+                service.enabled = true;
+              }
+            });
+          }
+          
+          currentSettings.services = newServices;
+          
+          // Chrome Storageに保存してからUIを更新
+          browser.storage.sync.set(currentSettings, () => {
+            displayServices(currentSettings.services);
+          });
+        } else {
+          throw new Error('Failed to retrieve configuration file');
+        }
+      }
+      // github タイプの場合は手動ロードのみ
+    } catch (error) {
+      console.error('Auto-load configuration error:', error);
+      servicesLoading = false;
+    }
   }
 
   /**
@@ -229,7 +306,7 @@
     const fullUrl = BASE_URL + urlPath;
     
     try {
-      const newServices = await loadRemoteCustomConfig(fullUrl);
+      const newServices = await loadRemoteCustomConfig(fullUrl) as ServicesData;
       
       if (!newServices) {
         throw new Error('Failed to retrieve configuration file');
@@ -239,9 +316,9 @@
       if (currentSettings.services) {
         Object.entries(newServices).forEach(([domain, service]) => {
           if (currentSettings.services[domain]) {
-            (service as any).enabled = currentSettings.services[domain].enabled;
+            service.enabled = currentSettings.services[domain].enabled;
           } else {
-            (service as any).enabled = true;
+            service.enabled = true;
           }
         });
       }
@@ -278,13 +355,13 @@
       // ローカル設定を読み込む
       servicesLoading = true;
       try {
-        const servicesData = await loadLocalConfig();
+        const servicesData = await loadLocalConfig() as ServicesData;
         
         // 既存のサービスからenabledフラグを引き継ぐ
         if (currentSettings.services) {
           Object.entries(servicesData).forEach(([domain, service]) => {
             if (currentSettings.services[domain]) {
-              (service as any).enabled = currentSettings.services[domain].enabled;
+              service.enabled = currentSettings.services[domain].enabled;
             }
           });
         }
@@ -313,16 +390,16 @@
       // default-latestの場合も自動でリモート設定をロード
       servicesLoading = true;
       try {
-        const newServices = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH);
+        const newServices = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH) as ServicesData;
         
         if (newServices) {
           // 既存のサービスからenabledフラグを引き継ぐ
           if (currentSettings.services) {
             Object.entries(newServices).forEach(([domain, service]) => {
               if (currentSettings.services[domain]) {
-                (service as any).enabled = currentSettings.services[domain].enabled;
+                service.enabled = currentSettings.services[domain].enabled;
               } else {
-                (service as any).enabled = true;
+                service.enabled = true;
               }
             });
           }
