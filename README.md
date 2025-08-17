@@ -41,78 +41,13 @@ When using these input methods in AI chat services, pressing Enter to confirm ch
 - NotebookLM (notebooklm.google.com)
 - Phind (www.phind.com)
 - Grok (grok.com)
-- And many others!
+- And many others! (15+ built-in sites)
 
 ## Usage
 
 - **Extension icon**: Colored when active, gray when inactive
 - **Click icon**: Toggle on/off for current site or access options
 - **Typing**: Enter for line breaks/character conversion, Ctrl+Enter to send
-
-## Technical Implementation
-
-### Architecture
-
-cReturn is built with the [WXT Framework](https://wxt.dev/) for modern Chrome extension development using:
-- **Manifest V3** for enhanced security and performance
-- **TypeScript** for type safety and better development experience
-- **Svelte** for lightweight, reactive UI components
-- **WXT Browser API** for cross-browser compatibility
-
-### Core Components
-
-#### Background Script (`background.ts`)
-- Extension lifecycle management (install/update)
-- Icon state management using `webNavigation` API
-- Configuration loading and caching
-
-#### Content Script (`content.ts`)
-- IME-aware keyboard event handling
-- Domain-specific selector matching
-- Real-time input field detection
-
-#### Icon Manager (`lib/icons.ts`)
-- Dynamic icon updates based on site support
-- Tab-specific state tracking
-
-#### Configuration System (`lib/config.ts`)
-- Local and remote configuration loading
-- GitHub-hosted config support
-- Automatic migration and updates
-
-### Key Features
-
-#### IME-Aware Input Handling
-```typescript
-// IME conversion protection
-if (event.isComposing) {
-  event.stopImmediatePropagation();
-  return;
-}
-```
-
-#### Dynamic Site Detection
-```typescript
-// Wildcard domain matching
-if (domain.startsWith('*.')) {
-  const baseDomain = domain.substring(2);
-  if (currentDomain.endsWith('.' + baseDomain) || currentDomain === baseDomain) {
-    return service;
-  }
-}
-```
-
-#### Reliable Icon Updates
-```typescript
-// Using webNavigation for accurate page change detection
-browser.webNavigation.onCommitted.addListener((details) => {
-  if (details.frameId !== 0) return; // Main frame only
-  const domain = new URL(details.url).hostname;
-  if (domain) {
-    IconManager.updateIcon(domain, details.tabId);
-  }
-});
-```
 
 ## Custom Configuration
 
@@ -158,29 +93,29 @@ The `selectors` field defines CSS selectors for text input areas on each domain.
 
 ## Development
 
-### Setup
-
-1. Clone the repository
-```bash
+### Setup & Build
+```sh
+# 1. Clone the repository
 git clone https://github.com/cojiso/creturn.git
 cd creturn
-```
 
-2. Install dependencies
-```bash
+# 2. Install dependencies
 pnpm install
-```
 
-3. Start development server
-```bash
+# 3. Start development server
 pnpm dev
-```
 
-### Build
-
-```bash
+# 4. Build
 pnpm build
 ```
+
+### Architecture
+
+cReturn is built with the [WXT Framework](https://wxt.dev/) for modern Chrome extension development using:
+- **Manifest V3** for enhanced security and performance
+- **TypeScript** for type safety and better development experience
+- **Svelte** for lightweight, reactive UI components
+- **WXT Browser API** for cross-browser compatibility
 
 ### Project Structure
 
@@ -242,25 +177,6 @@ If cReturn doesn't work:
 3. Verify supported input area
 4. For custom configs, check JSON format
 5. Check browser console for errors
-
-### Common Issues
-
-#### Extension Not Working on Specific Sites
-- Verify the site is in your configuration
-- Check if the CSS selectors match the actual input elements
-- Try refreshing the page after enabling
-
-#### IME Conversion Issues
-- Ensure your input method is properly configured
-- Test with different text areas to isolate the issue
-- Check if other extensions conflict with keyboard handling
-
-## Browser Compatibility
-
-- **Chrome**: Fully supported (Manifest V3)
-- **Edge**: Supported via Chrome Web Store
-- **Firefox**: Planned support
-- **Safari**: Under consideration
 
 ## Store Descriptions
 
