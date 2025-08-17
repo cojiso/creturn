@@ -158,3 +158,6 @@ sketch
 
 # WXT output directory
 .output
+
+# Resources
+resources
