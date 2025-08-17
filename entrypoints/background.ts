@@ -46,10 +46,33 @@ export default defineBackground(() => {
     }
   });
 
-  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status !== 'complete' || !tab.url) return;
-    const domain = new URL(tab.url)?.hostname;
-    IconManager.updateIcon(domain, tabId);
+  // webNavigationを使用してより確実なアイコン更新
+  chrome.webNavigation.onCommitted.addListener((details) => {
+    // メインフレームのみ対象（iframeは除外）
+    if (details.frameId !== 0) return;
+    
+    try {
+      const domain = new URL(details.url)?.hostname;
+      if (domain) {
+        IconManager.updateIcon(domain, details.tabId);
+      }
+    } catch (error) {
+      // URLが不正な場合は無視
+    }
+  });
+
+  // 履歴変更（SPAでの画面遷移）も監視
+  chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
+    if (details.frameId !== 0) return;
+    
+    try {
+      const domain = new URL(details.url)?.hostname;
+      if (domain) {
+        IconManager.updateIcon(domain, details.tabId);
+      }
+    } catch (error) {
+      // URLが不正な場合は無視
+    }
   });
 
   chrome.tabs.onActivated.addListener(async (activeInfo) => {

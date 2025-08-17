@@ -7,7 +7,7 @@ export default defineConfig({
     name: '__MSG_extensionName__',
     description: '__MSG_extensionDescription__',
     default_locale: 'en',
-    permissions: ['storage', 'activeTab'],
+    permissions: ['storage', 'activeTab', 'webNavigation'],
     host_permissions: ['https://raw.githubusercontent.com/*'],
     icons: {
       128: 'assets/icon.png'

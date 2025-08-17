@@ -29,9 +29,6 @@ export const IconManager = {
       : browser.runtime.getURL('assets/icon_disabled.png');
 
     try {
-      console.log(`アイコン更新: ${domain} ${isEnabled}`);
-      console.log(`アイコンパス: ${iconPath}`);
-      
       chrome.action.setIcon({ 
         path: iconPath,
         tabId: tabId 
