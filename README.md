@@ -211,7 +211,7 @@ This project uses simplified Trunk-Based Development for streamlined releases an
 
 ##### Configuration Updates (Weekly)
 Fast deployment without store approval:
-1. Update `creturn-config.json` in `main`
+1. Update `creturn-config.json` in `main/public`
 2. Tag with `config-vYYYYMMDD`
 3. Update hosted config file on GitHub
 

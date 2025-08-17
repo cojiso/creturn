@@ -15,7 +15,7 @@ export const CONFIG_SOURCES = {
 // デフォルトの設定
 export const DEFAULT_CONFIG = {
   source: CONFIG_SOURCES.REMOTE_DEFAULT,
-  configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/creturn-config.json",
+  configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.json",
   services: {}
 };
 

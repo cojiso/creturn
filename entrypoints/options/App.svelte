@@ -11,7 +11,7 @@
 
   // State variables
   let currentSettings: any = {
-    configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/creturn-config.json",
+    configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.json",
     services: {}
   };
   
@@ -30,7 +30,7 @@
   let messages: any = {};
 
   const BASE_URL = "https://raw.githubusercontent.com/";
-  const DEFAULT_LATEST_PATH = "cojiso/creturn/main/creturn-config.json";
+  const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.json";
 
   /**
    * Initialize internationalization
