@@ -76,8 +76,11 @@ export default defineContentScript({
       // 1. 自分で発火させたイベントの場合は無視
       if ((event as any).fromCReturn) return;
 
-      // 2. IME入力中はブラウザに任せる
-      if (event.isComposing) return;
+      // 2. IME入力中は変換確定のためにEnterを保護する、送信処理を阻止
+      if (event.isComposing) {
+        event.stopImmediatePropagation();
+        return;
+      }
 
       // 3. メタデータフラグのチェック
       if (!state.enabled || !event.isTrusted) return;
