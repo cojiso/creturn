@@ -266,63 +266,63 @@ If cReturn doesn't work:
 
 **Short Description (max 132　words):**
 ```
-Prevent accidental sending when pressing Enter for line breaks/kanji conversion. Use Ctrl+Enter to send. Custom configs available.
+Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental text conversion sends.
 ```
 
 **Full Description:**
 ```
-Use Ctrl+Enter to send messages in AI chat apps like ChatGPT and Claude. This prevents accidental sending when you type languages that need character conversion or composition, like:
-- Converting to kanji (Japanese, Chinese)
-- Composing Hangul (Korean)
-- Combining Indic scripts (Hindi, Bengali, Tamil, etc.)
-- Combining Arabic scripts
+▍Features:
+- 12+ built-in sites + unlimited custom site additions
+- Load custom configuration files created on GitHub
+- Reliable prevention of accidental sends even in chat editing areas
 
-Key features:
-- Press Enter = new line and finish character conversion/composition
-- Press Ctrl+Enter (Windows/Linux) or Command+Enter (Mac) = send message
-- Click the icon to turn on/off easily
-- You can make your own config file on GitHub to add more websites.
+▍Core functionality:
+- Enter key = line breaks + character conversion confirmation
+- Ctrl+Enter (macOS: Command+Enter) = send message
+- One-click on/off toggle
 
-Works on these sites:
-- ChatGPT (chat.openai.com)
-- Claude (claude.ai)
-- Google Gemini (gemini.google.com)
-- Perplexity AI
-- Microsoft Copilot
-- Many other AI chat sites. See: https://github.com/cojiso/creturn/blob/main/creturn-config.json
+▍Supported sites:
+- ChatGPT, Claude, Gemini, Perplexity, Copilot, and more
+- Full site list (config file): 
+  https://github.com/cojiso/creturn/blob/main/public/creturn-config.json
 
-Questions or problems? Visit our GitHub page.
+▍Custom configuration:
+1. Create JSON site configuration file
+2. Upload to GitHub
+3. Register file URL in extension settings
+
+▍Issues or feature requests: GitHub repository
 https://github.com/cojiso/creturn
 ```
 
 **短文説明:**
 ```
-チャットでのキー挙動を変更し、Ctrl+Enterで送信、Enterで改行、漢字変換をしようとして誤ってメッセージが送信されることを防ぎます。そして、GitHubのJSONファイルを読み込むことでカスタムのサイト設定を追加できます。
+どんなサイトでも、Enterで改行、Ctrl+Enterで送信。GitHubでのカスタム設定に対応。漢字変換時の誤送信を防ぐ拡張機能です。
 ```
 
 **説明文：**
 ```
-ChatGPTやClaudeなどのAIチャットサービスでメッセージ送信を「Ctrl+Enter」に割り当て、文字変換・合成が必要な言語での誤送信を防ぎます。以下のような言語入力時に適しています：
-- 漢字変換（日本語・中国語）
-- ハングル合成（韓国語）
-- インド系文字の結合（ヒンディー語・ベンガル語・タミル語等）
-- アラビア系文字の結合
+▍特徴：
+- 標準12サイト + 好みのサイトを無制限に追加
+- GitHubに作成したカスタム設定ファイルの読込オプション
+- チャットの修正エリアの中でも、誤送信を確実に防止
 
-主な機能：
-- Enterキーで改行・文字変換/合成確定
-- Ctrl+Enter（Windows/Linux）またはCommand+Enter（macOS）でメッセージ送信
-- 拡張機能アイコンクリックで簡単にオン/オフ切り替え
-- GitHubでカスタム設定ファイルを作成・読み込みすることで、標準対応サイト以外も追加可能
+▍基本機能：
+- Enterキー = 改行・文字変換の確定  
+- Ctrl+Enter (macOS: Command+Enter) = メッセージの送信
+- ワンクリックでのオン/オフ切替
 
-対応サイト：
-- ChatGPT (chat.openai.com)
-- Claude (claude.ai)
-- Google Gemini (gemini.google.com)
-- Perplexity AI
-- Microsoft Copilot
-- その他多数のAIチャットサービス: https://github.com/cojiso/creturn/blob/main/creturn-config.json
+▍対応サイト：
+- ChatGPT、Claude、Gemini、Perplexity、Copilot等
+- 対応サイト一覧(設定ファイル): 
+  https://github.com/cojiso/creturn/blob/main/public/creturn-config.json
 
-不具合やご要望は GitHubリポジトリまで。
+▍カスタム設定の方法：
+1. JSONファイルでサイト設定を作成
+2. GitHubへのアップロード  
+3. 設定画面にファイルのURLを登録
+
+▍不具合やご要望は GitHubリポジトリまで。
 https://github.com/cojiso/creturn
 ```
 
