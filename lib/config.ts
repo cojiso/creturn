@@ -3,12 +3,14 @@
  * 設定の取得・適用を担当
  */
 
+import { browser } from 'wxt/browser';
+
 // 設定ソースの種類を定義
 export const CONFIG_SOURCES = {
   LOCAL: 'local',           // ローカルファイル (creturn-config.json)
   REMOTE_DEFAULT: 'remote_default', // デフォルトのGitHubリポジトリ
   REMOTE_CUSTOM: 'remote_custom'    // カスタムURL
-};
+} as const;
 
 // デフォルトの設定
 export const DEFAULT_CONFIG = {
@@ -22,7 +24,7 @@ export const DEFAULT_CONFIG = {
  * @param {string} configUrl - 設定URL
  * @returns {string} - 設定ソースタイプ
  */
-export function getConfigSource(configUrl) {
+export function getConfigSource(configUrl: string): string {
   if (!configUrl || configUrl === "") {
     return CONFIG_SOURCES.LOCAL;
   } else if (configUrl === DEFAULT_CONFIG.configUrl) {
@@ -38,7 +40,7 @@ export function getConfigSource(configUrl) {
  * @param {Object} syncStorage - chrome.storageから取得した設定
  * @returns {Object} - 更新された設定オブジェクト
  */
-export async function migrateDomainEnabledStates(config, syncStorage={}) {
+export async function migrateDomainEnabledStates(config: any, syncStorage: any = {}): Promise<any> {
   // 設定オブジェクトに直接enabledフラグを設定
   Object.keys(config.services).forEach(domain => {
     config.services[domain].enabled = syncStorage.services?.[domain]?.enabled ?? true;
@@ -52,7 +54,7 @@ export async function migrateDomainEnabledStates(config, syncStorage={}) {
  * @param {string} configUrl - 設定URL（空の場合はローカル設定を使用）
  * @returns {Object} - サービス設定オブジェクト
  */
-export async function loadConfig(configUrl = "") {
+export async function loadConfig(configUrl: string = ""): Promise<any> {
   const source = getConfigSource(configUrl);
   
   switch (source) {
@@ -72,8 +74,8 @@ export async function loadConfig(configUrl = "") {
  * ローカル設定を読み込み
  * @returns {Object} - サービス設定オブジェクト
  */
-export async function loadLocalConfig() {
-  const response = await fetch(chrome.runtime.getURL('creturn-config.json'));
+export async function loadLocalConfig(): Promise<any> {
+  const response = await fetch('/creturn-config.json');
   const configData = await response.json();
   return configData.services;
 }
@@ -82,7 +84,7 @@ export async function loadLocalConfig() {
  * デフォルトリモート設定を読み込み
  * @returns {Object} - サービス設定オブジェクト
  */
-export async function loadRemoteDefaultConfig() {
+export async function loadRemoteDefaultConfig(): Promise<any> {
   return await loadRemoteCustomConfig(DEFAULT_CONFIG.configUrl);
 }
 
@@ -91,7 +93,7 @@ export async function loadRemoteDefaultConfig() {
  * @param {string} url - 設定ファイルのURL
  * @returns {Object} - 取得したサービス設定オブジェクト
  */
-export async function loadRemoteCustomConfig(url) {
+export async function loadRemoteCustomConfig(url: string): Promise<any> {
   try {
     if (!url.toLowerCase().endsWith('.json')) {
       throw new Error('設定ファイルはJSONファイルである必要があります');
@@ -120,12 +122,10 @@ export async function loadRemoteCustomConfig(url) {
  * 設定をデフォルト値にリセット
  * @returns {Promise<{success: boolean, message: string}>} - リセット結果
  */
-export async function resetToDefaults() {
+export async function resetToDefaults(): Promise<{success: boolean, message: string}> {
   try {
     // ストレージをクリア
-    await new Promise((resolve) => {
-      chrome.storage.sync.clear(resolve);
-    });
+    await browser.storage.sync.clear();
     
     // デフォルト設定を取得（現在はリモートデフォルトを使用）
     const services = await loadRemoteDefaultConfig();
@@ -137,24 +137,11 @@ export async function resetToDefaults() {
     };
     
     // 設定を保存
-    await new Promise((resolve) => {
-      chrome.storage.sync.set(config, resolve);
-    });
+    await browser.storage.sync.set(config);
     
     return { success: true, message: '設定をリセットしました' };
   } catch (error) {
     console.error('設定のリセット中にエラーが発生しました:', error);
     return { success: false, message: 'リセット中にエラーが発生しました' };
   }
-}
-
-// レガシー関数（後方互換性のため）
-export async function fetchDefaultConfig() {
-  console.warn('fetchDefaultConfig is deprecated, use loadLocalConfig instead');
-  return await loadLocalConfig();
-}
-
-export async function fetchCustomConfig(url) {
-  console.warn('fetchCustomConfig is deprecated, use loadRemoteCustomConfig instead');
-  return await loadRemoteCustomConfig(url);
 }

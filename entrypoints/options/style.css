@@ -85,7 +85,7 @@ h2 {
   margin: 15px 0 10px;
 }
 
-#url-prefix {
+.url-prefix {
   color: var(--text-secondary);
   font-family: monospace;
   white-space: nowrap;
@@ -102,7 +102,12 @@ h2 {
   line-height: 1;
 }
 
-#config-url {
+.url-prefix.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.url-input-group input[type="text"] {
   flex: 1;
   border: 1px solid var(--border-color);
   border-left: none;
@@ -116,7 +121,12 @@ h2 {
   line-height: 1;
 }
 
-#load-config {
+.url-input-group input[type="text"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.url-input-group button {
   height: 34px;
   margin: 0;
   padding: 0 12px;
@@ -154,27 +164,19 @@ h2 {
   color: var(--error-color);
 }
 
-/* 無効状態のスタイル */
-#config-url:disabled,
-#url-prefix.disabled,
-#load-config:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 /* モバイル対応 */
 @media (max-width: 600px) {
   .url-input-group {
     flex-wrap: wrap;
   }
   
-  #config-url {
+  .url-input-group input[type="text"] {
     border-radius: 0;
     border: 1px solid var(--border-color);
     margin: 5px 0;
   }
   
-  #load-config {
+  .url-input-group button {
     width: 100%;
     border-radius: 4px;
     margin-top: 5px;
@@ -236,7 +238,6 @@ input:checked + .slider:before {
   text-align: center;
   padding: 10px;
   color: var(--text-secondary);
-  display: none;
 }
 
 .btn {
@@ -250,8 +251,13 @@ input:checked + .slider:before {
   transition: all 0.2s ease;
 }
 
-.btn:hover {
+.btn:hover:not(:disabled) {
   background: var(--secondary-hover);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .btn.primary {
@@ -260,8 +266,13 @@ input:checked + .slider:before {
   border: none;
 }
 
-.btn.primary:hover {
+.btn.primary:hover:not(:disabled) {
   background: var(--primary-hover);
+}
+
+.btn.secondary {
+  background: var(--secondary-color);
+  color: var(--text-color);
 }
 
 .note {
@@ -271,7 +282,7 @@ input:checked + .slider:before {
 }
 
 /* サービスリスト */
-.services-container {
+.services-list {
   margin-top: 10px;
 }
 
@@ -316,19 +327,11 @@ input:checked + .slider:before {
   border-top: 1px solid var(--border-color);
 }
 
-.footer #save-status {
+.footer span {
   flex: 1;
   padding-right: 20px;
 }
 
 .footer button {
   min-width: 120px;
-}
-
-/* ロード中のサービスインジケーター */
-.loading-indicator {
-  text-align: center;
-  padding: 10px;
-  color: var(--text-secondary);
-  display: none;
 }

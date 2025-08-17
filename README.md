@@ -49,6 +49,71 @@ When using these input methods in AI chat services, pressing Enter to confirm ch
 - **Click icon**: Toggle on/off for current site or access options
 - **Typing**: Enter for line breaks/character conversion, Ctrl+Enter to send
 
+## Technical Implementation
+
+### Architecture
+
+cReturn is built with the [WXT Framework](https://wxt.dev/) for modern Chrome extension development using:
+- **Manifest V3** for enhanced security and performance
+- **TypeScript** for type safety and better development experience
+- **Svelte** for lightweight, reactive UI components
+- **WXT Browser API** for cross-browser compatibility
+
+### Core Components
+
+#### Background Script (`background.ts`)
+- Extension lifecycle management (install/update)
+- Icon state management using `webNavigation` API
+- Configuration loading and caching
+
+#### Content Script (`content.ts`)
+- IME-aware keyboard event handling
+- Domain-specific selector matching
+- Real-time input field detection
+
+#### Icon Manager (`lib/icons.ts`)
+- Dynamic icon updates based on site support
+- Tab-specific state tracking
+
+#### Configuration System (`lib/config.ts`)
+- Local and remote configuration loading
+- GitHub-hosted config support
+- Automatic migration and updates
+
+### Key Features
+
+#### IME-Aware Input Handling
+```typescript
+// IME conversion protection
+if (event.isComposing) {
+  event.stopImmediatePropagation();
+  return;
+}
+```
+
+#### Dynamic Site Detection
+```typescript
+// Wildcard domain matching
+if (domain.startsWith('*.')) {
+  const baseDomain = domain.substring(2);
+  if (currentDomain.endsWith('.' + baseDomain) || currentDomain === baseDomain) {
+    return service;
+  }
+}
+```
+
+#### Reliable Icon Updates
+```typescript
+// Using webNavigation for accurate page change detection
+browser.webNavigation.onCommitted.addListener((details) => {
+  if (details.frameId !== 0) return; // Main frame only
+  const domain = new URL(details.url).hostname;
+  if (domain) {
+    IconManager.updateIcon(domain, details.tabId);
+  }
+});
+```
+
 ## Custom Configuration
 
 Add support for additional sites by creating a JSON configuration file:
@@ -78,36 +143,85 @@ Add support for additional sites by creating a JSON configuration file:
         "div[contenteditable='true']",
         "div.ProseMirror" 
       ]
+    },
+    "*.example.com": {
+      "name": "Example Service",
+      "selectors": [
+        "textarea.chat-input"
+      ]
     }
   }
 }
 ```
 
-The `selectors` field defines CSS selectors for text input areas on each domain.
+The `selectors` field defines CSS selectors for text input areas on each domain. Wildcard domains (starting with `*.`) are supported for subdomain matching.
 
-## Development & Release Strategy
+## Development
+
+### Setup
+
+1. Clone the repository
+```bash
+git clone https://github.com/cojiso/creturn.git
+cd creturn
+```
+
+2. Install dependencies
+```bash
+pnpm install
+```
+
+3. Start development server
+```bash
+pnpm dev
+```
+
+### Build
+
+```bash
+pnpm build
+```
+
+### Project Structure
+
+```
+├── entrypoints/
+│   ├── background.ts      # Service worker
+│   ├── content.ts         # Content script
+│   ├── popup/            # Extension popup
+│   └── options/          # Options page
+├── lib/
+│   ├── config.ts         # Configuration management
+│   ├── icons.ts          # Icon state management
+│   └── utils.ts          # Utility functions
+├── assets/               # Static assets
+└── wxt.config.ts         # WXT configuration
+```
+
+### Release Strategy
 
 This project uses simplified Trunk-Based Development for streamlined releases and configuration updates.
 
-### Branch Structure
+#### Branch Structure
 - `main` - Primary development branch
+- `develop` - Development integration branch
 - `feature/name` - Optional short-lived feature branches
 
-### Update Workflows
+#### Update Workflows
 
-#### Configuration Updates (Weekly)
+##### Configuration Updates (Weekly)
 Fast deployment without store approval:
 1. Update `creturn-config.json` in `main`
 2. Tag with `config-vYYYYMMDD`
 3. Update hosted config file on GitHub
 
-#### Store Releases (Quarterly)
+##### Store Releases (Quarterly)
 1. Update version in `manifest.json`
 2. Commit with "Release vX.Y.Z"
 3. Tag with `vX.Y.Z`
 4. Package and submit to Chrome Web Store
 
-#### How to use tag
+##### How to use tag
 1. git commit
 2. git tag TAG_NAME
 3. git push origin main --tags
@@ -127,6 +241,26 @@ If cReturn doesn't work:
 2. Check if enabled (click icon)
 3. Verify supported input area
 4. For custom configs, check JSON format
+5. Check browser console for errors
+
+### Common Issues
+
+#### Extension Not Working on Specific Sites
+- Verify the site is in your configuration
+- Check if the CSS selectors match the actual input elements
+- Try refreshing the page after enabling
+
+#### IME Conversion Issues
+- Ensure your input method is properly configured
+- Test with different text areas to isolate the issue
+- Check if other extensions conflict with keyboard handling
+
+## Browser Compatibility
+
+- **Chrome**: Fully supported (Manifest V3)
+- **Edge**: Supported via Chrome Web Store
+- **Firefox**: Planned support
+- **Safari**: Under consideration
 
 ## Store Descriptions
 

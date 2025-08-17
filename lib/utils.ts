@@ -9,7 +9,7 @@
  * @param {Object} services - サービス設定オブジェクト
  * @returns {Object|null} - マッチしたサービス設定、またはnull
  */
-export function findMatchingService(currentDomain, services) {
+export function findMatchingService(currentDomain: string, services: any): any {
   if (!services || !currentDomain) return null;
   
   // 完全一致を優先

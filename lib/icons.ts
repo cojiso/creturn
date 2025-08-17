@@ -3,7 +3,8 @@
  * 拡張機能のアイコン状態を管理するモジュール
  */
 
-import { findMatchingService } from './utils.js';
+import { browser } from 'wxt/browser';
+import { findMatchingService } from './utils';
 
 export const IconManager = {
   /**
@@ -11,11 +12,11 @@ export const IconManager = {
    * @param {string} domain - 対象ドメイン
    * @param {number} tabId - タブID
    */
-  async updateIcon(domain, tabId) {
+  async updateIcon(domain: string, tabId: number) {
     if (!domain || !tabId) return;
     
     // ストレージから設定を取得
-    const { services = {} } = await chrome.storage.sync.get('services');
+    const { services = {} } = await browser.storage.sync.get('services');
     
     // 現在のドメインに対応するサービス設定を見つける（ワイルドカード対応）
     const matchingService = findMatchingService(domain, services);
@@ -25,14 +26,11 @@ export const IconManager = {
     
     // アイコンを設定（chrome.runtime.getURLを使用して絶対パスを取得）
     const iconPath = isEnabled 
-      ? chrome.runtime.getURL('assets/icon.png') 
-      : chrome.runtime.getURL('assets/icon_disabled.png');
+      ? '/assets/icon.png' 
+      : '/assets/icon_disabled.png';
 
     try {
-      console.log(`アイコン更新: ${domain} ${isEnabled}`);
-      console.log(`アイコンパス: ${iconPath}`);
-      
-      chrome.action.setIcon({ 
+      browser.action.setIcon({ 
         path: iconPath,
         tabId: tabId 
       });

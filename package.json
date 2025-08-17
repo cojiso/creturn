@@ -1,0 +1,23 @@
+{
+  "name": "creturn",
+  "version": "0.3.1",
+  "description": "Prevent accidental message sending during character conversion",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "wxt build",
+    "postinstall": "wxt prepare"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@wxt-dev/module-svelte": "^1.0.1",
+    "svelte": "^4.2.18",
+    "typescript": "^5.5.3",
+    "wxt": "^0.19.9"
+  }
+}
