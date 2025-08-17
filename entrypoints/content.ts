@@ -3,6 +3,8 @@
  * テキストエリアの検出、IME状態の監視、キーボードイベント処理を担当
  */
 
+import { browser } from 'wxt/browser';
+
 export default defineContentScript({
   matches: ['http://*/*', 'https://*/*'],
   runAt: 'document_start',
@@ -47,7 +49,7 @@ export default defineContentScript({
      * 設定を読み込む
      */
     function loadSettings() {
-      chrome.storage.sync.get(null, (data) => {
+      browser.storage.sync.get(null, (data) => {
         // 現在のドメインに対応するサービス設定を見つける（ワイルドカード対応）
         state.serviceConfig = findMatchingService(state.currentDomain, data.services);
         if (!state.serviceConfig?.selectors) return;
@@ -172,7 +174,7 @@ export default defineContentScript({
     }
 
     // chrome storage の変更を監視
-    chrome.storage.onChanged.addListener((_, namespace) => {
+    browser.storage.onChanged.addListener((_, namespace) => {
       if (namespace === 'sync') {
         loadSettings();
       }

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { browser } from 'wxt/browser';
   import { 
     resetToDefaults, 
     loadConfig, 
@@ -36,35 +37,32 @@
    */
   function initializeI18n() {
     try {
-      const api = (globalThis as any).browser || chrome;
-      if (!api?.i18n) return;
-      
-      extensionName = api.i18n.getMessage('extensionName') || 'cReturn';
-      options = api.i18n.getMessage('options') || 'Options';
+      extensionName = browser.i18n.getMessage('extensionName') || 'cReturn';
+      options = browser.i18n.getMessage('options') || 'Options';
     
       // Initialize all i18n messages
       messages = {
-        configFile: api.i18n.getMessage('configFile') || 'Config File',
-        useDefaultConfig: api.i18n.getMessage('useDefaultConfig') || 'Use Default Config',
-        useDefaultLatestConfig: api.i18n.getMessage('useDefaultLatestConfig') || 'Use Default Latest Config',
-        useGithubConfig: api.i18n.getMessage('useGithubConfig') || 'Use GitHub Config',
-        load: api.i18n.getMessage('load') || 'Load',
-        supportedServices: api.i18n.getMessage('supportedServices') || 'Supported Services',
-        loading: api.i18n.getMessage('loading') || 'Loading...',
-        resetToDefaults: api.i18n.getMessage('resetToDefaults') || 'Reset to Defaults',
-        noServices: api.i18n.getMessage('noServices') || 'No Services',
-        selector: api.i18n.getMessage('selector') || 'Selector: {0}',
-        settingsSaved: api.i18n.getMessage('settingsSaved') || 'Settings Saved',
-        confirmReset: api.i18n.getMessage('confirmReset') || 'Confirm Reset',
-        settingsResetSuccess: api.i18n.getMessage('settingsResetSuccess') || 'Settings Reset Successfully',
-        settingsResetError: api.i18n.getMessage('settingsResetError') || 'Settings Reset Error',
-        enterUrl: api.i18n.getMessage('enterUrl') || 'Enter URL',
-        loadingSettings: api.i18n.getMessage('loadingSettings') || 'Loading Settings...',
-        settingsLoaded: api.i18n.getMessage('settingsLoaded') || 'Settings Loaded',
-        loadingError: api.i18n.getMessage('loadingError') || 'Loading Error: {0}',
-        defaultSettingsApplied: api.i18n.getMessage('defaultSettingsApplied') || 'Default Settings Applied',
-        clickToLoad: api.i18n.getMessage('clickToLoad') || 'Click to Load',
-        unsavedChanges: api.i18n.getMessage('unsavedChanges') || 'Unsaved Changes'
+        configFile: browser.i18n.getMessage('configFile') || 'Config File',
+        useDefaultConfig: browser.i18n.getMessage('useDefaultConfig') || 'Use Default Config',
+        useDefaultLatestConfig: browser.i18n.getMessage('useDefaultLatestConfig') || 'Use Default Latest Config',
+        useGithubConfig: browser.i18n.getMessage('useGithubConfig') || 'Use GitHub Config',
+        load: browser.i18n.getMessage('load') || 'Load',
+        supportedServices: browser.i18n.getMessage('supportedServices') || 'Supported Services',
+        loading: browser.i18n.getMessage('loading') || 'Loading...',
+        resetToDefaults: browser.i18n.getMessage('resetToDefaults') || 'Reset to Defaults',
+        noServices: browser.i18n.getMessage('noServices') || 'No Services',
+        selector: browser.i18n.getMessage('selector') || 'Selector: {0}',
+        settingsSaved: browser.i18n.getMessage('settingsSaved') || 'Settings Saved',
+        confirmReset: browser.i18n.getMessage('confirmReset') || 'Confirm Reset',
+        settingsResetSuccess: browser.i18n.getMessage('settingsResetSuccess') || 'Settings Reset Successfully',
+        settingsResetError: browser.i18n.getMessage('settingsResetError') || 'Settings Reset Error',
+        enterUrl: browser.i18n.getMessage('enterUrl') || 'Enter URL',
+        loadingSettings: browser.i18n.getMessage('loadingSettings') || 'Loading Settings...',
+        settingsLoaded: browser.i18n.getMessage('settingsLoaded') || 'Settings Loaded',
+        loadingError: browser.i18n.getMessage('loadingError') || 'Loading Error: {0}',
+        defaultSettingsApplied: browser.i18n.getMessage('defaultSettingsApplied') || 'Default Settings Applied',
+        clickToLoad: browser.i18n.getMessage('clickToLoad') || 'Click to Load',
+        unsavedChanges: browser.i18n.getMessage('unsavedChanges') || 'Unsaved Changes'
       };
     } catch (error) {
       console.warn('i18n initialization failed:', error);
@@ -115,7 +113,6 @@
    */
   function loadSettings() {
     try {
-      const api = (globalThis as any).browser || chrome;
       if (!api?.storage) return;
       
       api.storage.sync.get(null, (data) => {
@@ -253,10 +250,8 @@
       currentSettings.configUrl = fullUrl;
       
       // Chrome Storageに保存してからUI を更新
-      const storageApi = (globalThis as any).browser || chrome;
-      if (!storageApi?.storage) return;
       
-      storageApi.storage.sync.set(currentSettings, () => {
+      browser.storage.sync.set(currentSettings, () => {
         displayServices(currentSettings.services);
         
         configStatus = messages.settingsLoaded;
@@ -297,10 +292,8 @@
         currentSettings.configUrl = "";
           
         // Chrome Storageに即時保存
-        const storageApi = (globalThis as any).browser || chrome;
-        if (!storageApi?.storage) return;
-        
-        storageApi.storage.sync.set(currentSettings, () => {
+            
+        browser.storage.sync.set(currentSettings, () => {
           displayServices(currentSettings.services);
           saveStatus = messages.defaultSettingsApplied;
           saveStatusClass = 'status success';
@@ -317,10 +310,8 @@
       currentSettings.configUrl = BASE_URL + DEFAULT_LATEST_PATH;
       configUrl = "";
       
-      const storageApi = (globalThis as any).browser || chrome;
-      if (!storageApi?.storage) return;
       
-      storageApi.storage.sync.set(currentSettings, () => {
+      browser.storage.sync.set(currentSettings, () => {
         saveStatus = messages.clickToLoad;
         saveStatusClass = 'status warning';
       });

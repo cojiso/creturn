@@ -3,6 +3,8 @@
  * 設定の取得・適用を担当
  */
 
+import { browser } from 'wxt/browser';
+
 // 設定ソースの種類を定義
 export const CONFIG_SOURCES = {
   LOCAL: 'local',           // ローカルファイル (creturn-config.json)
@@ -73,7 +75,7 @@ export async function loadConfig(configUrl: string = ""): Promise<any> {
  * @returns {Object} - サービス設定オブジェクト
  */
 export async function loadLocalConfig(): Promise<any> {
-  const response = await fetch(browser.runtime.getURL('creturn-config.json'));
+  const response = await fetch('/creturn-config.json');
   const configData = await response.json();
   return configData.services;
 }
@@ -123,9 +125,7 @@ export async function loadRemoteCustomConfig(url: string): Promise<any> {
 export async function resetToDefaults(): Promise<{success: boolean, message: string}> {
   try {
     // ストレージをクリア
-    await new Promise<void>((resolve) => {
-      chrome.storage.sync.clear(() => resolve());
-    });
+    await browser.storage.sync.clear();
     
     // デフォルト設定を取得（現在はリモートデフォルトを使用）
     const services = await loadRemoteDefaultConfig();
@@ -137,9 +137,7 @@ export async function resetToDefaults(): Promise<{success: boolean, message: str
     };
     
     // 設定を保存
-    await new Promise<void>((resolve) => {
-      chrome.storage.sync.set(config, () => resolve());
-    });
+    await browser.storage.sync.set(config);
     
     return { success: true, message: '設定をリセットしました' };
   } catch (error) {

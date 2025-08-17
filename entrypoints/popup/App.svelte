@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { browser } from 'wxt/browser';
+  import type { Tabs } from 'wxt/browser';
   
   import { findMatchingService } from '~/lib/utils';
 
   // State variables
-  let currentTab: chrome.tabs.Tab | null = null;
+  let currentTab: Tabs.Tab | null = null;
   let currentSettings: any = null;
   let currentService: any = null;
   let domain = 'Loading...';
@@ -22,9 +24,9 @@
   function initializeI18n() {
     try {
       if (chrome?.i18n) {
-        extensionName = chrome.i18n.getMessage('extensionName') || 'cReturn';
-        unsupportedMessage = chrome.i18n.getMessage('unsupportedDomain') || 'This site is not supported';
-        settingsTitle = chrome.i18n.getMessage('settings') || 'Settings';
+        extensionName = browser.i18n.getMessage('extensionName') || 'cReturn';
+        unsupportedMessage = browser.i18n.getMessage('unsupportedDomain') || 'This site is not supported';
+        settingsTitle = browser.i18n.getMessage('settings') || 'Settings';
       }
     } catch (error) {
       console.warn('i18n initialization failed:', error);
@@ -34,13 +36,9 @@
   /**
    * 現在のタブの情報を取得
    */
-  async function getCurrentTab(): Promise<chrome.tabs.Tab | null> {
+  async function getCurrentTab(): Promise<Tabs.Tab | null> {
     try {
-      // WXTのbrowser polyfill または chrome API を使用
-      const api = (globalThis as any).browser || chrome;
-      if (!api?.tabs) return null;
-      
-      const tabs = await api.tabs.query({ active: true, currentWindow: true });
+      const tabs = await browser.tabs.query({ active: true, currentWindow: true });
       return tabs.length > 0 ? tabs[0] : null;
     } catch (error) {
       console.error('Failed to get current tab:', error);
@@ -51,25 +49,15 @@
   /**
    * 設定を読み込む
    */
-  function loadSettings(): Promise<any> {
-    return new Promise((resolve) => {
-      try {
-        // WXTのbrowser polyfill または chrome API を使用
-        const api = (globalThis as any).browser || chrome;
-        if (!api?.storage) {
-          resolve({});
-          return;
-        }
-        
-        api.storage.sync.get(null, (data: any) => {
-          currentSettings = data;
-          resolve(data);
-        });
-      } catch (error) {
-        console.error('Failed to load settings:', error);
-        resolve({});
-      }
-    });
+  async function loadSettings(): Promise<any> {
+    try {
+      const data = await browser.storage.sync.get(null);
+      currentSettings = data;
+      return data;
+    } catch (error) {
+      console.error('Failed to load settings:', error);
+      return {};
+    }
   }
 
   /**
@@ -78,15 +66,12 @@
   function toggleSiteEnabled() {
     if (!currentService || !currentTab?.url) return;
     
-    const api = (globalThis as any).browser || chrome;
-    if (!api?.storage) return;
-    
     const tabDomain = new URL(currentTab.url).hostname;
     
     // サービスに直接enabledフラグを設定して保存
     if (currentSettings.services) {
       currentSettings.services[tabDomain].enabled = isEnabled;
-      api.storage.sync.set({ services: currentSettings.services });
+      browser.storage.sync.set({ services: currentSettings.services });
     }
   }
 
@@ -94,10 +79,7 @@
    * 詳細設定を開く
    */
   function openOptionsPage() {
-    const api = (globalThis as any).browser || chrome;
-    if (api?.runtime) {
-      api.runtime.openOptionsPage();
-    }
+    browser.runtime.openOptionsPage();
   }
 
   /**
