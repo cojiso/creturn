@@ -1,6 +1,6 @@
 {
   "name": "creturn",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Prevent accidental message sending during character conversion",
   "type": "module",
   "scripts": {
