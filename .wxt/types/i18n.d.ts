@@ -85,7 +85,7 @@ declare module "wxt/browser" {
     /**
      * Extension description
      *
-     * "Prevent accidental sending when pressing Enter for line breaks/kanji conversion. Use Ctrl+Enter to send. Custom configs available."
+     * "Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental text conversion sends."
      */
     getMessage(
       messageName: "extensionDescription",
