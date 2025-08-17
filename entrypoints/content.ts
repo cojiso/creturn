@@ -172,7 +172,7 @@ export default defineContentScript({
     }
 
     // chrome storage の変更を監視
-    chrome.storage.onChanged.addListener((changes, namespace) => {
+    chrome.storage.onChanged.addListener((_, namespace) => {
       if (namespace === 'sync') {
         loadSettings();
       }
