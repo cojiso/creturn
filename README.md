@@ -266,7 +266,7 @@ If cReturn doesn't work:
 
 **Short Description (max 132　words):**
 ```
-Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental text conversion sends.
+Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.
 ```
 
 **Full Description:**
