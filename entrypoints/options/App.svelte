@@ -310,11 +310,45 @@
       currentSettings.configUrl = BASE_URL + DEFAULT_LATEST_PATH;
       configUrl = "";
       
-      
-      browser.storage.sync.set(currentSettings, () => {
-        saveStatus = messages.clickToLoad;
-        saveStatusClass = 'status warning';
-      });
+      // default-latestの場合も自動でリモート設定をロード
+      servicesLoading = true;
+      try {
+        const newServices = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH);
+        
+        if (newServices) {
+          // 既存のサービスからenabledフラグを引き継ぐ
+          if (currentSettings.services) {
+            Object.entries(newServices).forEach(([domain, service]) => {
+              if (currentSettings.services[domain]) {
+                (service as any).enabled = currentSettings.services[domain].enabled;
+              } else {
+                (service as any).enabled = true;
+              }
+            });
+          }
+          
+          currentSettings.services = newServices;
+          
+          // Chrome Storageに保存してからUIを更新
+          browser.storage.sync.set(currentSettings, () => {
+            displayServices(currentSettings.services);
+            saveStatus = messages.settingsLoaded;
+            saveStatusClass = 'status success';
+            
+            setTimeout(() => {
+              saveStatus = '';
+              saveStatusClass = 'status';
+            }, 1500);
+          });
+        } else {
+          throw new Error('Failed to retrieve configuration file');
+        }
+      } catch (error) {
+        console.error('Default-latest configuration loading error:', error);
+        servicesLoading = false;
+        saveStatus = messages.loadingError.replace('{0}', (error as any).message);
+        saveStatusClass = 'status error';
+      }
     } else if (configType === 'github') {
       // default-latestのURLが設定されている場合はクリア
       if (currentSettings.configUrl === BASE_URL + DEFAULT_LATEST_PATH) {
