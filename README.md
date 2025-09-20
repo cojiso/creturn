@@ -1,6 +1,6 @@
 # cReturn - Browser Extension
 
-![cReturn Icon](assets/icon.png)
+![cReturn Icon](public/assets/icon.png)
 
 ## Prevent Accidental Message Sending During Character Conversion
 
