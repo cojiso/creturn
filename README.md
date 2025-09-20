@@ -107,6 +107,9 @@ pnpm dev
 
 # 4. Build
 pnpm build
+
+# 5. Create a ZIP file for Chrome Web Store
+pnpm zip
 ```
 
 ### Architecture
