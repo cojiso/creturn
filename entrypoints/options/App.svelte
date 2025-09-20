@@ -62,7 +62,7 @@
         loading: browser.i18n.getMessage('loading') || 'Loading...',
         resetToDefaults: browser.i18n.getMessage('resetToDefaults') || 'Reset to Defaults',
         noServices: browser.i18n.getMessage('noServices') || 'No Services',
-        selector: browser.i18n.getMessage('selector') || 'Selector: {0}',
+        selector: browser.i18n.getMessage('selector') || 'Selector: $SELECTORS$',
         settingsSaved: browser.i18n.getMessage('settingsSaved') || 'Settings Saved',
         confirmReset: browser.i18n.getMessage('confirmReset') || 'Confirm Reset',
         settingsResetSuccess: browser.i18n.getMessage('settingsResetSuccess') || 'Settings Reset Successfully',
@@ -90,7 +90,7 @@
         loading: 'Loading...',
         resetToDefaults: 'Reset to Defaults',
         noServices: 'No Services',
-        selector: 'Selector: {0}',
+        selector: 'Selector: $SELECTORS$',
         settingsSaved: 'Settings Saved',
         confirmReset: 'Confirm Reset',
         settingsResetSuccess: 'Settings Reset Successfully',
@@ -340,7 +340,7 @@
       
     } catch (error: any) {
       console.error('Configuration file loading error:', error);
-      configStatus = messages.loadingError.replace('{0}', error.message);
+      configStatus = browser.i18n.getMessage('loadingError', [error.message]);
       configStatusClass = 'status error';
     }
   }
@@ -423,7 +423,7 @@
       } catch (error) {
         console.error('Default-latest configuration loading error:', error);
         servicesLoading = false;
-        saveStatus = messages.loadingError.replace('{0}', (error as any).message);
+        saveStatus = browser.i18n.getMessage('loadingError', [(error as any).message]);
         saveStatusClass = 'status error';
       }
     } else if (configType === 'github') {
@@ -606,7 +606,7 @@
             <div class="service-info">
               <div class="service-name">{service.name}</div>
               <div class="service-domain">{domain}</div>
-              <div class="service-selectors">{messages.selector ? messages.selector.replace('{0}', service.selectors.join(', ')) : `Selector: ${service.selectors.join(', ')}`}</div>
+              <div class="service-selectors">{messages.selector ? browser.i18n.getMessage('selector', [service.selectors.join(', ')]) : `Selector: ${service.selectors.join(', ')}`}</div>
             </div>
             <label class="toggle">
               <input 
