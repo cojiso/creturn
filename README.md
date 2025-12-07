@@ -1,10 +1,10 @@
-# cReturn - Browser Extension
+# cReturn - Enter Key Swapper + Custom Site Configs (Browser Extension)
 
 ![cReturn Icon](public/assets/icon.png)
 
 ## Prevent Accidental Message Sending During Character Conversion
 
-cReturn is a lightweight browser extension that prevents accidental message sending when typing languages that require character conversion or composition, such as:
+cReturn - Enter Key Swapper + Custom Site Configs is a lightweight browser extension that prevents accidental message sending when typing languages that require character conversion or composition, such as:
 - **Converting to kanji** (Japanese, Chinese)
 - **Composing Hangul** (Korean)
 - **Combining Indic scripts** (Hindi, Bengali, Tamil, etc.)

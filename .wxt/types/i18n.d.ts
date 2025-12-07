@@ -75,7 +75,7 @@ declare module "wxt/browser" {
     /**
      * Extension name
      *
-     * "cReturn"
+     * "cReturn - Enter Key Swapper + Custom Site Configs"
      */
     getMessage(
       messageName: "extensionName",
