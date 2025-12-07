@@ -125,6 +125,12 @@
       "selectors": [
         "textarea"
       ]
+    },
+    "meet.google.com": {
+      "name": "Google Meet",
+      "selectors": [
+        "textarea"
+      ]
     }
   }
 }
