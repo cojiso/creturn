@@ -1,7 +1,11 @@
 {
   "extensionName": {
-    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "message": "cReturn",
     "description": "Extension name"
+  },
+  "extensionStoreName": {
+    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "description": "Extension name for Chrome Web Store"
   },
   "extensionDescription": {
     "message": "Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.",

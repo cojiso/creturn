@@ -75,10 +75,20 @@ declare module "wxt/browser" {
     /**
      * Extension name
      *
-     * "cReturn - Enter Key Swapper + Custom Site Configs"
+     * "cReturn"
      */
     getMessage(
       messageName: "extensionName",
+      substitutions?: string | string[],
+      options?: GetMessageOptions,
+    ): string;
+    /**
+     * Extension name for Chrome Web Store
+     *
+     * "cReturn - Enter Key Swapper + Custom Site Configs"
+     */
+    getMessage(
+      messageName: "extensionStoreName",
       substitutions?: string | string[],
       options?: GetMessageOptions,
     ): string;
@@ -333,7 +343,7 @@ declare module "wxt/browser" {
       options?: GetMessageOptions,
     ): string;
     getMessage(
-      messageName: "@@extension_id" | "@@ui_locale" | "@@bidi_dir" | "@@bidi_reversed_dir" | "@@bidi_start_edge" | "@@bidi_end_edge" | "extensionName" | "extensionDescription" | "unsupportedDomain" | "settings" | "configFile" | "useDefaultConfig" | "useDefaultLatestConfig" | "useGithubConfig" | "load" | "loading" | "supportedServices" | "noServices" | "selector" | "resetToDefaults" | "confirmReset" | "settingsResetSuccess" | "settingsResetError" | "enterUrl" | "loadingSettings" | "loadingError" | "settingsLoaded" | "settingsSaved" | "defaultSettingsApplied" | "clickToLoad" | "unsavedChanges" | "options",
+      messageName: "@@extension_id" | "@@ui_locale" | "@@bidi_dir" | "@@bidi_reversed_dir" | "@@bidi_start_edge" | "@@bidi_end_edge" | "extensionName" | "extensionStoreName" | "extensionDescription" | "unsupportedDomain" | "settings" | "configFile" | "useDefaultConfig" | "useDefaultLatestConfig" | "useGithubConfig" | "load" | "loading" | "supportedServices" | "noServices" | "selector" | "resetToDefaults" | "confirmReset" | "settingsResetSuccess" | "settingsResetError" | "enterUrl" | "loadingSettings" | "loadingError" | "settingsLoaded" | "settingsSaved" | "defaultSettingsApplied" | "clickToLoad" | "unsavedChanges" | "options",
       substitutions?: string | string[],
       options?: GetMessageOptions,
     ): string;
