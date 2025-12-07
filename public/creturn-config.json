@@ -44,7 +44,8 @@
     "github.com": {
       "name": "GitHub Copilot",
       "selectors": [
-        "textarea[placeholder='Ask Copilot']"
+        "textarea[placeholder='Ask Copilot']",
+        "#copilot-chat-textarea"
       ]
     },
     "v0.dev": {
