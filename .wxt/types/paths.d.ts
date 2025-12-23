@@ -11,6 +11,7 @@ declare module "wxt/browser" {
     | "/background.js"
     | "/content-scripts/content.js"
     | "/creturn-config.json"
+    | "/creturn-config.jsonc"
     | "/options.html"
     | "/popup.html"
   type HtmlPublicPath = Extract<PublicPath, `${string}.html`>

@@ -1,9 +1,7 @@
 {
-  // Metadata
   "updated": "2025-05-31",
   "license": "MIT ©︎ 2025 cojiso",
   "contact": "creturn_support@googlegroups.com",
-
   "services": {
     "*.openai.com": {
       "name": "ChatGPT",
@@ -11,14 +9,12 @@
         "#prompt-textarea"
       ]
     },
-
     "chatgpt.com": {
       "name": "ChatGPT",
       "selectors": [
         "#prompt-textarea"
       ]
     },
-
     "claude.ai": {
       "name": "Claude",
       "selectors": [
@@ -26,7 +22,6 @@
         "textarea"
       ]
     },
-
     "gemini.google.com": {
       "name": "Google Gemini",
       "selectors": [
@@ -34,21 +29,18 @@
         "div.mat-mdc-form-field-infix"
       ]
     },
-
     "www.perplexity.ai": {
       "name": "Perplexity AI",
       "selectors": [
         "textarea"
       ]
     },
-
     "notebooklm.google.com": {
       "name": "NotebookLM",
       "selectors": [
         "textarea.query-box-input"
       ]
     },
-
     "github.com": {
       "name": "GitHub Copilot",
       "selectors": [
@@ -56,7 +48,6 @@
         "#copilot-chat-textarea"
       ]
     },
-
     "v0.app": {
       "name": "v0.app",
       "selectors": [
@@ -64,92 +55,78 @@
         "div[role='textbox']"
       ]
     },
-
     "felo.ai": {
       "name": "Felo",
       "selectors": [
         "textarea"
       ]
     },
-
     "manus.im": {
       "name": "Manus",
       "selectors": [
         "textarea"
       ]
     },
-
     "bolt.new": {
       "name": "Bolt",
       "selectors": [
         "textarea"
       ]
     },
-
     "drive.google.com": {
       "name": "Gemini in Google drive",
       "selectors": [
         "div[aria-label='ここにプロンプトを入力']"
       ]
     },
-
     "poe.com": {
       "name": "Poe",
       "selectors": [
         "textarea"
       ]
     },
-
     "chat.mistral.ai": {
       "name": "Mistral AI",
       "selectors": [
         "textarea"
       ]
     },
-
     "you.com": {
       "name": "You.com",
       "selectors": [
         "textarea"
       ]
     },
-
     "dashboard.cohere.com": {
       "name": "Cohere Playground",
       "selectors": [
         "textarea"
       ]
     },
-
     "copilot.microsoft.com": {
       "name": "Microsoft Copilot",
       "selectors": [
         "textarea"
       ]
     },
-
     "www.phind.com": {
       "name": "Phind",
       "selectors": [
         "div.public-DraftEditor-content[contenteditable='true']"
       ]
     },
-
     "chat.deepseek.com": {
       "name": "DeepSeek",
       "selectors": [
         "#chat-input"
       ]
     },
-
     "grok.com": {
       "name": "Grok",
       "selectors": [
         "textarea"
       ]
     },
-
-    // Online Meeting Tool
     "meet.google.com": {
       "name": "Google Meet",
       "selectors": [

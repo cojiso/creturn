@@ -22,7 +22,7 @@
 
   // State variables
   let currentSettings: any = {
-    configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.json",
+    configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.jsonc",
     services: {}
   };
   
@@ -41,7 +41,7 @@
   let messages: any = {};
 
   const BASE_URL = "https://raw.githubusercontent.com/";
-  const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.json";
+  const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.jsonc";
 
   /**
    * Initialize internationalization
@@ -573,12 +573,12 @@
     
     <div class="url-input-group">
       <span class="url-prefix" class:disabled={configType !== 'github'}>{BASE_URL}</span>
-      <input 
-        type="text" 
+      <input
+        type="text"
         bind:value={configUrl}
         on:input={handleUrlChange}
         disabled={configType !== 'github'}
-        placeholder="user/repo/raw/main/creturn-config.json"
+        placeholder="user/repo/raw/main/creturn-config.jsonc"
       >
       <button 
         class="btn primary" 

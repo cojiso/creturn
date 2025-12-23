@@ -51,7 +51,7 @@ When using these input methods in AI chat services, pressing Enter to confirm ch
 
 ## Custom Configuration
 
-Add support for additional sites by creating a JSON configuration file:
+Add support for additional sites by creating a JSONC configuration file:
 
 1. Create a configuration file (format below)
 2. Host it on GitHub (raw.githubusercontent.com URL)
@@ -149,7 +149,7 @@ This project uses simplified Trunk-Based Development for streamlined releases an
 
 ##### Configuration Updates (Weekly)
 Fast deployment without store approval:
-1. Update `creturn-config.json` in `main/public`
+1. Update `creturn-config.jsonc` in `main/public`
 2. Tag with `config-vYYYYMMDD`
 3. Update hosted config file on GitHub
 
@@ -178,7 +178,7 @@ If cReturn doesn't work:
 1. Refresh the page
 2. Check if enabled (click icon)
 3. Verify supported input area
-4. For custom configs, check JSON format
+4. For custom configs, check JSONC format
 5. Check browser console for errors
 
 ## Store Descriptions
@@ -202,11 +202,11 @@ Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported.
 
 ▍Supported sites:
 - ChatGPT, Claude, Gemini, Perplexity, Copilot, and more
-- Full site list (config file): 
-  https://github.com/cojiso/creturn/blob/main/public/creturn-config.json
+- Full site list (config file):
+  https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc
 
 ▍Custom configuration:
-1. Create JSON site configuration file
+1. Create JSONC site configuration file
 2. Upload to GitHub
 3. Register file URL in extension settings
 
@@ -233,11 +233,11 @@ https://github.com/cojiso/creturn
 
 ▍対応サイト：
 - ChatGPT、Claude、Gemini、Perplexity、Copilot等
-- 対応サイト一覧(設定ファイル): 
-  https://github.com/cojiso/creturn/blob/main/public/creturn-config.json
+- 対応サイト一覧(設定ファイル):
+  https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc
 
 ▍カスタム設定の方法：
-1. JSONファイルでサイト設定を作成
+1. JSONCファイルでサイト設定を作成
 2. GitHubへのアップロード  
 3. 設定画面にファイルのURLを登録
 

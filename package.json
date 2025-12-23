@@ -19,5 +19,8 @@
     "svelte": "^4.2.18",
     "typescript": "^5.5.3",
     "wxt": "^0.19.9"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
   }
 }

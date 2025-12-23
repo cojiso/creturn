@@ -4,10 +4,11 @@
  */
 
 import { browser } from 'wxt/browser';
+import * as jsonc from 'jsonc-parser';
 
 // 設定ソースの種類を定義
 export const CONFIG_SOURCES = {
-  LOCAL: 'local',           // ローカルファイル (creturn-config.json)
+  LOCAL: 'local',           // ローカルファイル (creturn-config.jsonc)
   REMOTE_DEFAULT: 'remote_default', // デフォルトのGitHubリポジトリ
   REMOTE_CUSTOM: 'remote_custom'    // カスタムURL
 } as const;
@@ -15,7 +16,7 @@ export const CONFIG_SOURCES = {
 // デフォルトの設定
 export const DEFAULT_CONFIG = {
   source: CONFIG_SOURCES.REMOTE_DEFAULT,
-  configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.json",
+  configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.jsonc",
   services: {}
 };
 
@@ -75,8 +76,9 @@ export async function loadConfig(configUrl: string = ""): Promise<any> {
  * @returns {Object} - サービス設定オブジェクト
  */
 export async function loadLocalConfig(): Promise<any> {
-  const response = await fetch('/creturn-config.json');
-  const configData = await response.json();
+  const response = await fetch('/creturn-config.jsonc');
+  const jsonText = await response.text();
+  const configData = jsonc.parse(jsonText);
   return configData.services;
 }
 
@@ -95,18 +97,18 @@ export async function loadRemoteDefaultConfig(): Promise<any> {
  */
 export async function loadRemoteCustomConfig(url: string): Promise<any> {
   try {
-    if (!url.toLowerCase().endsWith('.json')) {
-      throw new Error('設定ファイルはJSONファイルである必要があります');
+    if (!url.toLowerCase().endsWith('.jsonc') && !url.toLowerCase().endsWith('.json')) {
+      throw new Error('設定ファイルはJSONCファイル (.jsonc) である必要があります');
     }
-    
+
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const jsonContent = await response.text();
-    const parsedConfig = JSON.parse(jsonContent);
-    
+    const parsedConfig = jsonc.parse(jsonContent);
+
     if (!parsedConfig || !parsedConfig.services) {
       throw new Error('設定ファイルの形式が正しくありません');
     }
