@@ -2,13 +2,9 @@
   "updated": "2025-05-31",
   "license": "MIT ©︎ 2025 cojiso",
   "contact": "creturn_support@googlegroups.com",
+
   "services": {
-    "*.openai.com": {
-      "name": "ChatGPT",
-      "selectors": [
-        "#prompt-textarea"
-      ]
-    },
+    // The AI Chat
     "chatgpt.com": {
       "name": "ChatGPT",
       "selectors": [
@@ -29,30 +25,38 @@
         "div.mat-mdc-form-field-infix"
       ]
     },
-    "www.perplexity.ai": {
-      "name": "Perplexity AI",
+
+    // Original LLM AI Chat
+    "chat.deepseek.com": {  
+      "name": "DeepSeek",
+      "selectors": [
+        "#chat-input"
+      ]
+    },
+    "chat.mistral.ai": {
+      "name": "Mistral AI",
       "selectors": [
         "textarea"
       ]
     },
-    "notebooklm.google.com": {
-      "name": "NotebookLM",
+    "dashboard.cohere.com": {
+      "name": "Cohere Playground",
       "selectors": [
-        "textarea.query-box-input"
+        "textarea"
       ]
     },
-    "github.com": {
-      "name": "GitHub Copilot",
+
+    // Integrated LLM AI Chat
+    "copilot.microsoft.com": {
+      "name": "Microsoft Copilot",
       "selectors": [
-        "textarea[placeholder='Ask Copilot']",
-        "#copilot-chat-textarea"
+        "textarea"
       ]
     },
-    "v0.app": {
-      "name": "v0.app",
+    "grok.com": {
+      "name": "Grok",
       "selectors": [
-        "#prompt-textarea-_new-chat_",
-        "div[role='textbox']"
+        "textarea"
       ]
     },
     "felo.ai": {
@@ -67,26 +71,16 @@
         "textarea"
       ]
     },
-    "bolt.new": {
-      "name": "Bolt",
-      "selectors": [
-        "textarea"
-      ]
-    },
-    "drive.google.com": {
-      "name": "Gemini in Google drive",
-      "selectors": [
-        "div[aria-label='ここにプロンプトを入力']"
-      ]
-    },
     "poe.com": {
       "name": "Poe",
       "selectors": [
         "textarea"
       ]
     },
-    "chat.mistral.ai": {
-      "name": "Mistral AI",
+
+    // Research AI Chat
+    "www.perplexity.ai": {
+      "name": "Perplexity AI",
       "selectors": [
         "textarea"
       ]
@@ -97,41 +91,90 @@
         "textarea"
       ]
     },
-    "dashboard.cohere.com": {
-      "name": "Cohere Playground",
-      "selectors": [
-        "textarea"
-      ]
-    },
-    "copilot.microsoft.com": {
-      "name": "Microsoft Copilot",
-      "selectors": [
-        "textarea"
-      ]
-    },
     "www.phind.com": {
       "name": "Phind",
       "selectors": [
         "div.public-DraftEditor-content[contenteditable='true']"
       ]
     },
-    "chat.deepseek.com": {
-      "name": "DeepSeek",
+
+    // Coding AI Chat
+    "github.com": {
+      "name": "GitHub Copilot",
       "selectors": [
-        "#chat-input"
+        "textarea[placeholder='Ask Copilot']",
+        "#copilot-chat-textarea"
       ]
     },
-    "grok.com": {
-      "name": "Grok",
+
+    // Design AI Chat
+    "v0.app": {
+      "name": "v0.app",
+      "selectors": [
+        "#prompt-textarea-_new-chat_",
+        "div[role='textbox']"
+      ]
+    },
+    "bolt.new": {
+      "name": "Bolt",
       "selectors": [
         "textarea"
       ]
     },
+
+    // Google Gemini Ecosystem
+    "drive.google.com": {
+      "name": "Gemini in Google drive",
+      "selectors": [
+        "div[aria-label='ここにプロンプトを入力']"
+      ]
+    },
+    "notebooklm.google.com": {
+      "name": "NotebookLM",
+      "selectors": [
+        "textarea.query-box-input"
+      ]
+    },
+
+    // Outdated Path
+    "*.openai.com": {
+      "name": "ChatGPT",
+      "selectors": [
+        "#prompt-textarea"
+      ]
+    },
+
+    // Video Meeting Chat
     "meet.google.com": {
       "name": "Google Meet",
       "selectors": [
         "textarea"
       ]
+    },
+    "zoom.us": {
+      "name": "Zoom",
+      "selectors": [
+        "textarea"
+      ]
+    },
+    // "teams.microsoft.com": {
+
+    // SNS Chat
+    // "discord.com": { // enterで改行できなくなるためコメントアウト
+    //   "name": "Discord",
+    //   "selectors": [
+    //     "div[role='textbox']"
+    //   ]
+    // }
+    "mail.google.com": {
+      "name": "Gmail Cnat",
+      "selectors": [
+        "div[data-ts]",
+        "div.editable",
+        "div[role='textbox']"
+      ]
     }
+    // twitter
+    // 
   }
 }
