@@ -48,10 +48,11 @@
         "#copilot-chat-textarea"
       ]
     },
-    "v0.dev": {
-      "name": "v0.dev",
+    "v0.app": {
+      "name": "v0.app",
       "selectors": [
-        "textarea"
+        "#prompt-textarea-_new-chat_",
+        "div[role='textbox']"
       ]
     },
     "felo.ai": {
