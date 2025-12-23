@@ -22,28 +22,32 @@ export default defineBackground(() => {
     }
     
     if (reason === 'update') {
-      browser.storage.sync.get(null, async (syncStorage) => {
+      try {
+        const syncStorage = await browser.storage.sync.get(null);
+        const configUrl = (syncStorage.configUrl as string) || DEFAULT_CONFIG.configUrl;
+        const services = await loadConfig(configUrl);
+        const config = {
+          configUrl: configUrl,
+          services: services
+        };
+        const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
+        await browser.storage.sync.set(updatedConfig);
+      } catch (error) {
+        console.error('Failed to update configs:', error);
+        // Fallback to default configs on error
         try {
-          const configUrl = syncStorage.configUrl || DEFAULT_CONFIG.configUrl;
-          const services = await loadConfig(configUrl);
-          const config = {
-            configUrl: configUrl,
-            services: services
-          };
-          const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
-          browser.storage.sync.set(updatedConfig);
-        } catch (error) {
-          console.error('設定の更新中にエラーが発生しました:', error);
-          // エラー時はデフォルト設定にフォールバック
+          const syncStorage = await browser.storage.sync.get(null);
           const services = await loadConfig(DEFAULT_CONFIG.configUrl);
           const config = {
             configUrl: DEFAULT_CONFIG.configUrl,
             services: services
           };
           const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
-          browser.storage.sync.set(updatedConfig);
+          await browser.storage.sync.set(updatedConfig);
+        } catch (fallbackError) {
+          console.error('Failed to apply fallback configs:', fallbackError);
         }
-      });
+      }
     }
   });
 

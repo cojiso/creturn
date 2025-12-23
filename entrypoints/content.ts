@@ -48,24 +48,23 @@ export default defineContentScript({
     /**
      * 設定を読み込む
      */
-    function loadSettings() {
-      browser.storage.sync.get(null, (data) => {
-        // 現在のドメインに対応するサービス設定を見つける（ワイルドカード対応）
-        state.serviceConfig = findMatchingService(state.currentDomain, data.services);
-        if (!state.serviceConfig?.selectors) return;
-        
-        state.enabled = state.serviceConfig?.enabled;
-        if (!state.enabled) {
-          document.removeEventListener('keydown', handleKeyDown, { capture: true });
-          (document as any).cReturnListenerInitialized = false;
-          return;
-        }
-        
-        if (!(document as any).cReturnListenerInitialized) {
-          document.addEventListener('keydown', handleKeyDown, { capture: true });
-          (document as any).cReturnListenerInitialized = true;
-        }
-      });
+    async function loadSettings() {
+      const data = await browser.storage.sync.get(null);
+      // 現在のドメインに対応するサービス設定を見つける（ワイルドカード対応）
+      state.serviceConfig = findMatchingService(state.currentDomain, data.services);
+      if (!state.serviceConfig?.selectors) return;
+
+      state.enabled = state.serviceConfig?.enabled;
+      if (!state.enabled) {
+        document.removeEventListener('keydown', handleKeyDown, { capture: true });
+        (document as any).cReturnListenerInitialized = false;
+        return;
+      }
+
+      if (!(document as any).cReturnListenerInitialized) {
+        document.addEventListener('keydown', handleKeyDown, { capture: true });
+        (document as any).cReturnListenerInitialized = true;
+      }
     }
 
     /**

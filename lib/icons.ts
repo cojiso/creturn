@@ -35,7 +35,7 @@ export const IconManager = {
         tabId: tabId 
       });
     } catch (error) {
-      console.error('アイコン更新エラー:', error);
+      console.error('Failed to set icon:', error);
     }
   }
 };
