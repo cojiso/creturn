@@ -90,39 +90,40 @@ export default defineContentScript({
       if (!state.serviceConfig) return;
       
       // 5. 対象elementかどうかをチェック
-      let isTargetElement = state.targetElements.includes(event.target as Element);
+      if (!event.target || !(event.target instanceof Element)) return;
+      let isTargetElement = state.targetElements.includes(event.target);
       if (!isTargetElement) {
         for (const selector of state.serviceConfig.selectors) {
           try {
-            if ((event.target as Element).matches?.(selector) || (event.target as Element).closest?.(selector)) {
+            if (event.target.matches?.(selector) || event.target.closest?.(selector)) {
               // 次回のために、見つかった要素をリストに追加
-              if (!state.targetElements.includes(event.target as Element)) {
-                state.targetElements.push(event.target as Element);
+              if (!state.targetElements.includes(event.target)) {
+                state.targetElements.push(event.target);
               }
               isTargetElement = true;
               break;
             }
-          } catch (e) { 
-            continue; 
+          } catch (e) {
+            continue;
           }
         }
       }
       if (!isTargetElement) return;
 
       // デバッグ用: どのセレクタがマッチしたかを確認（重い処理なのでログが必要な時だけ有効に）
-      // if (state.serviceConfig.selectors && console.debug) {
-      //   const matchingSelectors = state.serviceConfig.selectors.filter(selector => {
-      //     try {
-      //       return Array.from(document.querySelectorAll(selector)).includes(event.target);
-      //     } catch (e) {
-      //       return false;
-      //     }
-      //   });
-        
-      //   if (matchingSelectors.length > 0) {
-      //     // console.log(`cReturn: 要素がマッチしたセレクタ:`, matchingSelectors);
-      //   }
-      // }
+      if (state.serviceConfig.selectors) {
+        const matchingSelectors = state.serviceConfig.selectors.filter((selector: string) => {
+          try {
+            return Array.from(document.querySelectorAll(selector)).includes(event.target as Element);
+          } catch (e) {
+            return false;
+          }
+        });
+
+        if (matchingSelectors.length > 0) {
+          console.log(`cReturn: 要素がマッチしたセレクタ:`, matchingSelectors);
+        }
+      }
 
       // 6. 単独のEnterキー押下時の処理
       const isOnlyEnter = (!event.shiftKey && !event.ctrlKey && !event.metaKey && !event.altKey);
