@@ -114,7 +114,7 @@ pnpm zip
 
 cReturn is built with:
 - **[WXT Framework](https://wxt.dev/)**: Modern browser extension framework
-- **Svelte**: Lightweight reactive UI framework (Compiler)
+- **[Svelte](https://svelte.dev)**: Lightweight reactive UI framework (Compiler)
 
 ### Project Structure
 
@@ -197,7 +197,7 @@ Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported.
 - One-click on/off toggle
 
 ▍Supported sites:
-- ChatGPT, Claude, Gemini, Perplexity, Copilot, and more
+- ChatGPT, Claude, Gemini, Perplexity, Discord, Google Meet, and more
 - Full site list (config file):
   https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc
 
@@ -228,7 +228,7 @@ https://github.com/cojiso/creturn
 - ワンクリックでのオン/オフ切替
 
 ▍対応サイト：
-- ChatGPT、Claude、Gemini、Perplexity、Copilot等
+- ChatGPT、Claude、Gemini、Perplexity、Discord, Google Meet等
 - 対応サイト一覧(設定ファイル):
   https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc
 
