@@ -25,23 +25,23 @@ When typing languages that require character conversion (Japanese kanji, Korean 
 
 ## Supported Sites
 
-- **AI Chat:**
+- **AI Chat:**  
 [ChatGPT](https://chatgpt.com), [Claude](https://claude.ai), [Gemini](https://gemini.google.com)
-- **Original LLM AI Chat:**
+- **Original LLM AI Chat:**  
 [DeepSeek](https://chat.deepseek.com), [Mistral AI](https://chat.mistral.ai), [Cohere Playground](https://dashboard.cohere.com)
-- **Integrated LLM AI Chat:**
+- **Integrated LLM AI Chat:**  
 [Microsoft Copilot](https://copilot.microsoft.com), [Grok](https://grok.com), [Felo](https://felo.ai), [Manus](https://manus.im), [Poe](https://poe.com)
-- **Research AI Chat:**
+- **Research AI Chat:**  
 [Perplexity AI](https://www.perplexity.ai), [You.com](https://you.com), [Phind](https://www.phind.com)
-- **Coding AI Chat:**
+- **Coding AI Chat:**  
 [GitHub Copilot](https://github.com)
-- **Design AI Chat:**
+- **Design AI Chat:**  
 [v0.app](https://v0.app), [Bolt](https://bolt.new)
-- **Google Gemini Ecosystem:**
+- **Google Gemini Ecosystem:**  
 [Gemini in Google Drive](https://drive.google.com), [NotebookLM](https://notebooklm.google.com)
-- **Video Meeting Chat:**
+- **Video Meeting Chat:**  
 [Google Meet](https://meet.google.com), [Zoom](https://zoom.us)
-- **SNS Chat:**
+- **SNS Chat:**  
 [Discord](https://discord.com), [Google Chat](https://chat.google.com), [X (formerly Twitter)](https://x.com)
 
 [View full configuration file here](https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc)
