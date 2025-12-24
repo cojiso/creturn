@@ -6,7 +6,7 @@
 import { browser } from 'wxt/browser';
 
 export default defineContentScript({
-  matches: ['http://*/*', 'https://*/*'],
+  matches: ['https://*/*', 'http://*/*'],
   allFrames: true,
   runAt: 'document_start',
   main() {
