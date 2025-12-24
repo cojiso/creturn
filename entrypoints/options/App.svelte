@@ -20,9 +20,12 @@
     [domain: string]: ServiceConfig;
   }
 
+  const BASE_URL = "https://raw.githubusercontent.com/";
+  const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.jsonc";
+
   // State variables
   let currentSettings: any = {
-    configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.jsonc",
+    configUrl: BASE_URL + DEFAULT_LATEST_PATH,
     services: {}
   };
   
@@ -39,9 +42,6 @@
   let extensionName = '';
   let options = '';
   let messages: any = {};
-
-  const BASE_URL = "https://raw.githubusercontent.com/";
-  const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.jsonc";
 
   /**
    * Initialize internationalization
