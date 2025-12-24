@@ -228,7 +228,7 @@ https://github.com/cojiso/creturn
 - ワンクリックでのオン/オフ切替
 
 ▍対応サイト：
-- ChatGPT、Claude、Gemini、Perplexity、Discord, Google Meet等
+- ChatGPT、Claude、Gemini、Perplexity、Discord、Google Meet等
 - 対応サイト一覧(設定ファイル):
   https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc
 
