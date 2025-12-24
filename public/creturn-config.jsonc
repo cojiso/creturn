@@ -1,27 +1,27 @@
 {
-  "updated": "2025-05-31",
+  "updated": "2025-12-23",
   "license": "MIT ©︎ 2025 cojiso",
   "contact": "creturn_support@googlegroups.com",
 
   "services": {
-    // The AI Chat
+    // AI Chat
     "chatgpt.com": {
-      "name": "ChatGPT",
+      "name": "ChatGPT - OpenAI",
       "selectors": [
         "#prompt-textarea"
       ]
     },
     "claude.ai": {
-      "name": "Claude",
+      "name": "Claude - Anthropic",
       "selectors": [
-        "div[contenteditable='true']",
+        "[contenteditable='true']",
         "textarea"
       ]
     },
     "gemini.google.com": {
-      "name": "Google Gemini",
+      "name": "Gemini - Google",
       "selectors": [
-        "div.ql-editor[contenteditable='true']",
+        ".ql-editor[contenteditable='true']",
         "div.mat-mdc-form-field-infix"
       ]
     },
@@ -112,7 +112,7 @@
       "name": "v0.app",
       "selectors": [
         "#prompt-textarea-_new-chat_",
-        "div[role='textbox']"
+        "[role='textbox']"
       ]
     },
     "bolt.new": {
@@ -126,21 +126,13 @@
     "drive.google.com": {
       "name": "Gemini in Google drive",
       "selectors": [
-        "div[aria-label='ここにプロンプトを入力']"
+        "[contenteditable='true']"
       ]
     },
     "notebooklm.google.com": {
       "name": "NotebookLM",
       "selectors": [
         "textarea.query-box-input"
-      ]
-    },
-
-    // Outdated Path
-    "*.openai.com": {
-      "name": "ChatGPT",
-      "selectors": [
-        "#prompt-textarea"
       ]
     },
 
@@ -157,24 +149,42 @@
         "textarea"
       ]
     },
-    // "teams.microsoft.com": {
+    // Webex: 検証環境が用意できないため未対応
+    // YouTube Live: そもそも改行機能がない
 
     // SNS Chat
-    // "discord.com": { // enterで改行できなくなるためコメントアウト
-    //   "name": "Discord",
-    //   "selectors": [
-    //     "div[role='textbox']"
-    //   ]
-    // }
-    "mail.google.com": {
-      "name": "Gmail Cnat",
+    "discord.com": {
+      "name": "Discord",
       "selectors": [
-        "div[data-ts]",
-        "div.editable",
-        "div[role='textbox']"
+        "[data-slate-editor]"
+      ]
+    },
+    "chat.google.com": {
+      "name": "Google Chat (Hangouts)",
+      "selectors": [
+        "[contenteditable='true']"
+      ]
+    },
+    "x.com": {
+      "name": "X (formerly Twitter)",
+      "selectors": [
+        "[contenteditable='true'][data-testid='dmComposerTextInput']"
+      ]
+    },
+    // ZOHO connect: 検証環境が用意できないため未対応
+    // "teams.microsoft.com": 検証環境が用意できないため未対応
+    // Facebook Messenger: 未対応
+    // LINE: 未対応
+
+    // Task App
+    // Trello: 検証環境が用意できないため未対応
+
+    // Outdated Path
+    "*.openai.com": {
+      "name": "ChatGPT",
+      "selectors": [
+        "#prompt-textarea"
       ]
     }
-    // twitter
-    // 
   }
 }
