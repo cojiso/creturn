@@ -1,22 +1,18 @@
 # cReturn - Enter Key Swapper + Custom Site Configs (Browser Extension)
 
-![cReturn Icon](public/assets/icon.png)
+<img src="public/assets/icon.png" align="right" width="128" alt="cReturn Icon">
 
-## Prevent Accidental Message Sending During Character Conversion
-
-cReturn - Enter Key Swapper + Custom Site Configs is a lightweight browser extension that prevents accidental message sending when typing languages that require character conversion or composition, such as:
-- **Converting to kanji** (Japanese, Chinese)
-- **Composing Hangul** (Korean)
-- **Combining Indic scripts** (Hindi, Bengali, Tamil, etc.)
-- **Combining Arabic scripts**
+cReturn is a lightweight browser extension that swaps Enter key behavior: **Enter** for line breaks, **Ctrl+Enter** (Command+Enter on macOS) to send messages. You can create custom site configurations via GitHub.
 
 **The Problem:**
-When using these input methods in AI chat services, pressing Enter to confirm character conversion often accidentally sends incomplete messages, since both text confirmation and message sending use the same Enter key.
+When typing languages that require character conversion (Japanese kanji, Korean Hangul, Chinese characters, Indic scripts, Arabic scripts, etc.), you press Enter to confirm conversion, but it accidentally sends the incomplete message. This happens in various platforms: AI chats, video meetings, social media, and many others.
 
-**The Solution:**
-- Use **Ctrl+Enter** (Windows/Linux) or **Command+Enter** (macOS) to send messages
-- **Enter** key inserts line breaks and confirms character conversion
-- Custom configuration support via GitHub
+## Features
+
+- **Enter** key for line breaks and character conversion confirmation
+- **Ctrl+Enter** (Command+Enter on macOS) to send messages
+- One-click on/off toggle via extension icon (colored when active, gray when inactive)
+- 15+ built-in sites + unlimited custom site additions via GitHub
 
 ## Installation
 
@@ -27,35 +23,28 @@ When using these input methods in AI chat services, pressing Enter to confirm ch
 ### Firefox
 *Coming soon*
 
-## Supported AI Chat Services
+## Supported Sites
 
-- ChatGPT (chat.openai.com)
-- Claude (claude.ai)
-- Google Gemini (gemini.google.com)
-- Perplexity AI (www.perplexity.ai)
-- Microsoft Copilot (copilot.microsoft.com)
-- GitHub Copilot (github.com)
-- Poe (poe.com)
-- Mistral AI (chat.mistral.ai)
-- DeepSeek (chat.deepseek.com)
-- NotebookLM (notebooklm.google.com)
-- Phind (www.phind.com)
-- Grok (grok.com)
-- And many others! (15+ built-in sites)
+- **AI Chat:** [ChatGPT](https://chatgpt.com), [Claude](https://claude.ai), [Gemini](https://gemini.google.com)
+- **Original LLM AI Chat:** [DeepSeek](https://chat.deepseek.com), [Mistral AI](https://chat.mistral.ai), [Cohere Playground](https://dashboard.cohere.com)
+- **Integrated LLM AI Chat:** [Microsoft Copilot](https://copilot.microsoft.com), [Grok](https://grok.com), [Felo](https://felo.ai), [Manus](https://manus.im), [Poe](https://poe.com)
+- **Research AI Chat:** [Perplexity AI](https://www.perplexity.ai), [You.com](https://you.com), [Phind](https://www.phind.com)
+- **Coding AI Chat:** [GitHub Copilot](https://github.com)
+- **Design AI Chat:** [v0.app](https://v0.app), [Bolt](https://bolt.new)
+- **Google Gemini Ecosystem:** [Gemini in Google Drive](https://drive.google.com), [NotebookLM](https://notebooklm.google.com)
+- **Video Meeting Chat:** [Google Meet](https://meet.google.com), [Zoom](https://zoom.us)
+- **SNS Chat:** [Discord](https://discord.com), [Google Chat](https://chat.google.com), [X (formerly Twitter)](https://x.com)
 
-## Usage
-
-- **Extension icon**: Colored when active, gray when inactive
-- **Click icon**: Toggle on/off for current site or access options
-- **Typing**: Enter for line breaks/character conversion, Ctrl+Enter to send
+[View full configuration file](https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc)
 
 ## Custom Configuration
 
-Add support for additional sites by creating a JSONC configuration file:
+You can use cReturn on any sites by creating your own configuration file.
 
-1. Create a configuration file (format below)
-2. Host it on GitHub (raw.githubusercontent.com URL)
-3. Enter the URL in extension options
+1. **Create a JSONC file** (see format below)
+2. **Upload to GitHub** as a public repository or gist
+3. **Copy the raw URL** (raw.githubusercontent.com/...)
+4. **Paste the URL** in cReturn's extension options page
 
 ### Configuration Format
 
@@ -75,8 +64,8 @@ Add support for additional sites by creating a JSONC configuration file:
     "claude.ai": {
       "name": "Claude",
       "selectors": [
-        "div[contenteditable='true']",
-        "div.ProseMirror" 
+        "[contenteditable='true']",
+        "textarea" 
       ]
     },
     "*.example.com": {
@@ -114,20 +103,18 @@ pnpm zip
 
 ### Architecture
 
-cReturn is built with the [WXT Framework](https://wxt.dev/) for modern Chrome extension development using:
-- **Manifest V3** for enhanced security and performance
-- **TypeScript** for type safety and better development experience
-- **Svelte** for lightweight, reactive UI components
-- **WXT Browser API** for cross-browser compatibility
+cReturn is built with:
+- **[WXT Framework](https://wxt.dev/)**: Modern browser extension framework
+- **Svelte**: Lightweight reactive UI framework (Compiler)
 
 ### Project Structure
 
 ```
 ├── entrypoints/
-│   ├── background.ts      # Service worker
-│   ├── content.ts         # Content script
-│   ├── popup/            # Extension popup
-│   └── options/          # Options page
+│   ├── background.ts     # Service worker
+│   ├── content.ts        # Content script
+│   ├── popup/            # Extension popup UI
+│   └── options/          # Options page UI
 ├── lib/
 │   ├── config.ts         # Configuration management
 │   ├── icons.ts          # Icon state management
@@ -136,7 +123,7 @@ cReturn is built with the [WXT Framework](https://wxt.dev/) for modern Chrome ex
 └── wxt.config.ts         # WXT configuration
 ```
 
-### Release Strategy
+### Release & Branch Strategy
 
 This project uses simplified Trunk-Based Development for streamlined releases and configuration updates.
 
@@ -147,13 +134,13 @@ This project uses simplified Trunk-Based Development for streamlined releases an
 
 #### Update Workflows
 
-##### Configuration Updates (Weekly)
-Fast deployment without store approval:
-1. Update `creturn-config.jsonc` in `main/public`
+##### Configuration Updates
+Fast config file deployment without store approval:
+1. Update `public/creturn-config.jsonc` in `main` branch
 2. Tag with `config-vYYYYMMDD`
 3. Update hosted config file on GitHub
 
-##### Store Releases (Quarterly)
+##### Store Releases
 1. Update version in `manifest.json`
 2. Commit with "Release vX.Y.Z"
 3. Tag with `vX.Y.Z`
@@ -176,8 +163,8 @@ cReturn:
 
 If cReturn doesn't work:
 1. Refresh the page
-2. Check if enabled (click icon)
-3. Verify supported input area
+2. Check if enabled (click menuber icon)
+3. Refresh the Plugin
 4. For custom configs, check JSONC format
 5. Check browser console for errors
 
