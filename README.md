@@ -1,18 +1,18 @@
 # cReturn - Enter Key Swapper + Custom Site Configs (Browser Extension)
 
-<img src="public/assets/icon.png" align="right" width="128" alt="cReturn Icon">
+<img src="public/assets/icon.png" align="right" width="64" alt="cReturn Icon">
 
 cReturn is a lightweight browser extension that swaps Enter key behavior: **Enter** for line breaks, **Ctrl+Enter** (Command+Enter on macOS) to send messages. You can create custom site configurations via GitHub.
 
 **The Problem:**
-When typing languages that require character conversion (Japanese kanji, Korean Hangul, Chinese characters, Indic scripts, Arabic scripts, etc.), you press Enter to confirm conversion, but it accidentally sends the incomplete message. This happens in various platforms: AI chats, video meetings, social media, and many others.
+When typing languages that require character conversion (Japanese kanji, Korean Hangul, Chinese characters, Indic scripts, Arabic scripts, etc.), you press Enter intending to confirm conversion, but it accidentally sends the incomplete message. This happens in various platforms: AI chats, video meetings, social media, and many others.
 
 ## Features
 
 - **Enter** key for line breaks and character conversion confirmation
 - **Ctrl+Enter** (Command+Enter on macOS) to send messages
 - One-click on/off toggle via extension icon (colored when active, gray when inactive)
-- 15+ built-in sites + unlimited custom site additions via GitHub
+- 12+ built-in sites & unlimited custom site additions via GitHub
 
 ## Installation
 
@@ -25,17 +25,26 @@ When typing languages that require character conversion (Japanese kanji, Korean 
 
 ## Supported Sites
 
-- **AI Chat:** [ChatGPT](https://chatgpt.com), [Claude](https://claude.ai), [Gemini](https://gemini.google.com)
-- **Original LLM AI Chat:** [DeepSeek](https://chat.deepseek.com), [Mistral AI](https://chat.mistral.ai), [Cohere Playground](https://dashboard.cohere.com)
-- **Integrated LLM AI Chat:** [Microsoft Copilot](https://copilot.microsoft.com), [Grok](https://grok.com), [Felo](https://felo.ai), [Manus](https://manus.im), [Poe](https://poe.com)
-- **Research AI Chat:** [Perplexity AI](https://www.perplexity.ai), [You.com](https://you.com), [Phind](https://www.phind.com)
-- **Coding AI Chat:** [GitHub Copilot](https://github.com)
-- **Design AI Chat:** [v0.app](https://v0.app), [Bolt](https://bolt.new)
-- **Google Gemini Ecosystem:** [Gemini in Google Drive](https://drive.google.com), [NotebookLM](https://notebooklm.google.com)
-- **Video Meeting Chat:** [Google Meet](https://meet.google.com), [Zoom](https://zoom.us)
-- **SNS Chat:** [Discord](https://discord.com), [Google Chat](https://chat.google.com), [X (formerly Twitter)](https://x.com)
+- **AI Chat:**
+[ChatGPT](https://chatgpt.com), [Claude](https://claude.ai), [Gemini](https://gemini.google.com)
+- **Original LLM AI Chat:**
+[DeepSeek](https://chat.deepseek.com), [Mistral AI](https://chat.mistral.ai), [Cohere Playground](https://dashboard.cohere.com)
+- **Integrated LLM AI Chat:**
+[Microsoft Copilot](https://copilot.microsoft.com), [Grok](https://grok.com), [Felo](https://felo.ai), [Manus](https://manus.im), [Poe](https://poe.com)
+- **Research AI Chat:**
+[Perplexity AI](https://www.perplexity.ai), [You.com](https://you.com), [Phind](https://www.phind.com)
+- **Coding AI Chat:**
+[GitHub Copilot](https://github.com)
+- **Design AI Chat:**
+[v0.app](https://v0.app), [Bolt](https://bolt.new)
+- **Google Gemini Ecosystem:**
+[Gemini in Google Drive](https://drive.google.com), [NotebookLM](https://notebooklm.google.com)
+- **Video Meeting Chat:**
+[Google Meet](https://meet.google.com), [Zoom](https://zoom.us)
+- **SNS Chat:**
+[Discord](https://discord.com), [Google Chat](https://chat.google.com), [X (formerly Twitter)](https://x.com)
 
-[View full configuration file](https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc)
+[View full configuration file here](https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc)
 
 ## Custom Configuration
 
