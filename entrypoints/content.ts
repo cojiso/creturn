@@ -7,6 +7,7 @@ import { browser } from 'wxt/browser';
 
 export default defineContentScript({
   matches: ['http://*/*', 'https://*/*'],
+  allFrames: true,
   runAt: 'document_start',
   main() {
     /**
@@ -76,16 +77,16 @@ export default defineContentScript({
 
       // 1. 自分で発火させたイベントの場合は無視
       if ((event as any).fromCReturn) return;
-
+      
       // 2. IME入力中は変換確定のためにEnterを保護する、送信処理を阻止
       if (event.isComposing) {
         event.stopImmediatePropagation();
         return;
       }
-
+      
       // 3. メタデータフラグのチェック
       if (!state.enabled || !event.isTrusted) return;
-
+      
       // 4. serviceConfigがない場合は処理しない
       if (!state.serviceConfig) return;
       
@@ -133,7 +134,7 @@ export default defineContentScript({
 
         const target = event.target as any;
         if (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT') {
-          // リアクティブUIのための処理
+          // リアクティブUI　で EXTAREA/INPUT の場合
           const start = target.selectionStart;
           const end = target.selectionEnd;
           const value = target.value;
@@ -141,8 +142,16 @@ export default defineContentScript({
           target.value = newValue;
           target.selectionStart = target.selectionEnd = start + 1;
           target.dispatchEvent(new Event('input', { bubbles: true }));
+        } else if (target.hasAttribute?.('data-slate-editor')) {
+          // Slate Editor の場合: beforeinput イベントを発火
+          const beforeInputEvent = new InputEvent('beforeinput', {
+            inputType: 'insertLineBreak',
+            bubbles: true,
+            cancelable: true,
+          });
+          target.dispatchEvent(beforeInputEvent);
         } else {
-          // contentEditableなど他の要素の場合はshift+Enterを発火
+          // 他の要素の場合はshift+Enterを発火
           const shiftEnterEvent = new KeyboardEvent('keydown', {
             key: 'Enter',
             keyCode: 13,
