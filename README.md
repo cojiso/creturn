@@ -57,10 +57,10 @@ You can use cReturn on any sites by creating your own configuration file.
 
 ### Configuration Format
 
-```json
+```jsonc
 {
   "updated": "2025-05-07",
-  "license": "MIT ©︎ 2025 cojiso",
+  "license": "MIT ©︎ 2025 name",
   "contact": "form / email / sns id",
   "description": "Optional",
   "services": {
