@@ -112,7 +112,7 @@
       "name": "v0.app",
       "selectors": [
         "#prompt-textarea-_new-chat_",
-        "[role='textbox']"
+        "[contenteditable='true']"
       ]
     },
     "bolt.new": {

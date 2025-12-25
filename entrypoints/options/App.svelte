@@ -1,21 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { browser } from 'wxt/browser';
-  import { 
-    resetToDefaults, 
-    loadConfig, 
-    loadLocalConfig, 
+  import {
+    resetToDefaults,
+    loadConfig,
+    loadLocalConfig,
     loadRemoteCustomConfig,
-    CONFIG_SOURCES 
+    CONFIG_SOURCES
   } from '~/lib/config';
+  import type { ServiceConfig } from '~/lib/types';
 
   // 型定義
-  interface ServiceConfig {
-    name: string;
-    selectors: string[];
-    enabled?: boolean;
-  }
-  
   interface ServicesData {
     [domain: string]: ServiceConfig;
   }
