@@ -108,24 +108,22 @@ export default defineContentScript({
       const target = event.target;
 
       // 6. 対象elementかどうかをチェック
-      let isTargetElement = state.targetElements.includes(target);
-      if (!isTargetElement) {
+      if (!state.targetElements.includes(target)) {
+        let matched = false;
         for (const selector of state.serviceConfig.selectors) {
           try {
             if (target.matches?.(selector) || target.closest?.(selector)) {
               // 次回のために、見つかった要素をリストに追加
-              if (!state.targetElements.includes(target)) {
-                state.targetElements.push(target);
-              }
-              isTargetElement = true;
+              state.targetElements.push(target);
+              matched = true;
               break;
             }
           } catch (e) {
             continue;
           }
         }
+        if (!matched) return;
       }
-      if (!isTargetElement) return;
 
       // デバッグ用: どのセレクタがマッチしたかを確認（重い処理なのでログが必要な時だけ有効に）
       // if (state.serviceConfig.selectors) {
@@ -159,7 +157,7 @@ export default defineContentScript({
           });
           target.dispatchEvent(beforeInputEvent);
         } else {
-          // divのcontenteditableなど他の要素の場合はshift+Enterを発火
+          // div の contenteditable など他の要素の場合は shift+Enter を発火
           const shiftEnterEvent = new KeyboardEvent('keydown', {
             key: 'Enter',
             keyCode: 13,
@@ -178,7 +176,6 @@ export default defineContentScript({
       if (isModifierEnter) {
         event.preventDefault();
         event.stopPropagation();
-
         const newEvent = new KeyboardEvent('keydown', {
           key: 'Enter',
           keyCode: 13,
