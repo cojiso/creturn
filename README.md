@@ -187,7 +187,7 @@ Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported.
 **Full Description:**
 ```
 ▍Features:
-- 12+ built-in sites + unlimited custom site additions
+- 12+ built-in sites & unlimited custom site additions
 - Load custom configuration files created on GitHub
 - Reliable prevention of accidental sends even in chat editing areas
 
