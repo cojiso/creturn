@@ -23,12 +23,7 @@ export default defineContentScript({
   allFrames: true,
   runAt: 'document_start',
   main() {
-    /**
-     * ドメインマッチング（ワイルドカード対応）
-     * @param {string} currentDomain - 現在のドメイン
-     * @param {Object} services - サービス設定オブジェクト
-     * @returns {Object|null} - マッチしたサービス設定、またはnull
-     */
+    // ドメインマッチング（ワイルドカード対応）
     function findMatchingService(currentDomain: string, services: Record<string, ServiceConfig>): ServiceConfig | null {
       if (!services || !currentDomain) return null;
       
@@ -54,7 +49,6 @@ export default defineContentScript({
     const state = {
       enabled: false,
       currentDomain: window.location.hostname,
-      currentUrl: window.location.href,
       serviceConfig: null as ServiceConfig | null,      // 現在のドメインに対応する設定
       targetElements: [] as Element[],       // 監視対象の要素のリスト
     };
@@ -68,7 +62,7 @@ export default defineContentScript({
       state.serviceConfig = findMatchingService(state.currentDomain, data.services as Record<string, ServiceConfig>);
       if (!state.serviceConfig?.selectors) return;
 
-      state.enabled = state.serviceConfig?.enabled ?? false;
+      state.enabled = state.serviceConfig?.enabled !== false;
       if (!state.enabled) {
         document.removeEventListener('keydown', handleKeyDown, { capture: true });
         document.cReturnListenerInitialized = false;
