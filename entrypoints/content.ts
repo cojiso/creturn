@@ -128,19 +128,19 @@ export default defineContentScript({
       if (!isTargetElement) return;
 
       // デバッグ用: どのセレクタがマッチしたかを確認（重い処理なのでログが必要な時だけ有効に）
-      if (state.serviceConfig.selectors) {
-        const matchingSelectors = state.serviceConfig.selectors.filter((selector: string) => {
-          try {
-            return Array.from(document.querySelectorAll(selector)).includes(target);
-          } catch (e) {
-            return false;
-          }
-        });
+      // if (state.serviceConfig.selectors) {
+      //   const matchingSelectors = state.serviceConfig.selectors.filter((selector: string) => {
+      //     try {
+      //       return Array.from(document.querySelectorAll(selector)).includes(target);
+      //     } catch (e) {
+      //       return false;
+      //     }
+      //   });
 
-        if (matchingSelectors.length > 0) {
-          console.log(`cReturn: 要素がマッチしたセレクタ:`, matchingSelectors);
-        }
-      }
+      //   if (matchingSelectors.length > 0) {
+      //     console.log(`cReturn: 要素がマッチしたセレクタ:`, matchingSelectors);
+      //   }
+      // }
 
       // 7. 単独のEnterキー押下時の処理
       const isOnlyEnter = (!event.shiftKey && !event.ctrlKey && !event.metaKey && !event.altKey);
