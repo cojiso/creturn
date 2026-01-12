@@ -157,5 +157,8 @@ sketch
 # WXT output directory
 .output
 
+# WXT generated types directory
+.wxt
+
 # Resources
 resources
