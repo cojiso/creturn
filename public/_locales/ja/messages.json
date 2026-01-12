@@ -1,110 +1,106 @@
 {
-  "extensionName": {
+  "metadata_name": {
     "message": "cReturn",
-    "description": "拡張機能の名前"
+    "description": "Extension name"
   },
-  "extensionStoreName": {
+  "metadata_storeName": {
     "message": "cReturn - Enter Key Swapper + Custom Site Configs",
-    "description": "Chrome Web Store用の拡張機能名"
+    "description": "Extension name for Chrome Web Store"
   },
-  "extensionDescription": {
+  "metadata_description": {
     "message": "どんなサイトでも、Enterで改行、Ctrl+Enterで送信。GitHubでのカスタム設定に対応。漢字変換時の誤送信を防ぐ拡張機能です。",
-    "description": "拡張機能の説明"
+    "description": "Extension description for Chrome Web Store"
   },
-  "unsupportedDomain": {
+  "popup_unsupportedDomain": {
     "message": "未サポートなドメインです。",
-    "description": "サポートされていないドメインの場合のメッセージ"
-  },
-  "settings": {
-    "message": "設定",
-    "description": "設定ボタンのテキスト"
-  },
-  "configFile": {
-    "message": "設定ファイル",
-    "description": "設定ファイルのセクションタイトル"
-  },
-  "useDefaultConfig": {
-    "message": "デフォルト設定を使用 (安定版)",
-    "description": "デフォルト設定を使用するオプション"
-  },
-  "useDefaultLatestConfig": {
-    "message": "デフォルト設定を使用 (最新版)",
-    "description": "最新のデフォルト設定を使用するオプション"
-  },
-  "useGithubConfig": {
-    "message": "GitHub から設定を取得",
-    "description": "GitHub から設定を取得するオプション"
-  },
-  "load": {
-    "message": "読み込む",
-    "description": "読み込むボタンのテキスト"
-  },
-  "loading": {
-    "message": "読み込み中...",
-    "description": "読み込み中の表示テキスト"
-  },
-  "supportedServices": {
-    "message": "対応サービス",
-    "description": "対応サービスのセクションタイトル"
-  },
-  "noServices": {
-    "message": "設定されているサービスはありません。",
-    "description": "サービスが設定されていない場合のメッセージ"
-  },
-  "selector": {
-    "message": "セレクタ: $1",
-    "description": "セレクタ情報"
-  },
-  "resetToDefaults": {
-    "message": "デフォルトに戻す",
-    "description": "デフォルトに戻すボタンのテキスト"
-  },
-  "confirmReset": {
-    "message": "すべての設定をデフォルト値にリセットしてもよろしいですか？",
-    "description": "リセットの確認メッセージ"
-  },
-  "settingsResetSuccess": {
-    "message": "設定をデフォルト値にリセットしました",
-    "description": "設定リセット成功時のメッセージ"
-  },
-  "settingsResetError": {
-    "message": "リセットに失敗しました",
-    "description": "設定リセット失敗時のエラーメッセージ"
-  },
-  "enterUrl": {
-    "message": "URLを入力してください",
-    "description": "URLが空の場合のメッセージ"
-  },
-  "loadingSettings": {
-    "message": "設定を読み込んでいます...",
-    "description": "設定読み込み中のメッセージ"
-  },
-  "loadingError": {
-    "message": "エラー: $1",
-    "description": "設定読み込み失敗時のエラーメッセージ"
-  },
-  "settingsLoaded": {
-    "message": "設定を正常に読み込み保存しました",
-    "description": "設定読み込み成功時のメッセージ"
-  },
-  "settingsSaved": {
-    "message": "サービス設定を保存しました",
-    "description": "設定保存成功時のメッセージ"
-  },
-  "defaultSettingsApplied": {
-    "message": "デフォルト設定を適用しました",
-    "description": "デフォルト設定適用時のメッセージ"
-  },
-  "clickToLoad": {
-    "message": "「設定を読み込む」をクリックして設定を適用してください",
-    "description": "設定の読み込みを促すメッセージ"
-  },
-  "unsavedChanges": {
-    "message": "変更は保存されていません",
-    "description": "保存されていない変更についての警告"
+    "description": "Message shown when current domain is not supported"
   },
   "options": {
     "message": "設定",
-    "description": "設定ページのタイトル"
+    "description": "Label for settings button/link and options page title"
+  },
+  "config_jsonc_title": {
+    "message": "設定ファイル",
+    "description": "Title of configuration section in options page"
+  },
+  "config_jsonc_useDefaultStable": {
+    "message": "デフォルト設定を使用 (安定版)",
+    "description": "Option to use stable default configuration"
+  },
+  "config_jsonc_useDefaultLatest": {
+    "message": "デフォルト設定を使用 (最新版)",
+    "description": "Option to use latest default configuration"
+  },
+  "config_jsonc_useGithub": {
+    "message": "GitHub から設定を取得",
+    "description": "Option to load configuration from GitHub"
+  },
+  "config_jsonc_status_enterUrl": {
+    "message": "URLを入力してください",
+    "description": "Prompt message to enter URL"
+  },
+  "config_jsonc_status_unsavedChanges": {
+    "message": "変更はまだ保存されていません",
+    "description": "Warning message about unsaved changes"
+  },
+  "config_load_button": {
+    "message": "読み込む",
+    "description": "Button text to load configuration"
+  },
+  "config_load_status": {
+    "message": "読み込み中...",
+    "description": "Loading indicator text"
+  },
+  "config_load_result_success": {
+    "message": "設定が適用されました",
+    "description": "Success message after loading configuration"
+  },
+  "config_load_result_error": {
+    "message": "エラー: $ERROR$",
+    "description": "Error message when loading configuration fails",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1",
+        "example": "設定ファイルの取得に失敗しました"
+      }
+    }
+  },
+  "config_reset_button": {
+    "message": "デフォルト設定にリセット",
+    "description": "Button text to reset settings to default values"
+  },
+  "config_reset_dialogue": {
+    "message": "すべての設定をデフォルト値にリセットしてもよろしいですか？",
+    "description": "Confirmation dialog message for resetting settings"
+  },
+  "config_reset_result_success": {
+    "message": "設定をデフォルト値にリセットしました",
+    "description": "Success message after resetting settings"
+  },
+  "config_reset_result_error": {
+    "message": "リセットに失敗しました",
+    "description": "Error message when resetting settings fails"
+  },
+  "site_title": {
+    "message": "対応サイト",
+    "description": "Title of supported sites section"
+  },
+  "site_noSites": {
+    "message": "設定されているサイトはありません。",
+    "description": "Message shown when no sites are configured"
+  },
+  "site_selector": {
+    "message": "セレクタ: $SELECTORS$",
+    "description": "CSS selector information for site configuration",
+    "placeholders": {
+      "SELECTORS": {
+        "content": "$1",
+        "example": ".input, .textarea"
+      }
+    }
+  },
+  "site_result_saved": {
+    "message": "サイト設定を保存しました",
+    "description": "Success message after saving site configuration"
   }
 }

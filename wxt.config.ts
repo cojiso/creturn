@@ -4,8 +4,8 @@ export default defineConfig({
   extensionApi: 'chrome',
   modules: ['@wxt-dev/module-svelte'],
   manifest: {
-    name: '__MSG_extensionStoreName__',
-    description: '__MSG_extensionDescription__',
+    name: '__MSG_metadata_storeName__',
+    description: '__MSG_metadata_description__',
     default_locale: 'en',
     permissions: ['storage', 'activeTab', 'webNavigation'],
     host_permissions: ['https://raw.githubusercontent.com/*'],

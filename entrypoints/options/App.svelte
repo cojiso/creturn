@@ -43,32 +43,29 @@
    */
   function initializeI18n() {
     try {
-      extensionName = browser.i18n.getMessage('extensionName') || 'cReturn';
-      options = browser.i18n.getMessage('options') || 'Options';
-    
+      extensionName = browser.i18n.getMessage('metadata_name');
+      options = browser.i18n.getMessage('options');
+
       // Initialize all i18n messages
       messages = {
-        configFile: browser.i18n.getMessage('configFile') || 'Config File',
-        useDefaultConfig: browser.i18n.getMessage('useDefaultConfig') || 'Use Default Config',
-        useDefaultLatestConfig: browser.i18n.getMessage('useDefaultLatestConfig') || 'Use Default Latest Config',
-        useGithubConfig: browser.i18n.getMessage('useGithubConfig') || 'Use GitHub Config',
-        load: browser.i18n.getMessage('load') || 'Load',
-        supportedServices: browser.i18n.getMessage('supportedServices') || 'Supported Services',
-        loading: browser.i18n.getMessage('loading') || 'Loading...',
-        resetToDefaults: browser.i18n.getMessage('resetToDefaults') || 'Reset to Defaults',
-        noServices: browser.i18n.getMessage('noServices') || 'No Services',
-        selector: browser.i18n.getMessage('selector') || 'Selector: $SELECTORS$',
-        settingsSaved: browser.i18n.getMessage('settingsSaved') || 'Settings Saved',
-        confirmReset: browser.i18n.getMessage('confirmReset') || 'Confirm Reset',
-        settingsResetSuccess: browser.i18n.getMessage('settingsResetSuccess') || 'Settings Reset Successfully',
-        settingsResetError: browser.i18n.getMessage('settingsResetError') || 'Settings Reset Error',
-        enterUrl: browser.i18n.getMessage('enterUrl') || 'Enter URL',
-        loadingSettings: browser.i18n.getMessage('loadingSettings') || 'Loading Settings...',
-        settingsLoaded: browser.i18n.getMessage('settingsLoaded') || 'Settings Loaded',
-        loadingError: browser.i18n.getMessage('loadingError') || 'Loading Error: {0}',
-        defaultSettingsApplied: browser.i18n.getMessage('defaultSettingsApplied') || 'Default Settings Applied',
-        clickToLoad: browser.i18n.getMessage('clickToLoad') || 'Click to Load',
-        unsavedChanges: browser.i18n.getMessage('unsavedChanges') || 'Unsaved Changes'
+        configFile: browser.i18n.getMessage('config_jsonc_title'),
+        useDefaultConfig: browser.i18n.getMessage('config_jsonc_useDefaultStable'),
+        useDefaultLatestConfig: browser.i18n.getMessage('config_jsonc_useDefaultLatest'),
+        useGithubConfig: browser.i18n.getMessage('config_jsonc_useGithub'),
+        load: browser.i18n.getMessage('config_load_button'),
+        supportedServices: browser.i18n.getMessage('site_title'),
+        loading: browser.i18n.getMessage('config_load_status'),
+        resetToDefaults: browser.i18n.getMessage('config_reset_button'),
+        noServices: browser.i18n.getMessage('site_noSites'),
+        selector: browser.i18n.getMessage('site_selector'),
+        settingsSaved: browser.i18n.getMessage('site_result_saved'),
+        confirmReset: browser.i18n.getMessage('config_reset_dialogue'),
+        settingsResetSuccess: browser.i18n.getMessage('config_reset_result_success'),
+        settingsResetError: browser.i18n.getMessage('config_reset_result_error'),
+        enterUrl: browser.i18n.getMessage('config_jsonc_status_enterUrl'),
+        settingsLoaded: browser.i18n.getMessage('config_load_result_success'),
+        loadingError: browser.i18n.getMessage('config_load_result_error'),
+        unsavedChanges: browser.i18n.getMessage('config_jsonc_status_unsavedChanges')
       };
     } catch (error) {
       console.warn('i18n initialization failed:', error);
@@ -90,12 +87,9 @@
         confirmReset: 'Confirm Reset',
         settingsResetSuccess: 'Settings Reset Successfully',
         settingsResetError: 'Settings Reset Error',
-        enterUrl: 'Enter URL',
-        loadingSettings: 'Loading Settings...',
+        enterUrl: 'Please enter URL',
         settingsLoaded: 'Settings Loaded',
         loadingError: 'Loading Error: {0}',
-        defaultSettingsApplied: 'Default Settings Applied',
-        clickToLoad: 'Click to Load',
         unsavedChanges: 'Unsaved Changes'
       };
     }
@@ -294,7 +288,7 @@
       return;
     }
     
-    configStatus = messages.loadingSettings;
+    configStatus = messages.loading;
     configStatusClass = 'status';
     
     // GitHub URLを構築
@@ -335,7 +329,7 @@
       
     } catch (error: any) {
       console.error('Configuration file loading error:', error);
-      configStatus = browser.i18n.getMessage('loadingError', [error.message]);
+      configStatus = browser.i18n.getMessage('config_load_result_error', [error.message]);
       configStatusClass = 'status error';
     }
   }
@@ -367,7 +361,7 @@
             
         browser.storage.sync.set(currentSettings, () => {
           displayServices(currentSettings.services);
-          saveStatus = messages.defaultSettingsApplied;
+          saveStatus = messages.settingsLoaded;
           saveStatusClass = 'status success';
           
           setTimeout(() => {
@@ -418,7 +412,7 @@
       } catch (error) {
         console.error('Default-latest configuration loading error:', error);
         servicesLoading = false;
-        saveStatus = browser.i18n.getMessage('loadingError', [(error as any).message]);
+        saveStatus = browser.i18n.getMessage('config_load_result_error', [(error as any).message]);
         saveStatusClass = 'status error';
       }
     } else if (configType === 'github') {
@@ -428,7 +422,7 @@
         currentSettings.configUrl = "";
       }
       
-      saveStatus = messages.clickToLoad;
+      saveStatus = messages.enterUrl;
       saveStatusClass = 'status warning';
     }
   }
@@ -601,7 +595,7 @@
             <div class="service-info">
               <div class="service-name">{service.name}</div>
               <div class="service-domain">{domain}</div>
-              <div class="service-selectors">{messages.selector ? browser.i18n.getMessage('selector', [service.selectors.join(', ')]) : `Selector: ${service.selectors.join(', ')}`}</div>
+              <div class="service-selectors">{messages.selector ? browser.i18n.getMessage('ui_selector', [service.selectors.join(', ')]) : `Selector: ${service.selectors.join(', ')}`}</div>
             </div>
             <label class="toggle">
               <input 

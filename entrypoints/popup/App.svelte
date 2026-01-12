@@ -24,9 +24,9 @@
   function initializeI18n() {
     try {
       if (chrome?.i18n) {
-        extensionName = browser.i18n.getMessage('extensionName') || 'cReturn';
-        unsupportedMessage = browser.i18n.getMessage('unsupportedDomain') || 'This site is not supported';
-        settingsTitle = browser.i18n.getMessage('settings') || 'Settings';
+        extensionName = browser.i18n.getMessage('metadata_name');
+        unsupportedMessage = browser.i18n.getMessage('popup_unsupportedDomain');
+        settingsTitle = browser.i18n.getMessage('options');
       }
     } catch (error) {
       console.warn('i18n initialization failed:', error);
