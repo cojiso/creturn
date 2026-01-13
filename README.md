@@ -155,6 +155,8 @@ Fast config file deployment without store approval:
 
 ## Supported Languages
 en, ja, bn, da, de, fil, hi, ko, ne, ru, tr, vi, zh_CN, zh_TW
+- Store name is max 75 characters
+- Store description is max 132 words
 
 ## Troubleshooting
 
