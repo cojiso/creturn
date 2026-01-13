@@ -62,7 +62,7 @@ Configuration Format Example:
   "license": "MIT ©︎ 2025 name",
   "contact": "form / email / sns id",
   "description": "Optional",
-  "services": {
+  "sites": {
     "chat.openai.com": {
       "name": "ChatGPT",
       "selectors": [
@@ -87,6 +87,8 @@ Configuration Format Example:
 ```
 
 > The `selectors` field defines CSS selectors for text input areas on each domain. Wildcard domains (starting with `*.`) are supported for subdomain matching.
+
+> [Important Notice] The configuration field name has been changed from `services` (v0.5.1) to `sites` (v0.6.0). Please update your custom configuration files accordingly.
 
 ## Architecture
 

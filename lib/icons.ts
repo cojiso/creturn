@@ -4,7 +4,7 @@
  */
 
 import { browser } from 'wxt/browser';
-import { findMatchingService } from './utils';
+import { findMatchingSite } from './utils';
 
 export const IconManager = {
   /**
@@ -14,15 +14,15 @@ export const IconManager = {
    */
   async updateIcon(domain: string, tabId: number) {
     if (!domain || !tabId) return;
-    
-    // ストレージから設定を取得
-    const { services = {} } = await browser.storage.sync.get('services');
-    
-    // 現在のドメインに対応するサービス設定を見つける（ワイルドカード対応）
-    const matchingService = findMatchingService(domain, services);
-    
+
+    const storage = await browser.storage.sync.get('sites');
+    const sites = storage.sites || {};
+
+    // 現在のドメインに対応するサイト設定を見つける（ワイルドカード対応）
+    const matchingSite = findMatchingSite(domain, sites);
+
     // 有効状態を確認（設定がなければデフォルトでdisabled）
-    const isEnabled = matchingService?.enabled === true;
+    const isEnabled = matchingSite?.enabled === true;
     
     // アイコンを設定（chrome.runtime.getURLを使用して絶対パスを取得）
     const iconPath = isEnabled 

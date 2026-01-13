@@ -6,26 +6,26 @@
 /**
  * ドメインマッチング（ワイルドカード対応）
  * @param {string} currentDomain - 現在のドメイン
- * @param {Object} services - サービス設定オブジェクト
- * @returns {Object|null} - マッチしたサービス設定、またはnull
+ * @param {Object} sites - サイト設定オブジェクト
+ * @returns {Object|null} - マッチしたサイト設定、またはnull
  */
-export function findMatchingService(currentDomain: string, services: any): any {
-  if (!services || !currentDomain) return null;
-  
+export function findMatchingSite(currentDomain: string, sites: any): any {
+  if (!sites || !currentDomain) return null;
+
   // 完全一致を優先
-  if (services[currentDomain]) {
-    return services[currentDomain];
+  if (sites[currentDomain]) {
+    return sites[currentDomain];
   }
-  
+
   // ワイルドカードマッチング
-  for (const [domain, service] of Object.entries(services)) {
+  for (const [domain, site] of Object.entries(sites)) {
     if (domain.startsWith('*.')) {
       const baseDomain = domain.substring(2); // "*.example.com" -> "example.com"
       if (currentDomain.endsWith('.' + baseDomain) || currentDomain === baseDomain) {
-        return service;
+        return site;
       }
     }
   }
-  
+
   return null;
 }

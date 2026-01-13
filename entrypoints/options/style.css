@@ -281,12 +281,12 @@ input:checked + .slider:before {
   margin-top: 5px;
 }
 
-/* サービスリスト */
-.services-list {
+/* サイトリスト */
+.sites-list {
   margin-top: 10px;
 }
 
-.service-item {
+.site-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -294,25 +294,25 @@ input:checked + .slider:before {
   border-bottom: 1px solid var(--border-color);
 }
 
-.service-item:last-child {
+.site-item:last-child {
   border-bottom: none;
 }
 
-.service-info {
+.site-info {
   display: flex;
   flex-direction: column;
 }
 
-.service-name {
+.site-name {
   font-weight: 500;
 }
 
-.service-domain {
+.site-domain {
   font-size: 12px;
   color: var(--text-secondary);
 }
 
-.service-selectors {
+.site-selectors {
   font-size: 12px;
   color: var(--text-secondary);
   margin-top: 5px;

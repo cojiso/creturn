@@ -6,13 +6,14 @@
     loadConfig,
     loadLocalConfig,
     loadRemoteCustomConfig,
-    CONFIG_SOURCES
+    CONFIG_SOURCES,
+    ensureSitesKey
   } from '~/lib/config';
-  import type { ServiceConfig } from '~/lib/types';
+  import type { SiteConfig } from '~/lib/types';
 
   // 型定義
-  interface ServicesData {
-    [domain: string]: ServiceConfig;
+  interface SitesData {
+    [domain: string]: SiteConfig;
   }
 
   const BASE_URL = "https://raw.githubusercontent.com/";
@@ -21,7 +22,7 @@
   // State variables
   let currentSettings: any = {
     configUrl: BASE_URL + DEFAULT_LATEST_PATH,
-    services: {}
+    sites: {}
   };
   
   let configType = 'default-latest';
@@ -30,8 +31,8 @@
   let configStatusClass = '';
   let saveStatus = '';
   let saveStatusClass = '';
-  let servicesLoading = true;
-  let services: ServicesData = {};
+  let sitesLoading = true;
+  let sites: SitesData = {};
 
   // I18n messages
   let extensionName = '';
@@ -111,13 +112,15 @@
   /**
    * 設定をロードしてUIに表示
    */
-  function loadSettings() {
+  async function loadSettings() {
     try {
+      await ensureSitesKey();
+
       const api = (globalThis as any).browser || chrome;
       if (!api?.storage) return;
-      
+
       api.storage.sync.get(null, (data) => {
-      currentSettings = data || { configUrl: BASE_URL + DEFAULT_LATEST_PATH, services: {} };
+      currentSettings = data || { configUrl: BASE_URL + DEFAULT_LATEST_PATH, sites: {} };
       
       // configUrlの値で設定タイプを判定
       configType = getConfigType(currentSettings.configUrl);
@@ -135,15 +138,14 @@
         }
       }
       
-      // サービスリストを表示
-      const services = currentSettings.services || {};
-      if (Object.keys(services).length === 0) {
-        // サービス設定が空の場合は設定タイプに応じて自動ロード
-        servicesLoading = true;
+      const sitesData = currentSettings.sites || {};
+      if (Object.keys(sitesData).length === 0) {
+        // サイト設定が空の場合は設定タイプに応じて自動ロード
+        sitesLoading = true;
         autoLoadConfigByType();
       } else {
-        // サービス設定がある場合は表示
-        displayServices(services);
+        // サイト設定がある場合は表示
+        displaySites(sitesData);
       }
       });
     } catch (error) {
@@ -152,11 +154,11 @@
   }
 
   /**
-   * サービスのリストを表示
+   * サイトのリストを表示
    */
-  function displayServices(servicesData: ServicesData) {
-    servicesLoading = false;
-    services = servicesData;
+  function displaySites(sitesData: SitesData) {
+    sitesLoading = false;
+    sites = sitesData;
   }
 
   /**
@@ -166,44 +168,44 @@
     try {
       if (configType === 'default') {
         // ローカル設定を読み込む
-        const servicesData = await loadLocalConfig() as ServicesData;
-        
-        // 既存のサービスからenabledフラグを引き継ぐ
-        if (currentSettings.services) {
-          Object.entries(servicesData).forEach(([domain, service]) => {
-            if (currentSettings.services[domain]) {
-              service.enabled = currentSettings.services[domain].enabled;
+        const sitesData = await loadLocalConfig() as SitesData;
+
+        // 既存のサイトからenabledフラグを引き継ぐ
+        if (currentSettings.sites) {
+          Object.entries(sitesData).forEach(([siteDomain, siteConfig]) => {
+            if (currentSettings.sites[siteDomain]) {
+              siteConfig.enabled = currentSettings.sites[siteDomain].enabled;
             }
           });
         }
-        currentSettings.services = servicesData;
+        currentSettings.sites = sitesData;
         currentSettings.configUrl = "";
-        
+
         // Chrome Storageに保存してからUIを更新
         browser.storage.sync.set(currentSettings, () => {
-          displayServices(currentSettings.services);
+          displaySites(currentSettings.sites);
         });
       } else if (configType === 'default-latest') {
         // リモート最新設定を読み込む
-        const newServices = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH) as ServicesData;
-        
-        if (newServices) {
-          // 既存のサービスからenabledフラグを引き継ぐ
-          if (currentSettings.services) {
-            Object.entries(newServices).forEach(([domain, service]) => {
-              if (currentSettings.services[domain]) {
-                service.enabled = currentSettings.services[domain].enabled;
+        const newSites = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH) as SitesData;
+
+        if (newSites) {
+          // 既存のサイトからenabledフラグを引き継ぐ
+          if (currentSettings.sites) {
+            Object.entries(newSites).forEach(([siteDomain, siteConfig]) => {
+              if (currentSettings.sites[siteDomain]) {
+                siteConfig.enabled = currentSettings.sites[siteDomain].enabled;
               } else {
-                service.enabled = true;
+                siteConfig.enabled = true;
               }
             });
           }
-          
-          currentSettings.services = newServices;
-          
+
+          currentSettings.sites = newSites;
+
           // Chrome Storageに保存してからUIを更新
           browser.storage.sync.set(currentSettings, () => {
-            displayServices(currentSettings.services);
+            displaySites(currentSettings.sites);
           });
         } else {
           throw new Error('Failed to retrieve configuration file');
@@ -212,32 +214,33 @@
       // github タイプの場合は手動ロードのみ
     } catch (error) {
       console.error('Auto-load configuration error:', error);
-      servicesLoading = false;
+      sitesLoading = false;
     }
   }
 
   /**
-   * ドメインの有効/無効状態を更新
+   * サイトの有効/無効状態を更新
    */
-  function updateDomainStatus(domain: string, enabled: boolean) {
-    if (!currentSettings.services) {
-      currentSettings.services = {};
+  function updateSiteStatus(siteDomain: string, enabled: boolean) {
+    const sites = currentSettings.sites || {};
+
+    if (!sites[siteDomain]) {
+      sites[siteDomain] = {} as SiteConfig;
     }
-    
-    if (!currentSettings.services[domain]) {
-      currentSettings.services[domain] = {};
-    }
-    
-    currentSettings.services[domain].enabled = enabled;
-    
+
+    sites[siteDomain].enabled = enabled;
+
+    // sitesキーで保存
+    currentSettings.sites = sites;
+
     // 現在の設定をすべてChrome Storageに即時保存
     const api = (globalThis as any).browser || chrome;
     if (!api?.storage) return;
-    
+
     api.storage.sync.set(currentSettings, () => {
       saveStatus = messages.settingsSaved;
       saveStatusClass = 'status success';
-      
+
       // Clear message after a delay
       setTimeout(() => {
         saveStatus = '';
@@ -295,34 +298,34 @@
     const fullUrl = BASE_URL + urlPath;
     
     try {
-      const newServices = await loadRemoteCustomConfig(fullUrl) as ServicesData;
-      
-      if (!newServices) {
+      const newSites = await loadRemoteCustomConfig(fullUrl) as SitesData;
+
+      if (!newSites) {
         throw new Error('Failed to retrieve configuration file');
       }
-      
-      // 既存のサービスからenabledフラグを引き継ぐ
-      if (currentSettings.services) {
-        Object.entries(newServices).forEach(([domain, service]) => {
-          if (currentSettings.services[domain]) {
-            service.enabled = currentSettings.services[domain].enabled;
+
+      // 既存のサイトからenabledフラグを引き継ぐ
+      if (currentSettings.sites) {
+        Object.entries(newSites).forEach(([siteDomain, siteConfig]) => {
+          if (currentSettings.sites[siteDomain]) {
+            siteConfig.enabled = currentSettings.sites[siteDomain].enabled;
           } else {
-            service.enabled = true;
+            siteConfig.enabled = true;
           }
         });
       }
-      
-      currentSettings.services = newServices;
+
+      currentSettings.sites = newSites;
       currentSettings.configUrl = fullUrl;
-      
+
       // Chrome Storageに保存してからUI を更新
-      
+
       browser.storage.sync.set(currentSettings, () => {
-        displayServices(currentSettings.services);
-        
+        displaySites(currentSettings.sites);
+
         configStatus = messages.settingsLoaded;
         configStatusClass = 'status success';
-        
+
         saveStatus = '';
         saveStatusClass = 'status';
       });
@@ -342,28 +345,28 @@
       configUrl = "";
       
       // ローカル設定を読み込む
-      servicesLoading = true;
+      sitesLoading = true;
       try {
-        const servicesData = await loadLocalConfig() as ServicesData;
-        
-        // 既存のサービスからenabledフラグを引き継ぐ
-        if (currentSettings.services) {
-          Object.entries(servicesData).forEach(([domain, service]) => {
-            if (currentSettings.services[domain]) {
-              service.enabled = currentSettings.services[domain].enabled;
+        const sitesData = await loadLocalConfig() as SitesData;
+
+        // 既存のサイトからenabledフラグを引き継ぐ
+        if (currentSettings.sites) {
+          Object.entries(sitesData).forEach(([siteDomain, siteConfig]) => {
+            if (currentSettings.sites[siteDomain]) {
+              siteConfig.enabled = currentSettings.sites[siteDomain].enabled;
             }
           });
         }
-        currentSettings.services = servicesData;
+        currentSettings.sites = sitesData;
         currentSettings.configUrl = "";
-          
+
         // Chrome Storageに即時保存
-            
+
         browser.storage.sync.set(currentSettings, () => {
-          displayServices(currentSettings.services);
+          displaySites(currentSettings.sites);
           saveStatus = messages.settingsLoaded;
           saveStatusClass = 'status success';
-          
+
           setTimeout(() => {
             saveStatus = '';
             saveStatusClass = 'status';
@@ -377,30 +380,30 @@
       configUrl = "";
       
       // default-latestの場合も自動でリモート設定をロード
-      servicesLoading = true;
+      sitesLoading = true;
       try {
-        const newServices = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH) as ServicesData;
-        
-        if (newServices) {
-          // 既存のサービスからenabledフラグを引き継ぐ
-          if (currentSettings.services) {
-            Object.entries(newServices).forEach(([domain, service]) => {
-              if (currentSettings.services[domain]) {
-                service.enabled = currentSettings.services[domain].enabled;
+        const newSites = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH) as SitesData;
+
+        if (newSites) {
+          // 既存のサイトからenabledフラグを引き継ぐ
+          if (currentSettings.sites) {
+            Object.entries(newSites).forEach(([siteDomain, siteConfig]) => {
+              if (currentSettings.sites[siteDomain]) {
+                siteConfig.enabled = currentSettings.sites[siteDomain].enabled;
               } else {
-                service.enabled = true;
+                siteConfig.enabled = true;
               }
             });
           }
-          
-          currentSettings.services = newServices;
-          
+
+          currentSettings.sites = newSites;
+
           // Chrome Storageに保存してからUIを更新
           browser.storage.sync.set(currentSettings, () => {
-            displayServices(currentSettings.services);
+            displaySites(currentSettings.sites);
             saveStatus = messages.settingsLoaded;
             saveStatusClass = 'status success';
-            
+
             setTimeout(() => {
               saveStatus = '';
               saveStatusClass = 'status';
@@ -411,7 +414,7 @@
         }
       } catch (error) {
         console.error('Default-latest configuration loading error:', error);
-        servicesLoading = false;
+        sitesLoading = false;
         saveStatus = browser.i18n.getMessage('config_load_result_error', [(error as any).message]);
         saveStatusClass = 'status error';
       }
@@ -584,24 +587,24 @@
   
   <section class="section">
     <h2>{messages.supportedServices}</h2>
-    {#if servicesLoading}
+    {#if sitesLoading}
       <div class="loading-indicator">{messages.loading}</div>
-    {:else if Object.keys(services).length === 0}
+    {:else if Object.keys(sites).length === 0}
       <p>{messages.noServices}</p>
     {:else}
-      <div class="services-list">
-        {#each Object.entries(services) as [domain, service]}
-          <div class="service-item">
-            <div class="service-info">
-              <div class="service-name">{service.name}</div>
-              <div class="service-domain">{domain}</div>
-              <div class="service-selectors">{messages.selector ? browser.i18n.getMessage('ui_selector', [service.selectors.join(', ')]) : `Selector: ${service.selectors.join(', ')}`}</div>
+      <div class="sites-list">
+        {#each Object.entries(sites) as [siteDomain, siteConfig]}
+          <div class="site-item">
+            <div class="site-info">
+              <div class="site-name">{siteConfig.name}</div>
+              <div class="site-domain">{siteDomain}</div>
+              <div class="site-selectors">{messages.selector ? browser.i18n.getMessage('ui_selector', [siteConfig.selectors.join(', ')]) : `Selector: ${siteConfig.selectors.join(', ')}`}</div>
             </div>
             <label class="toggle">
-              <input 
-                type="checkbox" 
-                checked={service.enabled ?? true}
-                on:change={(e) => updateDomainStatus(domain, e.currentTarget.checked)}
+              <input
+                type="checkbox"
+                checked={siteConfig.enabled ?? true}
+                on:change={(e) => updateSiteStatus(siteDomain, e.currentTarget.checked)}
               >
               <span class="slider"></span>
             </label>

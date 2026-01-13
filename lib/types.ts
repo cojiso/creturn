@@ -3,9 +3,9 @@
  */
 
 /**
- * サービスごとの設定（ドメイン単位で管理）
+ * サイトごとの設定（ドメイン単位で管理）
  */
-export interface ServiceConfig {
+export interface SiteConfig {
   name: string;
   enabled?: boolean;
   selectors: string[];

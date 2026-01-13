@@ -4,18 +4,20 @@
  */
 
 import { browser } from 'wxt/browser';
-import { migrateDomainEnabledStates, loadConfig, DEFAULT_CONFIG } from '~/lib/config';
+import { migrateDomainEnabledStates, loadConfig, DEFAULT_CONFIG, ensureSitesKey } from '~/lib/config';
 import { IconManager } from '~/lib/icons';
 
 export default defineBackground(() => {
   // 拡張機能のインストール時やアップデート時に実行
   browser.runtime.onInstalled.addListener(async ({ reason }) => {
+    await ensureSitesKey();
+
     if (reason === 'install') {
       // 初回インストール時はデフォルトのリモート設定を使用
-      const services = await loadConfig(DEFAULT_CONFIG.configUrl);
+      const sites = await loadConfig(DEFAULT_CONFIG.configUrl);
       const config = {
         configUrl: DEFAULT_CONFIG.configUrl,
-        services: services
+        sites: sites
       };
       const updatedConfig = await migrateDomainEnabledStates(config);
       browser.storage.sync.set(updatedConfig);
@@ -25,10 +27,10 @@ export default defineBackground(() => {
       try {
         const syncStorage = await browser.storage.sync.get(null);
         const configUrl = (syncStorage.configUrl as string) || DEFAULT_CONFIG.configUrl;
-        const services = await loadConfig(configUrl);
+        const sites = await loadConfig(configUrl);
         const config = {
           configUrl: configUrl,
-          services: services
+          sites: sites
         };
         const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
         await browser.storage.sync.set(updatedConfig);
@@ -37,10 +39,10 @@ export default defineBackground(() => {
         // Fallback to default configs on error
         try {
           const syncStorage = await browser.storage.sync.get(null);
-          const services = await loadConfig(DEFAULT_CONFIG.configUrl);
+          const sites = await loadConfig(DEFAULT_CONFIG.configUrl);
           const config = {
             configUrl: DEFAULT_CONFIG.configUrl,
-            services: services
+            sites: sites
           };
           const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
           await browser.storage.sync.set(updatedConfig);
@@ -90,10 +92,13 @@ export default defineBackground(() => {
   });
 
   // chrome storage の更新をリッスンしてタブをサーチしてアイコンを更新
-  browser.storage.onChanged.addListener((changes, namespace) => {
+  browser.storage.onChanged.addListener(async (changes, namespace) => {
     if (namespace !== 'sync') return;
+
+    await ensureSitesKey();
+
     Object.keys(changes).forEach(async (key) => {
-      if (key !== 'services') return;
+      if (key !== 'sites') return;
       const tabs = await browser.tabs.query({ active: true, currentWindow: true });
       tabs.forEach(async (tab) => {
         if (!tab.url || !/^https?:\/\/.+\..+\/.+/.test(tab.url) || !tab.id) return;

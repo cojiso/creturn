@@ -17,7 +17,7 @@ export const CONFIG_SOURCES = {
 export const DEFAULT_CONFIG = {
   source: CONFIG_SOURCES.REMOTE_DEFAULT,
   configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.jsonc",
-  services: {}
+  sites: {}
 };
 
 /**
@@ -36,24 +36,51 @@ export function getConfigSource(configUrl: string): string {
 }
 
 /**
- * ドメイン設定を適用する
+ * ストレージのservicesキーをsitesキーに自動マイグレーションする
+ * この関数は全てのエントリーポイント（background, popup, options, content）で
+ * ストレージ読み込み前に呼び出すことで、ストレージの正規化を保証する
+ *
+ * NOTE: この関数は後方互換のために一時的に存在します
+ * TODO: 2週間後にservices読み込みコードを削除、1ヶ月後にこの関数自体を削除
+ */
+export async function ensureSitesKey(): Promise<void> {
+  const storage = await browser.storage.sync.get(['sites', 'services']);
+
+  // sites が既に存在すれば何もしない（早期リターン）
+  if (storage.sites && Object.keys(storage.sites).length > 0) {
+    return;
+  }
+
+  // services から sites に移行
+  if (storage.services && Object.keys(storage.services).length > 0) {
+    await browser.storage.sync.set({ sites: storage.services });
+    await browser.storage.sync.remove('services');
+  }
+}
+
+/**
+ * サイト設定を適用する
  * @param {Object} config - 現在の設定オブジェクト
  * @param {Object} syncStorage - chrome.storageから取得した設定
  * @returns {Object} - 更新された設定オブジェクト
  */
 export async function migrateDomainEnabledStates(config: any, syncStorage: any = {}): Promise<any> {
-  // 設定オブジェクトに直接enabledフラグを設定
-  Object.keys(config.services).forEach(domain => {
-    config.services[domain].enabled = syncStorage.services?.[domain]?.enabled ?? true;
-  });
-  
+  const existingSites = syncStorage.sites || {};
+
+  // config.sites に直接 enabled フラグを設定
+  if (config.sites) {
+    Object.keys(config.sites).forEach(domain => {
+      config.sites[domain].enabled = existingSites[domain]?.enabled ?? true;
+    });
+  }
+
   return config;
 }
 
 /**
  * 統一された設定読み込み関数
  * @param {string} configUrl - 設定URL（空の場合はローカル設定を使用）
- * @returns {Object} - サービス設定オブジェクト
+ * @returns {Object} - サイト設定オブジェクト
  */
 export async function loadConfig(configUrl: string = ""): Promise<any> {
   const source = getConfigSource(configUrl);
@@ -73,18 +100,24 @@ export async function loadConfig(configUrl: string = ""): Promise<any> {
 
 /**
  * ローカル設定を読み込み
- * @returns {Object} - サービス設定オブジェクト
+ * @returns {Object} - サイト設定オブジェクト
  */
 export async function loadLocalConfig(): Promise<any> {
   const response = await fetch('/creturn-config.jsonc');
   const jsonText = await response.text();
   const configData = jsonc.parse(jsonText);
-  return configData.services;
+
+  // 段階的移行: sites → services の順で取得
+  if (configData.sites && Object.keys(configData.sites).length > 0) {
+    return configData.sites;
+  }
+
+  return configData.services || {}; // JSONキーは "services" のまま維持（後方互換）
 }
 
 /**
  * デフォルトリモート設定を読み込み
- * @returns {Object} - サービス設定オブジェクト
+ * @returns {Object} - サイト設定オブジェクト
  */
 export async function loadRemoteDefaultConfig(): Promise<any> {
   return await loadRemoteCustomConfig(DEFAULT_CONFIG.configUrl);
@@ -93,7 +126,7 @@ export async function loadRemoteDefaultConfig(): Promise<any> {
 /**
  * カスタムリモート設定を読み込み
  * @param {string} url - 設定ファイルのURL
- * @returns {Object} - 取得したサービス設定オブジェクト
+ * @returns {Object} - 取得したサイト設定オブジェクト
  */
 export async function loadRemoteCustomConfig(url: string): Promise<any> {
   try {
@@ -109,13 +142,18 @@ export async function loadRemoteCustomConfig(url: string): Promise<any> {
     const jsonContent = await response.text();
     const parsedConfig = jsonc.parse(jsonContent);
 
-    if (!parsedConfig || !parsedConfig.services) {
-      throw new Error('設定ファイルの形式が正しくありません');
+    // 段階的移行: sites → services の順で取得
+    if (parsedConfig?.sites && Object.keys(parsedConfig.sites).length > 0) {
+      return parsedConfig.sites;
     }
 
-    return parsedConfig.services;
+    if (parsedConfig?.services && Object.keys(parsedConfig.services).length > 0) {
+      return parsedConfig.services;
+    }
+
+    throw new Error('Invalid configuration file format (sites key required; services key deprecated since v0.6.0)');
   } catch (error) {
-    console.error('設定ファイルの取得に失敗しました:', error);
+    console.error('Failed to load configuration file:', error);
     throw error;
   }
 }
@@ -128,19 +166,19 @@ export async function resetToDefaults(): Promise<{success: boolean, message: str
   try {
     // ストレージをクリア
     await browser.storage.sync.clear();
-    
+
     // デフォルト設定を取得（現在はリモートデフォルトを使用）
-    const services = await loadRemoteDefaultConfig();
-    
+    const sites = await loadRemoteDefaultConfig();
+
     // 設定オブジェクト構築
     const config = {
       configUrl: DEFAULT_CONFIG.configUrl,
-      services: services
+      sites: sites
     };
-    
+
     // 設定を保存
     await browser.storage.sync.set(config);
-    
+
     return { success: true, message: '設定をリセットしました' };
   } catch (error) {
     console.error('設定のリセット中にエラーが発生しました:', error);

@@ -2,13 +2,14 @@
   import { onMount } from 'svelte';
   import { browser } from 'wxt/browser';
   import type { Tabs } from 'wxt/browser';
-  
-  import { findMatchingService } from '~/lib/utils';
+
+  import { findMatchingSite } from '~/lib/utils';
+  import { ensureSitesKey } from '~/lib/config';
 
   // State variables
   let currentTab: Tabs.Tab | null = null;
   let currentSettings: any = null;
-  let currentService: any = null;
+  let currentSite: any = null;
   let domain = 'Loading...';
   let isSupported = false;
   let isEnabled = false;
@@ -64,15 +65,16 @@
    * サイトごとの有効/無効を切り替え
    */
   function toggleSiteEnabled() {
-    if (!currentService || !currentTab?.url) return;
-    
+    if (!currentSite || !currentTab?.url) return;
+
     const tabDomain = new URL(currentTab.url).hostname;
-    
-    // サービスに直接enabledフラグを設定して保存
-    if (currentSettings.services) {
-      currentSettings.services[tabDomain].enabled = isEnabled;
-      browser.storage.sync.set({ services: currentSettings.services });
-    }
+
+    // ensureSitesKey()実行済みのため、sitesを直接取得
+    const sites = currentSettings.sites || {};
+    sites[tabDomain].enabled = isEnabled;
+
+    // sitesキーで保存
+    browser.storage.sync.set({ sites: sites });
   }
 
   /**
@@ -87,9 +89,11 @@
    */
   async function initializeUI() {
     try {
+      await ensureSitesKey();
+
       // i18nの初期化
       initializeI18n();
-      
+
       // 現在のタブ情報を取得
       currentTab = await getCurrentTab();
       
@@ -111,13 +115,16 @@
       
       // 設定を読み込む
       await loadSettings();
-      
-      // 現在のドメインに対応するサービス設定を検索（ワイルドカード対応）
-      currentService = findMatchingService(domain, currentSettings?.services);
-      
+
+      // ensureSitesKey()実行済みのため、sitesを直接取得
+      const sites = currentSettings.sites || {};
+
+      // 現在のドメインに対応するサイト設定を検索（ワイルドカード対応）
+      currentSite = findMatchingSite(domain, sites);
+
       // サポートされているサイトかどうかで表示を切り替え
-      if (currentService) {
-        isEnabled = currentService.enabled !== false;
+      if (currentSite) {
+        isEnabled = currentSite.enabled !== false;
         isSupported = true;
       } else {
         isSupported = false;

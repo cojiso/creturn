@@ -4,7 +4,8 @@
  */
 
 import { browser } from 'wxt/browser';
-import type { ServiceConfig } from '~/lib/types';
+import type { SiteConfig } from '~/lib/types';
+import { ensureSitesKey } from '~/lib/config';
 
 // ローカル型定義
 interface CustomKeyboardEvent extends KeyboardEvent {
@@ -24,24 +25,24 @@ export default defineContentScript({
   runAt: 'document_start',
   main() {
     // ドメインマッチング（ワイルドカード対応）
-    function findMatchingService(currentDomain: string, services: Record<string, ServiceConfig>): ServiceConfig | null {
-      if (!services || !currentDomain) return null;
-      
+    function findMatchingSite(currentDomain: string, sites: Record<string, SiteConfig>): SiteConfig | null {
+      if (!sites || !currentDomain) return null;
+
       // 完全一致を優先
-      if (services[currentDomain]) {
-        return services[currentDomain];
+      if (sites[currentDomain]) {
+        return sites[currentDomain];
       }
-      
+
       // ワイルドカードマッチング
-      for (const [domain, service] of Object.entries(services)) {
+      for (const [domain, site] of Object.entries(sites)) {
         if (domain.startsWith('*.')) {
           const baseDomain = domain.substring(2); // "*.example.com" -> "example.com"
           if (currentDomain.endsWith('.' + baseDomain) || currentDomain === baseDomain) {
-            return service;
+            return site;
           }
         }
       }
-      
+
       return null;
     }
 
@@ -49,7 +50,7 @@ export default defineContentScript({
     const state = {
       enabled: false,
       currentDomain: window.location.hostname,
-      serviceConfig: null as ServiceConfig | null,      // 現在のドメインに対応する設定
+      siteConfig: null as SiteConfig | null,      // 現在のドメインに対応する設定
       targetElements: [] as Element[],       // 監視対象の要素のリスト
     };
 
@@ -57,12 +58,18 @@ export default defineContentScript({
      * 設定を読み込む
      */
     async function loadSettings() {
-      const data = await browser.storage.sync.get(null);
-      // 現在のドメインに対応するサービス設定を見つける（ワイルドカード対応）
-      state.serviceConfig = findMatchingService(state.currentDomain, data.services as Record<string, ServiceConfig>);
-      if (!state.serviceConfig?.selectors) return;
+      await ensureSitesKey();
 
-      state.enabled = state.serviceConfig?.enabled !== false;
+      const data = await browser.storage.sync.get('sites');
+
+      // ensureSitesKey()実行済みのため、sitesを直接取得
+      const sites = data.sites || {};
+
+      // 現在のドメインに対応するサイト設定を見つける（ワイルドカード対応）
+      state.siteConfig = findMatchingSite(state.currentDomain, sites as Record<string, SiteConfig>);
+      if (!state.siteConfig?.selectors) return;
+
+      state.enabled = state.siteConfig?.enabled !== false;
       if (!state.enabled) {
         document.removeEventListener('keydown', handleKeyDown, { capture: true });
         document.cReturnListenerInitialized = false;
@@ -94,8 +101,8 @@ export default defineContentScript({
       // 3. メタデータフラグのチェック
       if (!state.enabled || !event.isTrusted) return;
 
-      // 4. serviceConfigがない場合は処理しない
-      if (!state.serviceConfig) return;
+      // 4. siteConfigがない場合は処理しない
+      if (!state.siteConfig) return;
 
       // 5. event.targetがElementかどうかをチェック
       if (!event.target || !(event.target instanceof Element)) return;
@@ -104,7 +111,7 @@ export default defineContentScript({
       // 6. 対象elementかどうかをチェック
       if (!state.targetElements.includes(target)) {
         let matched = false;
-        for (const selector of state.serviceConfig.selectors) {
+        for (const selector of state.siteConfig.selectors) {
           try {
             if (target.matches?.(selector) || target.closest?.(selector)) {
               // 次回のために、見つかった要素をリストに追加
@@ -120,8 +127,8 @@ export default defineContentScript({
       }
 
       // デバッグ用: どのセレクタがマッチしたかを確認（重い処理なのでログが必要な時だけ有効に）
-      // if (state.serviceConfig.selectors) {
-      //   const matchingSelectors = state.serviceConfig.selectors.filter((selector: string) => {
+      // if (state.siteConfig.selectors) {
+      //   const matchingSelectors = state.siteConfig.selectors.filter((selector: string) => {
       //     try {
       //       return Array.from(document.querySelectorAll(selector)).includes(target);
       //     } catch (e) {
