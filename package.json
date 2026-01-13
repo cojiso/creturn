@@ -1,6 +1,6 @@
 {
   "name": "creturn",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "A Browser Plugin. Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during text conversion.",
   "type": "module",
   "scripts": {
