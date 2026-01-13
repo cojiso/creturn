@@ -4,59 +4,59 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "message": "cReturn - переключатель клавиши Enter + пользовательские конфиги сайтов",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.",
+    "message": "Enter для переносов строки, Ctrl+Enter для отправки на любом сайте. Поддерживаются пользовательские конфигурации. Предотвращает случайную отправку во время преобразования IME.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {
-    "message": "This domain is not supported.",
+    "message": "Этот домен не поддерживается.",
     "description": "Message shown when current domain is not supported"
   },
   "options": {
-    "message": "Settings",
+    "message": "Настройки",
     "description": "Label for settings button/link and options page title"
   },
   "config_jsonc_title": {
-    "message": "Configuration File",
+    "message": "Файл конфигурации",
     "description": "Title of configuration section in options page"
   },
   "config_jsonc_useDefaultStable": {
-    "message": "Use Default Configuration (Stable)",
+    "message": "Использовать конфигурацию по умолчанию (стабильная)",
     "description": "Option to use stable default configuration"
   },
   "config_jsonc_useDefaultLatest": {
-    "message": "Use Default Configuration (Latest)",
+    "message": "Использовать конфигурацию по умолчанию (последняя)",
     "description": "Option to use latest default configuration"
   },
   "config_jsonc_useGithub": {
-    "message": "Use GitHub Configuration",
+    "message": "Использовать конфигурацию GitHub",
     "description": "Option to load configuration from GitHub"
   },
   "config_jsonc_status_enterUrl": {
-    "message": "Please enter URL",
+    "message": "Введите URL",
     "description": "Prompt message to enter URL"
   },
   "config_jsonc_status_unsavedChanges": {
-    "message": "You have unsaved changes",
+    "message": "У вас есть несохраненные изменения",
     "description": "Warning message about unsaved changes"
   },
   "config_load_button": {
-    "message": "Load",
+    "message": "Загрузить",
     "description": "Button text to load configuration"
   },
   "config_load_status": {
-    "message": "Loading...",
+    "message": "Загрузка...",
     "description": "Loading indicator text"
   },
   "config_load_result_success": {
-    "message": "Settings applied",
+    "message": "Настройки применены",
     "description": "Success message after loading configuration"
   },
   "config_load_result_error": {
-    "message": "Error: $ERROR$",
+    "message": "Ошибка: $ERROR$",
     "description": "Error message when loading configuration fails",
     "placeholders": {
       "ERROR": {
@@ -66,31 +66,31 @@
     }
   },
   "config_reset_button": {
-    "message": "Reset to defaults",
+    "message": "Сбросить до значений по умолчанию",
     "description": "Button text to reset settings to default values"
   },
   "config_reset_dialogue": {
-    "message": "Reset all settings to their default values?",
+    "message": "Сбросить все настройки к значениям по умолчанию?",
     "description": "Confirmation dialog message for resetting settings"
   },
   "config_reset_result_success": {
-    "message": "Settings have been reset to default values",
+    "message": "Настройки сброшены до значений по умолчанию",
     "description": "Success message after resetting settings"
   },
   "config_reset_result_error": {
-    "message": "Failed to reset settings",
+    "message": "Не удалось сбросить настройки",
     "description": "Error message when resetting settings fails"
   },
   "site_title": {
-    "message": "Supported Sites",
+    "message": "Поддерживаемые сайты",
     "description": "Title of supported sites section"
   },
   "site_noSites": {
-    "message": "No sites configured.",
+    "message": "Сайты не настроены.",
     "description": "Message shown when no sites are configured"
   },
   "site_selector": {
-    "message": "Selectors: $SELECTORS$",
+    "message": "Селекторы: $SELECTORS$",
     "description": "CSS selector information for site configuration",
     "placeholders": {
       "SELECTORS": {
@@ -100,7 +100,7 @@
     }
   },
   "site_result_saved": {
-    "message": "Site settings saved",
+    "message": "Настройки сайта сохранены",
     "description": "Success message after saving site configuration"
   }
 }

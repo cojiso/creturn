@@ -4,59 +4,59 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "message": "cReturn - Enter Tuşu Değiştirme + Özel Site Yapılandırmaları",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.",
+    "message": "Satır atlama için Enter, herhangi bir sitede göndermek için Ctrl+Enter. Özel yapılandırmalar desteklenir. IME dönüştürme sırasında yanlışlıkla gönderimi önler.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {
-    "message": "This domain is not supported.",
+    "message": "Bu alan adı desteklenmiyor.",
     "description": "Message shown when current domain is not supported"
   },
   "options": {
-    "message": "Settings",
+    "message": "Ayarlar",
     "description": "Label for settings button/link and options page title"
   },
   "config_jsonc_title": {
-    "message": "Configuration File",
+    "message": "Yapılandırma Dosyası",
     "description": "Title of configuration section in options page"
   },
   "config_jsonc_useDefaultStable": {
-    "message": "Use Default Configuration (Stable)",
+    "message": "Varsayılan yapılandırmayı kullan (kararlı)",
     "description": "Option to use stable default configuration"
   },
   "config_jsonc_useDefaultLatest": {
-    "message": "Use Default Configuration (Latest)",
+    "message": "Varsayılan yapılandırmayı kullan (en yeni)",
     "description": "Option to use latest default configuration"
   },
   "config_jsonc_useGithub": {
-    "message": "Use GitHub Configuration",
+    "message": "GitHub yapılandırmasını kullan",
     "description": "Option to load configuration from GitHub"
   },
   "config_jsonc_status_enterUrl": {
-    "message": "Please enter URL",
+    "message": "Lütfen URL girin",
     "description": "Prompt message to enter URL"
   },
   "config_jsonc_status_unsavedChanges": {
-    "message": "You have unsaved changes",
+    "message": "Kaydedilmemiş değişiklikleriniz var",
     "description": "Warning message about unsaved changes"
   },
   "config_load_button": {
-    "message": "Load",
+    "message": "Yükle",
     "description": "Button text to load configuration"
   },
   "config_load_status": {
-    "message": "Loading...",
+    "message": "Yükleniyor...",
     "description": "Loading indicator text"
   },
   "config_load_result_success": {
-    "message": "Settings applied",
+    "message": "Ayarlar uygulandı",
     "description": "Success message after loading configuration"
   },
   "config_load_result_error": {
-    "message": "Error: $ERROR$",
+    "message": "Hata: $ERROR$",
     "description": "Error message when loading configuration fails",
     "placeholders": {
       "ERROR": {
@@ -66,31 +66,31 @@
     }
   },
   "config_reset_button": {
-    "message": "Reset to defaults",
+    "message": "Varsayılanlara sıfırla",
     "description": "Button text to reset settings to default values"
   },
   "config_reset_dialogue": {
-    "message": "Reset all settings to their default values?",
+    "message": "Tüm ayarları varsayılan değerlere sıfırlamak istiyor musunuz?",
     "description": "Confirmation dialog message for resetting settings"
   },
   "config_reset_result_success": {
-    "message": "Settings have been reset to default values",
+    "message": "Ayarlar varsayılan değerlere sıfırlandı",
     "description": "Success message after resetting settings"
   },
   "config_reset_result_error": {
-    "message": "Failed to reset settings",
+    "message": "Ayarlar sıfırlanamadı",
     "description": "Error message when resetting settings fails"
   },
   "site_title": {
-    "message": "Supported Sites",
+    "message": "Desteklenen Siteler",
     "description": "Title of supported sites section"
   },
   "site_noSites": {
-    "message": "No sites configured.",
+    "message": "Yapılandırılmış site yok.",
     "description": "Message shown when no sites are configured"
   },
   "site_selector": {
-    "message": "Selectors: $SELECTORS$",
+    "message": "Seçiciler: $SELECTORS$",
     "description": "CSS selector information for site configuration",
     "placeholders": {
       "SELECTORS": {
@@ -100,7 +100,7 @@
     }
   },
   "site_result_saved": {
-    "message": "Site settings saved",
+    "message": "Site ayarları kaydedildi",
     "description": "Success message after saving site configuration"
   }
 }

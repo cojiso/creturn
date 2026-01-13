@@ -4,59 +4,59 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "message": "cReturn - Enter कुंजी अदल-बदल + कस्टम साइट कॉन्फ़िगरेशन",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.",
+    "message": "लाइन ब्रेक के लिए Enter, किसी भी साइट पर भेजने के लिए Ctrl+Enter। कस्टम कॉन्फ़िगरेशन समर्थित हैं। IME रूपांतरण के दौरान गलती से भेजने से बचाता है।",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {
-    "message": "This domain is not supported.",
+    "message": "यह डोमेन समर्थित नहीं है।",
     "description": "Message shown when current domain is not supported"
   },
   "options": {
-    "message": "Settings",
+    "message": "सेटिंग्स",
     "description": "Label for settings button/link and options page title"
   },
   "config_jsonc_title": {
-    "message": "Configuration File",
+    "message": "कॉन्फ़िगरेशन फ़ाइल",
     "description": "Title of configuration section in options page"
   },
   "config_jsonc_useDefaultStable": {
-    "message": "Use Default Configuration (Stable)",
+    "message": "डिफ़ॉल्ट कॉन्फ़िगरेशन उपयोग करें (स्थिर)",
     "description": "Option to use stable default configuration"
   },
   "config_jsonc_useDefaultLatest": {
-    "message": "Use Default Configuration (Latest)",
+    "message": "डिफ़ॉल्ट कॉन्फ़िगरेशन उपयोग करें (नवीनतम)",
     "description": "Option to use latest default configuration"
   },
   "config_jsonc_useGithub": {
-    "message": "Use GitHub Configuration",
+    "message": "GitHub कॉन्फ़िगरेशन उपयोग करें",
     "description": "Option to load configuration from GitHub"
   },
   "config_jsonc_status_enterUrl": {
-    "message": "Please enter URL",
+    "message": "कृपया URL दर्ज करें",
     "description": "Prompt message to enter URL"
   },
   "config_jsonc_status_unsavedChanges": {
-    "message": "You have unsaved changes",
+    "message": "आपके पास सहेजे नहीं गए बदलाव हैं",
     "description": "Warning message about unsaved changes"
   },
   "config_load_button": {
-    "message": "Load",
+    "message": "लोड करें",
     "description": "Button text to load configuration"
   },
   "config_load_status": {
-    "message": "Loading...",
+    "message": "लोड हो रहा है...",
     "description": "Loading indicator text"
   },
   "config_load_result_success": {
-    "message": "Settings applied",
+    "message": "सेटिंग्स लागू किए गए",
     "description": "Success message after loading configuration"
   },
   "config_load_result_error": {
-    "message": "Error: $ERROR$",
+    "message": "त्रुटि: $ERROR$",
     "description": "Error message when loading configuration fails",
     "placeholders": {
       "ERROR": {
@@ -66,31 +66,31 @@
     }
   },
   "config_reset_button": {
-    "message": "Reset to defaults",
+    "message": "डिफ़ॉल्ट पर रीसेट करें",
     "description": "Button text to reset settings to default values"
   },
   "config_reset_dialogue": {
-    "message": "Reset all settings to their default values?",
+    "message": "क्या सभी सेटिंग्स को डिफ़ॉल्ट मानों पर रीसेट करें?",
     "description": "Confirmation dialog message for resetting settings"
   },
   "config_reset_result_success": {
-    "message": "Settings have been reset to default values",
+    "message": "सेटिंग्स को डिफ़ॉल्ट मानों पर रीसेट कर दिए गए",
     "description": "Success message after resetting settings"
   },
   "config_reset_result_error": {
-    "message": "Failed to reset settings",
+    "message": "सेटिंग्स रीसेट करने में विफल",
     "description": "Error message when resetting settings fails"
   },
   "site_title": {
-    "message": "Supported Sites",
+    "message": "समर्थित साइटें",
     "description": "Title of supported sites section"
   },
   "site_noSites": {
-    "message": "No sites configured.",
+    "message": "कोई साइट कॉन्फ़िगर नहीं है।",
     "description": "Message shown when no sites are configured"
   },
   "site_selector": {
-    "message": "Selectors: $SELECTORS$",
+    "message": "सेलेक्टर्स: $SELECTORS$",
     "description": "CSS selector information for site configuration",
     "placeholders": {
       "SELECTORS": {
@@ -100,7 +100,7 @@
     }
   },
   "site_result_saved": {
-    "message": "Site settings saved",
+    "message": "साइट सेटिंग्स सहेजी गईं",
     "description": "Success message after saving site configuration"
   }
 }

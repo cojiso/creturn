@@ -4,55 +4,55 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "message": "cReturn - Enter key switcher + Custom na konfigurasyon ng site",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.",
+    "message": "Enter para sa bagong linya, Ctrl+Enter para magpadala sa anumang site. Sinusuportahan ang custom na mga konfigurasyon. Pinipigilan ang aksidenteng pagpapadala habang nagko-convert ang IME.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {
-    "message": "This domain is not supported.",
+    "message": "Hindi suportado ang domain na ito.",
     "description": "Message shown when current domain is not supported"
   },
   "options": {
-    "message": "Settings",
+    "message": "Mga Setting",
     "description": "Label for settings button/link and options page title"
   },
   "config_jsonc_title": {
-    "message": "Configuration File",
+    "message": "File ng Konfigurasyon",
     "description": "Title of configuration section in options page"
   },
   "config_jsonc_useDefaultStable": {
-    "message": "Use Default Configuration (Stable)",
+    "message": "Gamitin ang default na konfigurasyon (stable)",
     "description": "Option to use stable default configuration"
   },
   "config_jsonc_useDefaultLatest": {
-    "message": "Use Default Configuration (Latest)",
+    "message": "Gamitin ang default na konfigurasyon (pinakabago)",
     "description": "Option to use latest default configuration"
   },
   "config_jsonc_useGithub": {
-    "message": "Use GitHub Configuration",
+    "message": "Gamitin ang konfigurasyon ng GitHub",
     "description": "Option to load configuration from GitHub"
   },
   "config_jsonc_status_enterUrl": {
-    "message": "Please enter URL",
+    "message": "Pakilagay ang URL",
     "description": "Prompt message to enter URL"
   },
   "config_jsonc_status_unsavedChanges": {
-    "message": "You have unsaved changes",
+    "message": "Mayroon kang hindi pa na-save na mga pagbabago",
     "description": "Warning message about unsaved changes"
   },
   "config_load_button": {
-    "message": "Load",
+    "message": "I-load",
     "description": "Button text to load configuration"
   },
   "config_load_status": {
-    "message": "Loading...",
+    "message": "Naglo-load...",
     "description": "Loading indicator text"
   },
   "config_load_result_success": {
-    "message": "Settings applied",
+    "message": "Naipatupad ang mga setting",
     "description": "Success message after loading configuration"
   },
   "config_load_result_error": {
@@ -66,31 +66,31 @@
     }
   },
   "config_reset_button": {
-    "message": "Reset to defaults",
+    "message": "I-reset sa mga default",
     "description": "Button text to reset settings to default values"
   },
   "config_reset_dialogue": {
-    "message": "Reset all settings to their default values?",
+    "message": "I-reset ang lahat ng setting sa kanilang default na halaga?",
     "description": "Confirmation dialog message for resetting settings"
   },
   "config_reset_result_success": {
-    "message": "Settings have been reset to default values",
+    "message": "Na-reset ang mga setting sa default na halaga",
     "description": "Success message after resetting settings"
   },
   "config_reset_result_error": {
-    "message": "Failed to reset settings",
+    "message": "Nabigong i-reset ang mga setting",
     "description": "Error message when resetting settings fails"
   },
   "site_title": {
-    "message": "Supported Sites",
+    "message": "Mga Sinusuportahang Site",
     "description": "Title of supported sites section"
   },
   "site_noSites": {
-    "message": "No sites configured.",
+    "message": "Walang naka-configure na site.",
     "description": "Message shown when no sites are configured"
   },
   "site_selector": {
-    "message": "Selectors: $SELECTORS$",
+    "message": "Mga Selector: $SELECTORS$",
     "description": "CSS selector information for site configuration",
     "placeholders": {
       "SELECTORS": {
@@ -100,7 +100,7 @@
     }
   },
   "site_result_saved": {
-    "message": "Site settings saved",
+    "message": "Na-save ang mga setting ng site",
     "description": "Success message after saving site configuration"
   }
 }
