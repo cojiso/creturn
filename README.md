@@ -153,6 +153,9 @@ Fast config file deployment without store approval:
 4. Manually submit ZIP file to Chrome Web Store
 5. Create GitHub Release manually
 
+## Supported Languages
+en, ja, bn, da, de, fil, hi, ko, ne, ru, tr, vi, zh_CN, zh_TW
+
 ## Troubleshooting
 
 If cReturn doesn't work:
@@ -170,67 +173,3 @@ If you encounter issues or have suggestions:
 ## License
 
 cReturn is released under the [MIT License](https://github.com/cojiso/creturn/blob/main/LICENSE).
-
-## Store Descriptions
-
-**Short Description (max 132　words):**
-```
-Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.
-```
-
-**Full Description:**
-```
-▍Features:
-- 12+ built-in sites & unlimited custom site additions
-- Load custom configuration files created on GitHub
-- Reliable prevention of accidental sends even in chat editing areas
-
-▍Core functionality:
-- Enter key = line breaks + character conversion confirmation
-- Ctrl+Enter (macOS: Command+Enter) = send message
-- One-click on/off toggle
-
-▍Supported sites:
-- ChatGPT, Claude, Gemini, Perplexity, Discord, Google Meet, and more
-- Full site list (config file):
-  https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc
-
-▍Custom configuration:
-1. Create JSONC site configuration file
-2. Upload to GitHub
-3. Register file URL in extension settings
-
-▍Issues or feature requests: GitHub repository
-https://github.com/cojiso/creturn
-```
-
-**短文説明:**
-```
-どんなサイトでも、Enterで改行、Ctrl+Enterで送信。GitHubでのカスタム設定に対応。漢字変換時の誤送信を防ぐ拡張機能です。
-```
-
-**説明文：**
-```
-▍特徴：
-- 標準12サイト + 好みのサイトを無制限に追加
-- GitHubに作成したカスタム設定ファイルの読込オプション
-- チャットの修正エリアの中でも、誤送信を確実に防止
-
-▍基本機能：
-- Enterキー = 改行・文字変換の確定  
-- Ctrl+Enter (macOS: Command+Enter) = メッセージの送信
-- ワンクリックでのオン/オフ切替
-
-▍対応サイト：
-- ChatGPT、Claude、Gemini、Perplexity、Discord、Google Meet等
-- 対応サイト一覧(設定ファイル):
-  https://github.com/cojiso/creturn/blob/main/public/creturn-config.jsonc
-
-▍カスタム設定の方法：
-1. JSONCファイルでサイト設定を作成
-2. GitHubへのアップロード  
-3. 設定画面にファイルのURLを登録
-
-▍不具合やご要望は GitHubリポジトリまで。
-https://github.com/cojiso/creturn
-```
