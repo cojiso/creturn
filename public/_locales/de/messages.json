@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter-Tasten-Umschaltung + Benutzerdefinierte Konfigurationen",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter für Zeilenumbrüche, Strg+Enter zum Senden auf jeder Website. Benutzerdefinierte Konfigurationen werden unterstützt. Verhindert versehentliches Senden während der IME-Konvertierung.",
+    "message": "Enter für Zeilenumbrüche, Strg+Enter zum Senden auf jeder Website. Benutzerdefinierte Whitelist wird unterstützt. Verhindert versehentliches Senden während der IME-Konvertierung.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter-tast-omskifter + brugerdefinerede webstedsindstillinger",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter for linjeskift, Ctrl+Enter for at sende på enhver side. Brugerdefinerede konfigurationer understøttes. Forhindrer utilsigtet afsendelse under IME-konvertering.",
+    "message": "Enter for linjeskift, Ctrl+Enter for at sende på enhver side. Brugerdefineret whitelist understøttes. Forhindrer utilsigtet afsendelse under IME-konvertering.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

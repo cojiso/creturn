@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.",
+    "message": "Enter for line breaks, Ctrl+Enter to send on any site. Custom Whitelist supported. Prevents accidental sends during conversion.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

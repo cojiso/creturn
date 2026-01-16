@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Trình chuyển phím Enter + cấu hình trang web tùy chỉnh",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter để xuống dòng, Ctrl+Enter để gửi trên mọi trang web. Hỗ trợ cấu hình tùy chỉnh. Ngăn gửi nhầm khi chuyển đổi IME.",
+    "message": "Enter để xuống dòng, Ctrl+Enter để gửi trên mọi trang web. Hỗ trợ danh sách trắng tùy chỉnh. Ngăn gửi nhầm khi chuyển đổi IME.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

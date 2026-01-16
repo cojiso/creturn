@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter Key Swapper + Custom Site Configs",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "どんなサイトでも、Enterで改行、Ctrl+Enterで送信。GitHubでのカスタム設定に対応。漢字変換時の誤送信を防ぐ拡張機能です。",
+    "message": "どんなサイトでも、Enterで改行、Ctrl+Enterで送信。GitHubでのカスタムホワイトリストに対応。漢字変換時の誤送信を防ぐ拡張機能です。",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

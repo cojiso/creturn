@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter key switcher + Custom na konfigurasyon ng site",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter para sa bagong linya, Ctrl+Enter para magpadala sa anumang site. Sinusuportahan ang custom na mga konfigurasyon. Pinipigilan ang aksidenteng pagpapadala habang nagko-convert ang IME.",
+    "message": "Enter para sa bagong linya, Ctrl+Enter para magpadala sa anumang site. Sinusuportahan ang custom na site whitelist. Pinipigilan ang aksidenteng pagpapadala habang nagko-convert ang IME.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

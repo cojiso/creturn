@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter कुञ्जी स्विचर + अनुकूल साइट कन्फिगहरू",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "लाइन ब्रेकका लागि Enter, कुनै पनि साइटमा पठाउन Ctrl+Enter। अनुकूल कन्फिगरेसन समर्थित छन्। IME रूपान्तरणका क्रममा गल्तीले पठिनु रोक्छ।",
+    "message": "लाइन ब्रेकका लागि Enter, कुनै पनि साइटमा पठाउन Ctrl+Enter। अनुकूल Whitelist समर्थित छन्। IME रूपान्तरणका क्रममा गल्तीले पठिनु रोक्छ।",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

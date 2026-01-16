@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter Tuşu Değiştirme + Özel Site Yapılandırmaları",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Satır atlama için Enter, herhangi bir sitede göndermek için Ctrl+Enter. Özel yapılandırmalar desteklenir. IME dönüştürme sırasında yanlışlıkla gönderimi önler.",
+    "message": "Satır atlama için Enter, herhangi bir sitede göndermek için Ctrl+Enter. Özel beyaz liste desteklenir. IME dönüştürme sırasında yanlışlıkla gönderimi önler.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

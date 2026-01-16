@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter कुंजी अदल-बदल + कस्टम साइट कॉन्फ़िगरेशन",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "लाइन ब्रेक के लिए Enter, किसी भी साइट पर भेजने के लिए Ctrl+Enter। कस्टम कॉन्फ़िगरेशन समर्थित हैं। IME रूपांतरण के दौरान गलती से भेजने से बचाता है।",
+    "message": "लाइन ब्रेक के लिए Enter, किसी भी साइट पर भेजने के लिए Ctrl+Enter। कस्टम व्हाइटलिस्ट समर्थित हैं। IME रूपांतरण के दौरान गलती से भेजने से बचाता है।",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

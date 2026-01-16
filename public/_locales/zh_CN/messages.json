@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - Enter 键切换 + 自定义网站配置",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter 换行，Ctrl+Enter 在任何网站上发送。支持自定义配置。可防止输入法转换时误发送。",
+    "message": "Enter 换行，Ctrl+Enter 在任何网站上发送。支持自定义白名单。可防止输入法转换时误发送。",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {

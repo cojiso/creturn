@@ -4,11 +4,11 @@
     "description": "Extension name"
   },
   "metadata_storeName": {
-    "message": "cReturn - переключатель клавиши Enter + пользовательские конфиги сайтов",
+    "message": "cReturn - Enter Key Switcher + Custom Site Whitelist",
     "description": "Extension name for Chrome Web Store"
   },
   "metadata_description": {
-    "message": "Enter для переносов строки, Ctrl+Enter для отправки на любом сайте. Поддерживаются пользовательские конфигурации. Предотвращает случайную отправку во время преобразования IME.",
+    "message": "Enter для переносов строки, Ctrl+Enter для отправки на любом сайте. Поддерживается пользовательский белый список. Предотвращает случайную отправку во время преобразования IME.",
     "description": "Extension description for Chrome Web Store"
   },
   "popup_unsupportedDomain": {
