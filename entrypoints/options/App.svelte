@@ -16,6 +16,12 @@
   const BASE_URL = "https://raw.githubusercontent.com/";
   const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.jsonc";
 
+  const STATUS_BASE = 'inline-block rounded px-2 py-1 text-xs';
+  const STATUS_DEFAULT = `${STATUS_BASE} text-[var(--text-secondary)]`;
+  const STATUS_SUCCESS = `${STATUS_BASE} bg-[rgba(15,157,88,0.1)] text-[var(--success-color)]`;
+  const STATUS_WARNING = `${STATUS_BASE} bg-[rgba(244,180,0,0.1)] text-[var(--warning-color)]`;
+  const STATUS_ERROR = `${STATUS_BASE} bg-[rgba(217,48,37,0.1)] text-[var(--error-color)]`;
+
   // State variables
   let currentSettings: any = {
     configUrl: BASE_URL + DEFAULT_LATEST_PATH,
@@ -25,9 +31,9 @@
   let configType = 'default-latest';
   let configUrl = '';
   let configStatus = '';
-  let configStatusClass = '';
+  let configStatusClass = STATUS_DEFAULT;
   let saveStatus = '';
-  let saveStatusClass = '';
+  let saveStatusClass = STATUS_DEFAULT;
   let sitesLoading = true;
   let sites: SitesData = {};
   const timeoutIds: Array<ReturnType<typeof setTimeout>> = [];
@@ -177,11 +183,11 @@
     await sitesStorage.setValue(currentSettings.sites);
 
     saveStatus = i18n.t('site_result_saved');
-    saveStatusClass = 'status success';
+    saveStatusClass = STATUS_SUCCESS;
 
     scheduleTimeout(() => {
       saveStatus = '';
-      saveStatusClass = 'status';
+      saveStatusClass = STATUS_DEFAULT;
     }, 1500);
   }
 
@@ -198,11 +204,11 @@
           loadSettings();
 
           saveStatus = i18n.t('config_reset_result_success');
-          saveStatusClass = 'status success';
+          saveStatusClass = STATUS_SUCCESS;
 
           scheduleTimeout(() => {
             saveStatus = '';
-            saveStatusClass = 'status';
+            saveStatusClass = STATUS_DEFAULT;
           }, 3000);
         } else {
           throw new Error(resetResult.message || 'Reset failed');
@@ -210,7 +216,7 @@
       } catch (error) {
         console.error('An error occurred during reset process:', error);
         saveStatus = i18n.t('config_reset_result_error');
-        saveStatusClass = 'status error';
+        saveStatusClass = STATUS_ERROR;
       }
     }
   }
@@ -223,12 +229,12 @@
 
     if (!urlPath) {
       configStatus = i18n.t('config_jsonc_status_enterUrl');
-      configStatusClass = 'status error';
+      configStatusClass = STATUS_ERROR;
       return;
     }
 
     configStatus = i18n.t('config_load_status');
-    configStatusClass = 'status';
+    configStatusClass = STATUS_DEFAULT;
 
     // GitHub URLを構築
     const fullUrl = BASE_URL + urlPath;
@@ -260,15 +266,15 @@
       displaySites(currentSettings.sites);
 
       configStatus = i18n.t('config_load_result_success');
-      configStatusClass = 'status success';
+      configStatusClass = STATUS_SUCCESS;
 
       saveStatus = '';
-      saveStatusClass = 'status';
+      saveStatusClass = STATUS_DEFAULT;
 
     } catch (error: any) {
       console.error('Configuration file loading error:', error);
       configStatus = i18n.t('config_load_result_error', [error.message]);
-      configStatusClass = 'status error';
+      configStatusClass = STATUS_ERROR;
     }
   }
 
@@ -301,11 +307,11 @@
         displaySites(currentSettings.sites);
 
         saveStatus = i18n.t('config_load_result_success');
-        saveStatusClass = 'status success';
+        saveStatusClass = STATUS_SUCCESS;
 
         scheduleTimeout(() => {
           saveStatus = '';
-          saveStatusClass = 'status';
+          saveStatusClass = STATUS_DEFAULT;
         }, 1500);
       } catch (error) {
         console.error('Local configuration loading error:', error);
@@ -339,11 +345,11 @@
           displaySites(currentSettings.sites);
 
           saveStatus = i18n.t('config_load_result_success');
-          saveStatusClass = 'status success';
+          saveStatusClass = STATUS_SUCCESS;
 
           scheduleTimeout(() => {
             saveStatus = '';
-            saveStatusClass = 'status';
+            saveStatusClass = STATUS_DEFAULT;
           }, 1500);
         } else {
           throw new Error('Failed to retrieve configuration file');
@@ -352,7 +358,7 @@
         console.error('Default-latest configuration loading error:', error);
         sitesLoading = false;
         saveStatus = i18n.t('config_load_result_error', [(error as any).message]);
-        saveStatusClass = 'status error';
+        saveStatusClass = STATUS_ERROR;
       }
     } else if (configType === 'github') {
       // default-latestのURLが設定されている場合はクリア
@@ -362,7 +368,7 @@
       }
 
       saveStatus = i18n.t('config_jsonc_status_enterUrl');
-      saveStatusClass = 'status warning';
+      saveStatusClass = STATUS_WARNING;
     }
   }
 
@@ -380,7 +386,7 @@
     }
 
     saveStatus = i18n.t('config_jsonc_status_unsavedChanges');
-    saveStatusClass = 'status warning';
+    saveStatusClass = STATUS_WARNING;
   }
 
   // 初期化
@@ -394,13 +400,13 @@
   });
 </script>
 
-<div class="container">
-  <h1>{i18n.t('metadata_name')} {i18n.t('options')}</h1>
+<div class="mx-auto max-w-[800px] p-5 text-sm leading-[21px] text-[var(--text-color)]">
+  <h1 class="mb-5 border-b border-[var(--border-color)] pb-2.5 text-2xl font-medium">{i18n.t('metadata_name')} {i18n.t('options')}</h1>
 
-  <section class="section">
-    <h2>{i18n.t('config_jsonc_title')}</h2>
-    <div class="config-type-selection">
-      <div class="radio-option">
+  <section class="mb-5 rounded-lg border border-[var(--border-color)] bg-[var(--section-bg)] px-5 py-4">
+    <h2 class="mb-3.5 text-lg font-medium">{i18n.t('config_jsonc_title')}</h2>
+    <div class="mb-4 flex flex-col gap-2.5">
+      <div class="flex items-center gap-2">
         <input
           type="radio"
           id="default-config"
@@ -410,7 +416,7 @@
         >
         <label for="default-config">{i18n.t('config_jsonc_useDefaultStable')}</label>
       </div>
-      <div class="radio-option">
+      <div class="flex items-center gap-2">
         <input
           type="radio"
           id="default-latest-config"
@@ -420,7 +426,7 @@
         >
         <label for="default-latest-config">{i18n.t('config_jsonc_useDefaultLatest')}</label>
       </div>
-      <div class="radio-option">
+      <div class="flex items-center gap-2">
         <input
           type="radio"
           id="github-config"
@@ -432,42 +438,49 @@
       </div>
     </div>
 
-    <div class="url-input-group">
-      <span class="url-prefix" class:disabled={configType !== 'github'}>{BASE_URL}</span>
+    <div class="mb-2.5 mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
+      <span
+        class="flex h-[34px] items-center whitespace-nowrap rounded border border-[var(--border-color)] bg-[var(--secondary-color)] px-2 font-mono text-[13px] leading-none text-[var(--text-secondary)] sm:rounded-l sm:rounded-r-none sm:border-r-0"
+        class:opacity-60={configType !== 'github'}
+        class:cursor-not-allowed={configType !== 'github'}
+      >
+        {BASE_URL}
+      </span>
       <input
         type="text"
         bind:value={configUrl}
         on:input={handleUrlChange}
         disabled={configType !== 'github'}
         placeholder="user/repo/raw/main/creturn-config.jsonc"
+        class="h-[34px] flex-1 rounded border border-[var(--border-color)] bg-transparent px-2 font-mono text-[13px] leading-none outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-none sm:border-x-0"
       >
       <button
-        class="btn primary"
+        class="h-[34px] w-full rounded border border-[var(--border-color)] bg-[var(--primary-color)] px-3 text-[13px] font-medium leading-none text-white transition-colors hover:bg-[var(--primary-hover)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:rounded-l-none sm:rounded-r sm:border-l-0"
         disabled={configType === 'default'}
         on:click={loadRemoteConfig}
       >
         {i18n.t('config_load_button')}
       </button>
     </div>
-    <div class="status-container">
+    <div class="mt-2.5">
       <span class={configStatusClass}>{configStatus}</span>
     </div>
   </section>
 
-  <section class="section">
-    <h2>{i18n.t('site_title')}</h2>
+  <section class="mb-5 rounded-lg border border-[var(--border-color)] bg-[var(--section-bg)] px-5 py-4">
+    <h2 class="mb-3.5 text-lg font-medium">{i18n.t('site_title')}</h2>
     {#if sitesLoading}
-      <div class="loading-indicator">{i18n.t('config_load_status')}</div>
+      <div class="py-2.5 text-center text-[var(--text-secondary)]">{i18n.t('config_load_status')}</div>
     {:else if Object.keys(sites).length === 0}
-      <p>{i18n.t('site_noSites')}</p>
+      <p class="text-[var(--text-secondary)]">{i18n.t('site_noSites')}</p>
     {:else}
-      <div class="sites-list">
+      <div class="mt-2.5">
         {#each Object.entries(sites) as [siteDomain, siteConfig]}
-          <div class="site-item">
-            <div class="site-info">
-              <div class="site-name">{siteConfig.name}</div>
-              <div class="site-domain">{siteDomain}</div>
-              <div class="site-selectors">{i18n.t('site_selector', [siteConfig.selectors.join(', ')])}</div>
+          <div class="flex items-center justify-between border-b border-[var(--border-color)] py-2.5 last:border-b-0">
+            <div class="flex flex-col">
+              <div class="font-medium">{siteConfig.name}</div>
+              <div class="text-xs text-[var(--text-secondary)]">{siteDomain}</div>
+              <div class="mt-1 text-xs text-[var(--text-secondary)]">{i18n.t('site_selector', [siteConfig.selectors.join(', ')])}</div>
             </div>
             <label class="toggle">
               <input
@@ -483,8 +496,13 @@
     {/if}
   </section>
 
-  <div class="footer">
-    <span class={saveStatusClass}>{saveStatus}</span>
-    <button class="btn secondary" on:click={resetSettings}>{i18n.t('config_reset_button')}</button>
+  <div class="mt-5 flex items-center justify-between border-t border-[var(--border-color)] pt-4">
+    <span class={`flex-1 pr-5 ${saveStatusClass}`}>{saveStatus}</span>
+    <button
+      class="min-w-[120px] rounded border border-[var(--border-color)] bg-[var(--secondary-color)] px-4 py-2 text-sm text-[var(--text-color)] transition-colors hover:bg-[var(--secondary-hover)]"
+      on:click={resetSettings}
+    >
+      {i18n.t('config_reset_button')}
+    </button>
   </div>
 </div>

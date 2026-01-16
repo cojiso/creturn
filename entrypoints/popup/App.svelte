@@ -101,19 +101,19 @@
   });
 </script>
 
-<div class="popup-container">
+<div class="flex h-full w-full flex-col text-sm leading-[21px] text-[var(--text-color)]">
   <!-- Domain display -->
-  <div class="domain-section">
-    <div class="site-domain-display">
-      <span class="site-domain">{domain}</span>
+  <div class="border-b border-[var(--border-color)] px-4 py-3 text-center">
+    <div class="flex items-center justify-center">
+      <span class="text-base font-medium">{domain}</span>
     </div>
   </div>
 
   <!-- Toggle button -->
-  <div class="toggle-section">
+  <div class="flex flex-1 items-center justify-center border-b border-[var(--border-color)] p-[30px]">
     {#if isSupported}
-      <div class="site-toggle-container">
-        <label class="toggle large-toggle">
+      <div>
+        <label class="toggle">
           <input 
             type="checkbox" 
             bind:checked={isEnabled}
@@ -123,8 +123,8 @@
         </label>
       </div>
     {:else}
-      <div class="site-not-supported">
-        <div class="not-supported-message">
+      <div>
+        <div class="text-center text-[var(--text-secondary)]">
           <p>{i18n.t('popup_unsupportedDomain')}</p>
         </div>
       </div>
@@ -132,10 +132,14 @@
   </div>
 
   <!-- Footer section -->
-  <div class="footer-section">
-    <div class="brand">{i18n.t('metadata_name')}</div>
-    <div class="controls">
-      <button class="btn options-btn" title={i18n.t('options')} on:click={openOptionsPage}>
+  <div class="flex items-center justify-between px-4 py-2">
+    <div class="text-base font-medium">{i18n.t('metadata_name')}</div>
+    <div class="flex items-center">
+      <button
+        class="inline-flex h-8 w-8 items-center justify-center rounded p-1 text-[var(--text-color)] transition-colors hover:bg-[rgba(0,0,0,0.05)]"
+        title={i18n.t('options')}
+        on:click={openOptionsPage}
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2" />
