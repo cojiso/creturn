@@ -136,7 +136,7 @@ Fast config file deployment without store approval:
     - Create GitHub Release draft with the ZIP file
 4. Setup requirements
     - Set [BPP_KEYS](https://github.com/PlasmoHQ/bpp#usage) secret in GitHub repository settings
-    - Go to: [Actions secrets and variables](https://github.com/cojiso/creturn/settings/secrets/actions)
+    - Set at [Actions secrets and variables](https://github.com/cojiso/creturn/settings/secrets/actions)
 
 #### Manual Release (Alternative):
 1. Update version in `package.json`
