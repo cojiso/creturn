@@ -5,6 +5,7 @@
 
 import { browser } from 'wxt/browser';
 import * as jsonc from 'jsonc-parser';
+import { configUrl as configUrlStorage, sites as sitesStorage, DEFAULT_CONFIG_URL } from './storage';
 
 // 設定ソースの種類を定義
 export const CONFIG_SOURCES = {
@@ -16,7 +17,7 @@ export const CONFIG_SOURCES = {
 // デフォルトの設定
 export const DEFAULT_CONFIG = {
   source: CONFIG_SOURCES.REMOTE_DEFAULT,
-  configUrl: "https://raw.githubusercontent.com/cojiso/creturn/main/public/creturn-config.jsonc",
+  configUrl: DEFAULT_CONFIG_URL,
   sites: {}
 };
 
@@ -44,16 +45,17 @@ export function getConfigSource(configUrl: string): string {
  * TODO: 2週間後にservices読み込みコードを削除、1ヶ月後にこの関数自体を削除
  */
 export async function ensureSitesKey(): Promise<void> {
-  const storage = await browser.storage.sync.get(['sites', 'services']);
+  const currentSites = await sitesStorage.getValue();
 
   // sites が既に存在すれば何もしない（早期リターン）
-  if (storage.sites && Object.keys(storage.sites).length > 0) {
+  if (currentSites && Object.keys(currentSites).length > 0) {
     return;
   }
 
-  // services から sites に移行
+  // services から sites に移行（レガシー対応）
+  const storage = await browser.storage.sync.get('services');
   if (storage.services && Object.keys(storage.services).length > 0) {
-    await browser.storage.sync.set({ sites: storage.services });
+    await sitesStorage.setValue(storage.services);
     await browser.storage.sync.remove('services');
   }
 }
@@ -168,16 +170,11 @@ export async function resetToDefaults(): Promise<{success: boolean, message: str
     await browser.storage.sync.clear();
 
     // デフォルト設定を取得（現在はリモートデフォルトを使用）
-    const sites = await loadRemoteDefaultConfig();
-
-    // 設定オブジェクト構築
-    const config = {
-      configUrl: DEFAULT_CONFIG.configUrl,
-      sites: sites
-    };
+    const newSites = await loadRemoteDefaultConfig();
 
     // 設定を保存
-    await browser.storage.sync.set(config);
+    await configUrlStorage.setValue(DEFAULT_CONFIG_URL);
+    await sitesStorage.setValue(newSites);
 
     return { success: true, message: '設定をリセットしました' };
   } catch (error) {

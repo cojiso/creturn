@@ -6,11 +6,13 @@
 
   import { findMatchingSite } from '~/lib/utils';
   import { ensureSitesKey } from '~/lib/config';
+  import { sites as sitesStorage } from '~/lib/storage';
+  import type { SiteConfig } from '~/lib/types';
 
   // State variables
   let currentTab: Tabs.Tab | null = null;
-  let currentSettings: any = null;
-  let currentSite: any = null;
+  let currentSites: Record<string, SiteConfig> = {};
+  let currentSite: SiteConfig | null = null;
   let domain = 'Loading...';
   let isSupported = false;
   let isEnabled = false;
@@ -29,33 +31,14 @@
   }
 
   /**
-   * 設定を読み込む
-   */
-  async function loadSettings(): Promise<any> {
-    try {
-      const data = await browser.storage.sync.get(null);
-      currentSettings = data;
-      return data;
-    } catch (error) {
-      console.error('Failed to load settings:', error);
-      return {};
-    }
-  }
-
-  /**
    * サイトごとの有効/無効を切り替え
    */
-  function toggleSiteEnabled() {
+  async function toggleSiteEnabled() {
     if (!currentSite || !currentTab?.url) return;
 
     const tabDomain = new URL(currentTab.url).hostname;
-
-    // ensureSitesKey()実行済みのため、sitesを直接取得
-    const sites = currentSettings.sites || {};
-    sites[tabDomain].enabled = isEnabled;
-
-    // sitesキーで保存
-    browser.storage.sync.set({ sites: sites });
+    currentSites[tabDomain].enabled = isEnabled;
+    await sitesStorage.setValue(currentSites);
   }
 
   /**
@@ -74,13 +57,13 @@
 
       // 現在のタブ情報を取得
       currentTab = await getCurrentTab();
-      
+
       if (!currentTab || !currentTab.url) {
         domain = 'Unknown domain';
         isSupported = false;
         return;
       }
-      
+
       // タブのURLからドメインを取得
       try {
         const url = new URL(currentTab.url);
@@ -90,15 +73,12 @@
         isSupported = false;
         return;
       }
-      
-      // 設定を読み込む
-      await loadSettings();
 
-      // ensureSitesKey()実行済みのため、sitesを直接取得
-      const sites = currentSettings.sites || {};
+      // 設定を読み込む
+      currentSites = await sitesStorage.getValue();
 
       // 現在のドメインに対応するサイト設定を検索（ワイルドカード対応）
-      currentSite = findMatchingSite(domain, sites);
+      currentSite = findMatchingSite(domain, currentSites);
 
       // サポートされているサイトかどうかで表示を切り替え
       if (currentSite) {
@@ -107,7 +87,7 @@
       } else {
         isSupported = false;
       }
-      
+
     } catch (error) {
       console.error('An error occurred during initialization:', error);
       domain = 'Error loading';

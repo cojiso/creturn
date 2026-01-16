@@ -1,21 +1,17 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { browser } from 'wxt/browser';
   import { i18n } from '#i18n';
   import {
     resetToDefaults,
-    loadConfig,
     loadLocalConfig,
     loadRemoteCustomConfig,
-    CONFIG_SOURCES,
     ensureSitesKey
   } from '~/lib/config';
   import type { SiteConfig } from '~/lib/types';
+  import { configUrl as configUrlStorage, sites as sitesStorage, DEFAULT_CONFIG_URL } from '~/lib/storage';
 
   // 型定義
-  interface SitesData {
-    [domain: string]: SiteConfig;
-  }
+  type SitesData = Record<string, SiteConfig>;
 
   const BASE_URL = "https://raw.githubusercontent.com/";
   const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.jsonc";
@@ -55,15 +51,17 @@
     try {
       await ensureSitesKey();
 
-      const api = (globalThis as any).browser || chrome;
-      if (!api?.storage) return;
+      const storedConfigUrl = await configUrlStorage.getValue();
+      const storedSites = await sitesStorage.getValue();
 
-      api.storage.sync.get(null, (data) => {
-      currentSettings = data || { configUrl: BASE_URL + DEFAULT_LATEST_PATH, sites: {} };
-      
+      currentSettings = {
+        configUrl: storedConfigUrl,
+        sites: storedSites
+      };
+
       // configUrlの値で設定タイプを判定
       configType = getConfigType(currentSettings.configUrl);
-      
+
       if (configType === "default") {
         configUrl = "";
       } else if (configType === "default-latest") {
@@ -76,7 +74,7 @@
           configUrl = fullUrl;
         }
       }
-      
+
       const sitesData = currentSettings.sites || {};
       if (Object.keys(sitesData).length === 0) {
         // サイト設定が空の場合は設定タイプに応じて自動ロード
@@ -86,7 +84,6 @@
         // サイト設定がある場合は表示
         displaySites(sitesData);
       }
-      });
     } catch (error) {
       console.error('Failed to load settings:', error);
     }
@@ -120,10 +117,10 @@
         currentSettings.sites = sitesData;
         currentSettings.configUrl = "";
 
-        // Chrome Storageに保存してからUIを更新
-        browser.storage.sync.set(currentSettings, () => {
-          displaySites(currentSettings.sites);
-        });
+        // ストレージに保存してからUIを更新
+        await configUrlStorage.setValue("");
+        await sitesStorage.setValue(currentSettings.sites);
+        displaySites(currentSettings.sites);
       } else if (configType === 'default-latest') {
         // リモート最新設定を読み込む
         const newSites = await loadRemoteCustomConfig(BASE_URL + DEFAULT_LATEST_PATH) as SitesData;
@@ -142,10 +139,9 @@
 
           currentSettings.sites = newSites;
 
-          // Chrome Storageに保存してからUIを更新
-          browser.storage.sync.set(currentSettings, () => {
-            displaySites(currentSettings.sites);
-          });
+          // ストレージに保存してからUIを更新
+          await sitesStorage.setValue(currentSettings.sites);
+          displaySites(currentSettings.sites);
         } else {
           throw new Error('Failed to retrieve configuration file');
         }
@@ -160,32 +156,26 @@
   /**
    * サイトの有効/無効状態を更新
    */
-  function updateSiteStatus(siteDomain: string, enabled: boolean) {
-    const sites = currentSettings.sites || {};
+  async function updateSiteStatus(siteDomain: string, enabled: boolean) {
+    const sitesData = currentSettings.sites || {};
 
-    if (!sites[siteDomain]) {
-      sites[siteDomain] = {} as SiteConfig;
+    if (!sitesData[siteDomain]) {
+      sitesData[siteDomain] = {} as SiteConfig;
     }
 
-    sites[siteDomain].enabled = enabled;
+    sitesData[siteDomain].enabled = enabled;
+    currentSettings.sites = sitesData;
 
-    // sitesキーで保存
-    currentSettings.sites = sites;
+    // ストレージに即時保存
+    await sitesStorage.setValue(currentSettings.sites);
 
-    // 現在の設定をすべてChrome Storageに即時保存
-    const api = (globalThis as any).browser || chrome;
-    if (!api?.storage) return;
+    saveStatus = i18n.t('site_result_saved');
+    saveStatusClass = 'status success';
 
-    api.storage.sync.set(currentSettings, () => {
-      saveStatus = i18n.t('site_result_saved');
-      saveStatusClass = 'status success';
-
-      // Clear message after a delay
-      setTimeout(() => {
-        saveStatus = '';
-        saveStatusClass = 'status';
-      }, 1500);
-    });
+    setTimeout(() => {
+      saveStatus = '';
+      saveStatusClass = 'status';
+    }, 1500);
   }
 
   /**
@@ -232,10 +222,10 @@
 
     configStatus = i18n.t('config_load_status');
     configStatusClass = 'status';
-    
+
     // GitHub URLを構築
     const fullUrl = BASE_URL + urlPath;
-    
+
     try {
       const newSites = await loadRemoteCustomConfig(fullUrl) as SitesData;
 
@@ -257,17 +247,16 @@
       currentSettings.sites = newSites;
       currentSettings.configUrl = fullUrl;
 
-      // Chrome Storageに保存してからUI を更新
+      // ストレージに保存してからUIを更新
+      await configUrlStorage.setValue(fullUrl);
+      await sitesStorage.setValue(currentSettings.sites);
+      displaySites(currentSettings.sites);
 
-      browser.storage.sync.set(currentSettings, () => {
-        displaySites(currentSettings.sites);
+      configStatus = i18n.t('config_load_result_success');
+      configStatusClass = 'status success';
 
-        configStatus = i18n.t('config_load_result_success');
-        configStatusClass = 'status success';
-
-        saveStatus = '';
-        saveStatusClass = 'status';
-      });
+      saveStatus = '';
+      saveStatusClass = 'status';
 
     } catch (error: any) {
       console.error('Configuration file loading error:', error);
@@ -282,7 +271,7 @@
   async function handleConfigTypeChange() {
     if (configType === 'default') {
       configUrl = "";
-      
+
       // ローカル設定を読み込む
       sitesLoading = true;
       try {
@@ -299,18 +288,18 @@
         currentSettings.sites = sitesData;
         currentSettings.configUrl = "";
 
-        // Chrome Storageに即時保存
+        // ストレージに即時保存
+        await configUrlStorage.setValue("");
+        await sitesStorage.setValue(currentSettings.sites);
+        displaySites(currentSettings.sites);
 
-        browser.storage.sync.set(currentSettings, () => {
-          displaySites(currentSettings.sites);
-          saveStatus = i18n.t('config_load_result_success');
-          saveStatusClass = 'status success';
+        saveStatus = i18n.t('config_load_result_success');
+        saveStatusClass = 'status success';
 
-          setTimeout(() => {
-            saveStatus = '';
-            saveStatusClass = 'status';
-          }, 1500);
-        });
+        setTimeout(() => {
+          saveStatus = '';
+          saveStatusClass = 'status';
+        }, 1500);
       } catch (error) {
         console.error('Local configuration loading error:', error);
       }
@@ -337,17 +326,18 @@
 
           currentSettings.sites = newSites;
 
-          // Chrome Storageに保存してからUIを更新
-          browser.storage.sync.set(currentSettings, () => {
-            displaySites(currentSettings.sites);
-            saveStatus = i18n.t('config_load_result_success');
-            saveStatusClass = 'status success';
+          // ストレージに保存してからUIを更新
+          await configUrlStorage.setValue(BASE_URL + DEFAULT_LATEST_PATH);
+          await sitesStorage.setValue(currentSettings.sites);
+          displaySites(currentSettings.sites);
 
-            setTimeout(() => {
-              saveStatus = '';
-              saveStatusClass = 'status';
-            }, 1500);
-          });
+          saveStatus = i18n.t('config_load_result_success');
+          saveStatusClass = 'status success';
+
+          setTimeout(() => {
+            saveStatus = '';
+            saveStatusClass = 'status';
+          }, 1500);
         } else {
           throw new Error('Failed to retrieve configuration file');
         }
@@ -430,20 +420,10 @@
   // オプション用のコンテキスト
   const optionsCtx = new OptionsContext();
 
-  // WXT スタイルの初期化 - ブラウザAPI待機
+  // 初期化
   async function initializeWXT(): Promise<void> {
-    if (optionsCtx.isInvalid) return; // コンテキストが無効な場合は終了
-
-    // ブラウザAPIが利用可能になるまで再帰的に待機
-    const api = (globalThis as any).browser || chrome;
-    if (typeof api === 'undefined' || !api?.storage) {
-      return new Promise<void>(resolve =>
-        optionsCtx.setTimeout(() => resolve(initializeWXT()), 10)
-      );
-    }
-
-    // 初期化実行
-    loadSettings();
+    if (optionsCtx.isInvalid) return;
+    await loadSettings();
   }
 
   // 即座に初期化開始

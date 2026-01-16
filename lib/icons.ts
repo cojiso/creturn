@@ -5,6 +5,7 @@
 
 import { browser } from 'wxt/browser';
 import { findMatchingSite } from './utils';
+import { sites as sitesStorage } from './storage';
 
 export const IconManager = {
   /**
@@ -15,8 +16,7 @@ export const IconManager = {
   async updateIcon(domain: string, tabId: number) {
     if (!domain || !tabId) return;
 
-    const storage = await browser.storage.sync.get('sites');
-    const sites = storage.sites || {};
+    const sites = await sitesStorage.getValue();
 
     // 現在のドメインに対応するサイト設定を見つける（ワイルドカード対応）
     const matchingSite = findMatchingSite(domain, sites);

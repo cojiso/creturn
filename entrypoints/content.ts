@@ -3,9 +3,9 @@
  * テキストエリアの検出、IME状態の監視、キーボードイベント処理を担当
  */
 
-import { browser } from 'wxt/browser';
 import type { SiteConfig } from '~/lib/types';
 import { ensureSitesKey } from '~/lib/config';
+import { sites as sitesStorage } from '~/lib/storage';
 
 // ローカル型定義
 interface CustomKeyboardEvent extends KeyboardEvent {
@@ -60,13 +60,10 @@ export default defineContentScript({
     async function loadSettings() {
       await ensureSitesKey();
 
-      const data = await browser.storage.sync.get('sites');
-
-      // ensureSitesKey()実行済みのため、sitesを直接取得
-      const sites = data.sites || {};
+      const sites = await sitesStorage.getValue();
 
       // 現在のドメインに対応するサイト設定を見つける（ワイルドカード対応）
-      state.siteConfig = findMatchingSite(state.currentDomain, sites as Record<string, SiteConfig>);
+      state.siteConfig = findMatchingSite(state.currentDomain, sites);
       if (!state.siteConfig?.selectors) return;
 
       state.enabled = state.siteConfig?.enabled !== false;
@@ -188,11 +185,9 @@ export default defineContentScript({
       }
     }
 
-    // chrome storage の変更を監視
-    browser.storage.onChanged.addListener((_, namespace) => {
-      if (namespace === 'sync') {
-        loadSettings();
-      }
+    // sites の変更を監視
+    sitesStorage.watch(() => {
+      loadSettings();
     });
 
     // init

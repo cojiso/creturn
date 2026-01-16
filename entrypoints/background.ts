@@ -4,8 +4,9 @@
  */
 
 import { browser } from 'wxt/browser';
-import { migrateDomainEnabledStates, loadConfig, DEFAULT_CONFIG, ensureSitesKey } from '~/lib/config';
+import { migrateDomainEnabledStates, loadConfig, ensureSitesKey } from '~/lib/config';
 import { IconManager } from '~/lib/icons';
+import { configUrl as configUrlStorage, sites as sitesStorage, DEFAULT_CONFIG_URL } from '~/lib/storage';
 
 export default defineBackground(() => {
   // 拡張機能のインストール時やアップデート時に実行
@@ -14,38 +15,32 @@ export default defineBackground(() => {
 
     if (reason === 'install') {
       // 初回インストール時はデフォルトのリモート設定を使用
-      const sites = await loadConfig(DEFAULT_CONFIG.configUrl);
-      const config = {
-        configUrl: DEFAULT_CONFIG.configUrl,
-        sites: sites
-      };
+      const newSites = await loadConfig(DEFAULT_CONFIG_URL);
+      const config = { configUrl: DEFAULT_CONFIG_URL, sites: newSites };
       const updatedConfig = await migrateDomainEnabledStates(config);
-      browser.storage.sync.set(updatedConfig);
+      await configUrlStorage.setValue(updatedConfig.configUrl);
+      await sitesStorage.setValue(updatedConfig.sites);
     }
-    
+
     if (reason === 'update') {
       try {
-        const syncStorage = await browser.storage.sync.get(null);
-        const configUrl = (syncStorage.configUrl as string) || DEFAULT_CONFIG.configUrl;
-        const sites = await loadConfig(configUrl);
-        const config = {
-          configUrl: configUrl,
-          sites: sites
-        };
-        const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
-        await browser.storage.sync.set(updatedConfig);
+        const currentConfigUrl = await configUrlStorage.getValue();
+        const currentSites = await sitesStorage.getValue();
+        const newSites = await loadConfig(currentConfigUrl);
+        const config = { configUrl: currentConfigUrl, sites: newSites };
+        const updatedConfig = await migrateDomainEnabledStates(config, { sites: currentSites });
+        await configUrlStorage.setValue(updatedConfig.configUrl);
+        await sitesStorage.setValue(updatedConfig.sites);
       } catch (error) {
         console.error('Failed to update configs:', error);
         // Fallback to default configs on error
         try {
-          const syncStorage = await browser.storage.sync.get(null);
-          const sites = await loadConfig(DEFAULT_CONFIG.configUrl);
-          const config = {
-            configUrl: DEFAULT_CONFIG.configUrl,
-            sites: sites
-          };
-          const updatedConfig = await migrateDomainEnabledStates(config, syncStorage);
-          await browser.storage.sync.set(updatedConfig);
+          const currentSites = await sitesStorage.getValue();
+          const newSites = await loadConfig(DEFAULT_CONFIG_URL);
+          const config = { configUrl: DEFAULT_CONFIG_URL, sites: newSites };
+          const updatedConfig = await migrateDomainEnabledStates(config, { sites: currentSites });
+          await configUrlStorage.setValue(updatedConfig.configUrl);
+          await sitesStorage.setValue(updatedConfig.sites);
         } catch (fallbackError) {
           console.error('Failed to apply fallback configs:', fallbackError);
         }
@@ -91,21 +86,16 @@ export default defineBackground(() => {
     }
   });
 
-  // chrome storage の更新をリッスンしてタブをサーチしてアイコンを更新
-  browser.storage.onChanged.addListener(async (changes, namespace) => {
-    if (namespace !== 'sync') return;
-
+  // sites の変更を監視してアイコンを更新
+  sitesStorage.watch(async () => {
     await ensureSitesKey();
 
-    Object.keys(changes).forEach(async (key) => {
-      if (key !== 'sites') return;
-      const tabs = await browser.tabs.query({ active: true, currentWindow: true });
-      tabs.forEach(async (tab) => {
-        if (!tab.url || !/^https?:\/\/.+\..+\/.+/.test(tab.url) || !tab.id) return;
-        const domain = new URL(tab.url).hostname;
-        if (!domain) return;
-        await IconManager.updateIcon(domain, tab.id);
-      });
-    });
+    const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    for (const tab of tabs) {
+      if (!tab.url || !/^https?:\/\/.+\..+\/.+/.test(tab.url) || !tab.id) continue;
+      const domain = new URL(tab.url).hostname;
+      if (!domain) continue;
+      await IconManager.updateIcon(domain, tab.id);
+    }
   });
 });
