@@ -12,12 +12,12 @@ config_jsonc_status_unsavedChanges: Du har ikke-gemte ændringer
 config_load_button: Indlæs
 config_load_status: Indlæser...
 config_load_result_success: Indstillinger anvendt
-config_load_result_error: "Fejl: {ERROR}"
+config_load_result_error: "Fejl: $1"
 config_reset_button: Nulstil til standardindstillinger
 config_reset_dialogue: Nulstil alle indstillinger til deres standardværdier?
 config_reset_result_success: Indstillinger er nulstillet til standardværdier
 config_reset_result_error: Kunne ikke nulstille indstillinger
 site_title: Understøttede websteder
 site_noSites: Ingen websteder konfigureret.
-site_selector: "Selektorer: {SELECTORS}"
+site_selector: "Selektorer: $1"
 site_result_saved: Webstedsindstillinger gemt

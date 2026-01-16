@@ -12,12 +12,12 @@ config_jsonc_status_unsavedChanges: Bạn có thay đổi chưa lưu
 config_load_button: Tải
 config_load_status: Đang tải...
 config_load_result_success: Đã áp dụng cài đặt
-config_load_result_error: "Lỗi: {ERROR}"
+config_load_result_error: "Lỗi: $1"
 config_reset_button: Đặt lại về mặc định
 config_reset_dialogue: Đặt lại tất cả cài đặt về giá trị mặc định?
 config_reset_result_success: Cài đặt đã được đặt lại về giá trị mặc định
 config_reset_result_error: Không thể đặt lại cài đặt
 site_title: Trang web được hỗ trợ
 site_noSites: Không có trang web nào được cấu hình.
-site_selector: "Bộ chọn: {SELECTORS}"
+site_selector: "Bộ chọn: $1"
 site_result_saved: Đã lưu cài đặt trang web

@@ -12,12 +12,12 @@ config_jsonc_status_unsavedChanges: Sie haben ungespeicherte Änderungen
 config_load_button: Laden
 config_load_status: Wird geladen...
 config_load_result_success: Einstellungen angewendet
-config_load_result_error: "Fehler: {ERROR}"
+config_load_result_error: "Fehler: $1"
 config_reset_button: Auf Standardwerte zurücksetzen
 config_reset_dialogue: Alle Einstellungen auf ihre Standardwerte zurücksetzen?
 config_reset_result_success: Einstellungen wurden auf Standardwerte zurückgesetzt
 config_reset_result_error: Zurücksetzen der Einstellungen fehlgeschlagen
 site_title: Unterstützte Websites
 site_noSites: Keine Websites konfiguriert.
-site_selector: "Selektoren: {SELECTORS}"
+site_selector: "Selektoren: $1"
 site_result_saved: Website-Einstellungen gespeichert

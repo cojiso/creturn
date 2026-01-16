@@ -12,12 +12,12 @@ config_jsonc_status_unsavedChanges: Kaydedilmemiş değişiklikleriniz var
 config_load_button: Yükle
 config_load_status: Yükleniyor...
 config_load_result_success: Ayarlar uygulandı
-config_load_result_error: "Hata: {ERROR}"
+config_load_result_error: "Hata: $1"
 config_reset_button: Varsayılanlara sıfırla
 config_reset_dialogue: Tüm ayarları varsayılan değerlere sıfırlamak istiyor musunuz?
 config_reset_result_success: Ayarlar varsayılan değerlere sıfırlandı
 config_reset_result_error: Ayarlar sıfırlanamadı
 site_title: Desteklenen Siteler
 site_noSites: Yapılandırılmış site yok.
-site_selector: "Seçiciler: {SELECTORS}"
+site_selector: "Seçiciler: $1"
 site_result_saved: Site ayarları kaydedildi

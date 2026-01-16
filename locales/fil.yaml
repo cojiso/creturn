@@ -12,12 +12,12 @@ config_jsonc_status_unsavedChanges: Mayroon kang hindi pa na-save na mga pagbaba
 config_load_button: I-load
 config_load_status: Naglo-load...
 config_load_result_success: Naipatupad ang mga setting
-config_load_result_error: "Error: {ERROR}"
+config_load_result_error: "Error: $1"
 config_reset_button: I-reset sa mga default
 config_reset_dialogue: I-reset ang lahat ng setting sa kanilang default na halaga?
 config_reset_result_success: Na-reset ang mga setting sa default na halaga
 config_reset_result_error: Nabigong i-reset ang mga setting
 site_title: Mga Sinusuportahang Site
 site_noSites: Walang naka-configure na site.
-site_selector: "Mga Selector: {SELECTORS}"
+site_selector: "Mga Selector: $1"
 site_result_saved: Na-save ang mga setting ng site

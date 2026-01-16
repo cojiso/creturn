@@ -271,7 +271,7 @@
 
     } catch (error: any) {
       console.error('Configuration file loading error:', error);
-      configStatus = i18n.t('config_load_result_error', { ERROR: error.message });
+      configStatus = i18n.t('config_load_result_error', [error.message]);
       configStatusClass = 'status error';
     }
   }
@@ -354,7 +354,7 @@
       } catch (error) {
         console.error('Default-latest configuration loading error:', error);
         sitesLoading = false;
-        saveStatus = i18n.t('config_load_result_error', { ERROR: (error as any).message });
+        saveStatus = i18n.t('config_load_result_error', [(error as any).message]);
         saveStatusClass = 'status error';
       }
     } else if (configType === 'github') {
@@ -536,7 +536,7 @@
             <div class="site-info">
               <div class="site-name">{siteConfig.name}</div>
               <div class="site-domain">{siteDomain}</div>
-              <div class="site-selectors">{i18n.t('site_selector', { SELECTORS: siteConfig.selectors.join(', ') })}</div>
+              <div class="site-selectors">{i18n.t('site_selector', [siteConfig.selectors.join(', ')])}</div>
             </div>
             <label class="toggle">
               <input

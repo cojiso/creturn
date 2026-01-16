@@ -12,12 +12,12 @@ config_jsonc_status_unsavedChanges: You have unsaved changes
 config_load_button: Load
 config_load_status: Loading...
 config_load_result_success: Settings applied
-config_load_result_error: "Error: {ERROR}"
+config_load_result_error: "Error: $1"
 config_reset_button: Reset to defaults
 config_reset_dialogue: Reset all settings to their default values?
 config_reset_result_success: Settings have been reset to default values
 config_reset_result_error: Failed to reset settings
 site_title: Supported Sites
 site_noSites: No sites configured.
-site_selector: "Selectors: {SELECTORS}"
+site_selector: "Selectors: $1"
 site_result_saved: Site settings saved

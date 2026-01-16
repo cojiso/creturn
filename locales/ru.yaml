@@ -12,12 +12,12 @@ config_jsonc_status_unsavedChanges: У вас есть несохраненны�
 config_load_button: Загрузить
 config_load_status: Загрузка...
 config_load_result_success: Настройки применены
-config_load_result_error: "Ошибка: {ERROR}"
+config_load_result_error: "Ошибка: $1"
 config_reset_button: Сбросить до значений по умолчанию
 config_reset_dialogue: Сбросить все настройки к значениям по умолчанию?
 config_reset_result_success: Настройки сброшены до значений по умолчанию
 config_reset_result_error: Не удалось сбросить настройки
 site_title: Поддерживаемые сайты
 site_noSites: Сайты не настроены.
-site_selector: "Селекторы: {SELECTORS}"
+site_selector: "Селекторы: $1"
 site_result_saved: Настройки сайта сохранены
