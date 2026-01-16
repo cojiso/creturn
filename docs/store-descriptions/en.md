@@ -1,9 +1,3 @@
-# Store Descriptions (EN)
-
-## Short Description (max 132 words)
-Enter for line breaks, Ctrl+Enter to send on any site. Custom configs supported. Prevents accidental sends during conversion.
-
-## Full Description
 ▍Features:
 - 12+ built-in sites & unlimited custom site additions
 - Load custom configuration files created on GitHub

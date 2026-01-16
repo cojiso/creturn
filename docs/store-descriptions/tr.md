@@ -1,9 +1,3 @@
-# Store Descriptions (TR)
-
-## Kısa Açıklama (en fazla 132 kelime)
-Satır atlama için Enter, herhangi bir sitede göndermek için Ctrl+Enter. Özel yapılandırmalar desteklenir. IME dönüştürme sırasında yanlışlıkla gönderimi önler.
-
-## Tam Açıklama
 ▍Özellikler:
 - 12+ yerleşik site ve sınırsız özel site ekleme
 - GitHub'da oluşturulan özel yapılandırma dosyalarını yükleme

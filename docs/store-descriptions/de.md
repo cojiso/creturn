@@ -1,9 +1,3 @@
-# Store Descriptions (DE)
-
-## Kurzbeschreibung (max. 132 Wörter)
-Enter für Zeilenumbrüche, Strg+Enter zum Senden auf jeder Website. Benutzerdefinierte Konfigurationen werden unterstützt. Verhindert versehentliches Senden während der IME-Konvertierung.
-
-## Vollständige Beschreibung
 ▍Funktionen:
 - 12+ integrierte Websites und unbegrenzte benutzerdefinierte Ergänzungen
 - Benutzerdefinierte Konfigurationsdateien von GitHub laden

@@ -1,9 +1,3 @@
-# Store Descriptions (FIL)
-
-## Maikling Paglalarawan (max 132 words)
-Enter para sa bagong linya, Ctrl+Enter para magpadala sa anumang site. Sinusuportahan ang custom na mga konfigurasyon. Pinipigilan ang aksidenteng pagpapadala habang nagko-convert ang IME.
-
-## Buong Paglalarawan
 ▍Mga tampok:
 - 12+ built-in na site at walang limitasyong custom na dagdag
 - I-load ang custom na configuration files na ginawa sa GitHub

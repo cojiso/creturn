@@ -1,9 +1,3 @@
-# Store Descriptions (VI)
-
-## Mô tả ngắn (tối đa 132 từ)
-Enter để xuống dòng, Ctrl+Enter để gửi trên mọi trang web. Hỗ trợ cấu hình tùy chỉnh. Ngăn gửi nhầm khi chuyển đổi IME.
-
-## Mô tả đầy đủ
 ▍Tính năng:
 - 12+ trang web tích hợp và thêm trang web tùy chỉnh không giới hạn
 - Tải các tệp cấu hình tùy chỉnh tạo trên GitHub

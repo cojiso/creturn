@@ -1,9 +1,3 @@
-# Store Descriptions (DA)
-
-## Kort beskrivelse (maks. 132 ord)
-Enter til linjeskift, Ctrl+Enter for at sende på enhver side. Brugerdefinerede konfigurationer understøttes. Forhindrer utilsigtet afsendelse under IME-konvertering.
-
-## Fuldt beskrivelser
 ▍Funktioner:
 - 12+ indbyggede websteder og ubegrænsede brugerdefinerede tilføjelser
 - Indlæs brugerdefinerede konfigurationsfiler oprettet på GitHub
