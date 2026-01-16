@@ -2,7 +2,7 @@ import { defineConfig } from 'wxt';
 
 export default defineConfig({
   extensionApi: 'chrome',
-  modules: ['@wxt-dev/module-svelte'],
+  modules: ['@wxt-dev/module-svelte', '@wxt-dev/i18n/module'],
   manifest: {
     name: '__MSG_metadata_storeName__',
     description: '__MSG_metadata_description__',

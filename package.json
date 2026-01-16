@@ -21,6 +21,7 @@
     "wxt": "^0.19.9"
   },
   "dependencies": {
+    "@wxt-dev/i18n": "^0.2.4",
     "jsonc-parser": "^3.3.1"
   }
 }

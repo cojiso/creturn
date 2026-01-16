@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter 换行，Ctrl+Enter 在任何网站上发送。支持自定义白名单。可防止输入法转换时误发送。
+popup_unsupportedDomain: 该域名不受支持。
+options: 设置
+config_jsonc_title: 配置文件
+config_jsonc_useDefaultStable: 使用默认配置（稳定版）
+config_jsonc_useDefaultLatest: 使用默认配置（最新版）
+config_jsonc_useGithub: 使用 GitHub 配置
+config_jsonc_status_enterUrl: 请输入 URL
+config_jsonc_status_unsavedChanges: 有未保存的更改
+config_load_button: 加载
+config_load_status: 加载中...
+config_load_result_success: 设置已应用
+config_load_result_error: "错误：{ERROR}"
+config_reset_button: 恢复默认设置
+config_reset_dialogue: 将所有设置恢复为默认值？
+config_reset_result_success: 设置已恢复为默认值
+config_reset_result_error: 恢复设置失败
+site_title: 支持的网站
+site_noSites: 未配置任何网站。
+site_selector: "选择器：{SELECTORS}"
+site_result_saved: 网站设置已保存

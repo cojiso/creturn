@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Satır atlama için Enter, herhangi bir sitede göndermek için Ctrl+Enter. Özel beyaz liste desteklenir. IME dönüştürme sırasında yanlışlıkla gönderimi önler.
+popup_unsupportedDomain: Bu alan adı desteklenmiyor.
+options: Ayarlar
+config_jsonc_title: Yapılandırma Dosyası
+config_jsonc_useDefaultStable: Varsayılan yapılandırmayı kullan (kararlı)
+config_jsonc_useDefaultLatest: Varsayılan yapılandırmayı kullan (en yeni)
+config_jsonc_useGithub: GitHub yapılandırmasını kullan
+config_jsonc_status_enterUrl: Lütfen URL girin
+config_jsonc_status_unsavedChanges: Kaydedilmemiş değişiklikleriniz var
+config_load_button: Yükle
+config_load_status: Yükleniyor...
+config_load_result_success: Ayarlar uygulandı
+config_load_result_error: "Hata: {ERROR}"
+config_reset_button: Varsayılanlara sıfırla
+config_reset_dialogue: Tüm ayarları varsayılan değerlere sıfırlamak istiyor musunuz?
+config_reset_result_success: Ayarlar varsayılan değerlere sıfırlandı
+config_reset_result_error: Ayarlar sıfırlanamadı
+site_title: Desteklenen Siteler
+site_noSites: Yapılandırılmış site yok.
+site_selector: "Seçiciler: {SELECTORS}"
+site_result_saved: Site ayarları kaydedildi

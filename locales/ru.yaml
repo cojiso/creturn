@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter для переносов строки, Ctrl+Enter для отправки на любом сайте. Поддерживается пользовательский белый список. Предотвращает случайную отправку во время преобразования IME.
+popup_unsupportedDomain: Этот домен не поддерживается.
+options: Настройки
+config_jsonc_title: Файл конфигурации
+config_jsonc_useDefaultStable: Использовать конфигурацию по умолчанию (стабильная)
+config_jsonc_useDefaultLatest: Использовать конфигурацию по умолчанию (последняя)
+config_jsonc_useGithub: Использовать конфигурацию GitHub
+config_jsonc_status_enterUrl: Введите URL
+config_jsonc_status_unsavedChanges: У вас есть несохраненные изменения
+config_load_button: Загрузить
+config_load_status: Загрузка...
+config_load_result_success: Настройки применены
+config_load_result_error: "Ошибка: {ERROR}"
+config_reset_button: Сбросить до значений по умолчанию
+config_reset_dialogue: Сбросить все настройки к значениям по умолчанию?
+config_reset_result_success: Настройки сброшены до значений по умолчанию
+config_reset_result_error: Не удалось сбросить настройки
+site_title: Поддерживаемые сайты
+site_noSites: Сайты не настроены.
+site_selector: "Селекторы: {SELECTORS}"
+site_result_saved: Настройки сайта сохранены

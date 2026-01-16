@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter 換行，Ctrl+Enter 在任何網站上送出。支援自訂白名單。可避免輸入法轉換時誤送。
+popup_unsupportedDomain: 此網域不受支援。
+options: 設定
+config_jsonc_title: 設定檔
+config_jsonc_useDefaultStable: 使用預設設定（穩定版）
+config_jsonc_useDefaultLatest: 使用預設設定（最新版）
+config_jsonc_useGithub: 使用 GitHub 設定
+config_jsonc_status_enterUrl: 請輸入 URL
+config_jsonc_status_unsavedChanges: 你有未儲存的變更
+config_load_button: 載入
+config_load_status: 載入中...
+config_load_result_success: 設定已套用
+config_load_result_error: "錯誤：{ERROR}"
+config_reset_button: 重設為預設值
+config_reset_dialogue: 要將所有設定重設為預設值嗎？
+config_reset_result_success: 設定已重設為預設值
+config_reset_result_error: 重設設定失敗
+site_title: 支援的網站
+site_noSites: 未設定任何網站。
+site_selector: "選擇器：{SELECTORS}"
+site_result_saved: 網站設定已儲存

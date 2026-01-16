@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter để xuống dòng, Ctrl+Enter để gửi trên mọi trang web. Hỗ trợ danh sách trắng tùy chỉnh. Ngăn gửi nhầm khi chuyển đổi IME.
+popup_unsupportedDomain: Tên miền này không được hỗ trợ.
+options: Cài đặt
+config_jsonc_title: Tệp cấu hình
+config_jsonc_useDefaultStable: Dùng cấu hình mặc định (ổn định)
+config_jsonc_useDefaultLatest: Dùng cấu hình mặc định (mới nhất)
+config_jsonc_useGithub: Dùng cấu hình GitHub
+config_jsonc_status_enterUrl: Vui lòng nhập URL
+config_jsonc_status_unsavedChanges: Bạn có thay đổi chưa lưu
+config_load_button: Tải
+config_load_status: Đang tải...
+config_load_result_success: Đã áp dụng cài đặt
+config_load_result_error: "Lỗi: {ERROR}"
+config_reset_button: Đặt lại về mặc định
+config_reset_dialogue: Đặt lại tất cả cài đặt về giá trị mặc định?
+config_reset_result_success: Cài đặt đã được đặt lại về giá trị mặc định
+config_reset_result_error: Không thể đặt lại cài đặt
+site_title: Trang web được hỗ trợ
+site_noSites: Không có trang web nào được cấu hình.
+site_selector: "Bộ chọn: {SELECTORS}"
+site_result_saved: Đã lưu cài đặt trang web

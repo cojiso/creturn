@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter para sa bagong linya, Ctrl+Enter para magpadala sa anumang site. Sinusuportahan ang custom na site whitelist. Pinipigilan ang aksidenteng pagpapadala habang nagko-convert ang IME.
+popup_unsupportedDomain: Hindi suportado ang domain na ito.
+options: Mga Setting
+config_jsonc_title: File ng Konfigurasyon
+config_jsonc_useDefaultStable: Gamitin ang default na konfigurasyon (stable)
+config_jsonc_useDefaultLatest: Gamitin ang default na konfigurasyon (pinakabago)
+config_jsonc_useGithub: Gamitin ang konfigurasyon ng GitHub
+config_jsonc_status_enterUrl: Pakilagay ang URL
+config_jsonc_status_unsavedChanges: Mayroon kang hindi pa na-save na mga pagbabago
+config_load_button: I-load
+config_load_status: Naglo-load...
+config_load_result_success: Naipatupad ang mga setting
+config_load_result_error: "Error: {ERROR}"
+config_reset_button: I-reset sa mga default
+config_reset_dialogue: I-reset ang lahat ng setting sa kanilang default na halaga?
+config_reset_result_success: Na-reset ang mga setting sa default na halaga
+config_reset_result_error: Nabigong i-reset ang mga setting
+site_title: Mga Sinusuportahang Site
+site_noSites: Walang naka-configure na site.
+site_selector: "Mga Selector: {SELECTORS}"
+site_result_saved: Na-save ang mga setting ng site

@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter for line breaks, Ctrl+Enter to send on any site. Custom Whitelist supported. Prevents accidental sends during conversion.
+popup_unsupportedDomain: This domain is not supported.
+options: Settings
+config_jsonc_title: Configuration File
+config_jsonc_useDefaultStable: Use Default Configuration (Stable)
+config_jsonc_useDefaultLatest: Use Default Configuration (Latest)
+config_jsonc_useGithub: Use GitHub Configuration
+config_jsonc_status_enterUrl: Please enter URL
+config_jsonc_status_unsavedChanges: You have unsaved changes
+config_load_button: Load
+config_load_status: Loading...
+config_load_result_success: Settings applied
+config_load_result_error: "Error: {ERROR}"
+config_reset_button: Reset to defaults
+config_reset_dialogue: Reset all settings to their default values?
+config_reset_result_success: Settings have been reset to default values
+config_reset_result_error: Failed to reset settings
+site_title: Supported Sites
+site_noSites: No sites configured.
+site_selector: "Selectors: {SELECTORS}"
+site_result_saved: Site settings saved

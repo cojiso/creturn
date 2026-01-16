@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter for linjeskift, Ctrl+Enter for at sende på enhver side. Brugerdefineret whitelist understøttes. Forhindrer utilsigtet afsendelse under IME-konvertering.
+popup_unsupportedDomain: Dette domæne understøttes ikke.
+options: Indstillinger
+config_jsonc_title: Konfigurationsfil
+config_jsonc_useDefaultStable: Brug standardkonfiguration (stabil)
+config_jsonc_useDefaultLatest: Brug standardkonfiguration (seneste)
+config_jsonc_useGithub: Brug GitHub-konfiguration
+config_jsonc_status_enterUrl: Indtast URL
+config_jsonc_status_unsavedChanges: Du har ikke-gemte ændringer
+config_load_button: Indlæs
+config_load_status: Indlæser...
+config_load_result_success: Indstillinger anvendt
+config_load_result_error: "Fejl: {ERROR}"
+config_reset_button: Nulstil til standardindstillinger
+config_reset_dialogue: Nulstil alle indstillinger til deres standardværdier?
+config_reset_result_success: Indstillinger er nulstillet til standardværdier
+config_reset_result_error: Kunne ikke nulstille indstillinger
+site_title: Understøttede websteder
+site_noSites: Ingen websteder konfigureret.
+site_selector: "Selektorer: {SELECTORS}"
+site_result_saved: Webstedsindstillinger gemt

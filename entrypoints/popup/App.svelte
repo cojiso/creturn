@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { browser } from 'wxt/browser';
   import type { Tabs } from 'wxt/browser';
+  import { i18n } from '#i18n';
 
   import { findMatchingSite } from '~/lib/utils';
   import { ensureSitesKey } from '~/lib/config';
@@ -13,26 +14,6 @@
   let domain = 'Loading...';
   let isSupported = false;
   let isEnabled = false;
-
-  // I18n messages - デフォルト値を設定
-  let extensionName = 'cReturn';
-  let unsupportedMessage = 'This site is not supported';
-  let settingsTitle = 'Settings';
-
-  /**
-   * Initialize text using i18n
-   */
-  function initializeI18n() {
-    try {
-      if (chrome?.i18n) {
-        extensionName = browser.i18n.getMessage('metadata_name');
-        unsupportedMessage = browser.i18n.getMessage('popup_unsupportedDomain');
-        settingsTitle = browser.i18n.getMessage('options');
-      }
-    } catch (error) {
-      console.warn('i18n initialization failed:', error);
-    }
-  }
 
   /**
    * 現在のタブの情報を取得
@@ -90,9 +71,6 @@
   async function initializeUI() {
     try {
       await ensureSitesKey();
-
-      // i18nの初期化
-      initializeI18n();
 
       // 現在のタブ情報を取得
       currentTab = await getCurrentTab();
@@ -237,7 +215,7 @@
     {:else}
       <div class="site-not-supported">
         <div class="not-supported-message">
-          <p>{unsupportedMessage}</p>
+          <p>{i18n.t('popup_unsupportedDomain')}</p>
         </div>
       </div>
     {/if}
@@ -245,9 +223,9 @@
 
   <!-- Footer section -->
   <div class="footer-section">
-    <div class="brand">{extensionName}</div>
+    <div class="brand">{i18n.t('metadata_name')}</div>
     <div class="controls">
-      <button class="btn options-btn" title={settingsTitle} on:click={openOptionsPage}>
+      <button class="btn options-btn" title={i18n.t('options')} on:click={openOptionsPage}>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2" />

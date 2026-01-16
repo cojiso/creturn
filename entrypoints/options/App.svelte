@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { browser } from 'wxt/browser';
+  import { i18n } from '#i18n';
   import {
     resetToDefaults,
     loadConfig,
@@ -24,7 +25,7 @@
     configUrl: BASE_URL + DEFAULT_LATEST_PATH,
     sites: {}
   };
-  
+
   let configType = 'default-latest';
   let configUrl = '';
   let configStatus = '';
@@ -33,68 +34,6 @@
   let saveStatusClass = '';
   let sitesLoading = true;
   let sites: SitesData = {};
-
-  // I18n messages
-  let extensionName = '';
-  let options = '';
-  let messages: any = {};
-
-  /**
-   * Initialize internationalization
-   */
-  function initializeI18n() {
-    try {
-      extensionName = browser.i18n.getMessage('metadata_name');
-      options = browser.i18n.getMessage('options');
-
-      // Initialize all i18n messages
-      messages = {
-        configFile: browser.i18n.getMessage('config_jsonc_title'),
-        useDefaultConfig: browser.i18n.getMessage('config_jsonc_useDefaultStable'),
-        useDefaultLatestConfig: browser.i18n.getMessage('config_jsonc_useDefaultLatest'),
-        useGithubConfig: browser.i18n.getMessage('config_jsonc_useGithub'),
-        load: browser.i18n.getMessage('config_load_button'),
-        supportedServices: browser.i18n.getMessage('site_title'),
-        loading: browser.i18n.getMessage('config_load_status'),
-        resetToDefaults: browser.i18n.getMessage('config_reset_button'),
-        noServices: browser.i18n.getMessage('site_noSites'),
-        selector: browser.i18n.getMessage('site_selector'),
-        settingsSaved: browser.i18n.getMessage('site_result_saved'),
-        confirmReset: browser.i18n.getMessage('config_reset_dialogue'),
-        settingsResetSuccess: browser.i18n.getMessage('config_reset_result_success'),
-        settingsResetError: browser.i18n.getMessage('config_reset_result_error'),
-        enterUrl: browser.i18n.getMessage('config_jsonc_status_enterUrl'),
-        settingsLoaded: browser.i18n.getMessage('config_load_result_success'),
-        loadingError: browser.i18n.getMessage('config_load_result_error'),
-        unsavedChanges: browser.i18n.getMessage('config_jsonc_status_unsavedChanges')
-      };
-    } catch (error) {
-      console.warn('i18n initialization failed:', error);
-      // Set fallback values
-      extensionName = 'cReturn';
-      options = 'Options';
-      messages = {
-        configFile: 'Config File',
-        useDefaultConfig: 'Use Default Config',
-        useDefaultLatestConfig: 'Use Default Latest Config',
-        useGithubConfig: 'Use GitHub Config',
-        load: 'Load',
-        supportedServices: 'Supported Services',
-        loading: 'Loading...',
-        resetToDefaults: 'Reset to Defaults',
-        noServices: 'No Services',
-        selector: 'Selector: $SELECTORS$',
-        settingsSaved: 'Settings Saved',
-        confirmReset: 'Confirm Reset',
-        settingsResetSuccess: 'Settings Reset Successfully',
-        settingsResetError: 'Settings Reset Error',
-        enterUrl: 'Please enter URL',
-        settingsLoaded: 'Settings Loaded',
-        loadingError: 'Loading Error: {0}',
-        unsavedChanges: 'Unsaved Changes'
-      };
-    }
-  }
 
   /**
    * configUrlの値から設定タイプを判定する
@@ -238,7 +177,7 @@
     if (!api?.storage) return;
 
     api.storage.sync.set(currentSettings, () => {
-      saveStatus = messages.settingsSaved;
+      saveStatus = i18n.t('site_result_saved');
       saveStatusClass = 'status success';
 
       // Clear message after a delay
@@ -253,17 +192,17 @@
    * 設定をデフォルト値にリセット
    */
   async function resetSettings() {
-    if (confirm(messages.confirmReset)) {
+    if (confirm(i18n.t('config_reset_dialogue'))) {
       try {
         const resetResult = await resetToDefaults();
-        
+
         if (resetResult.success) {
           // 設定を再読み込み
           loadSettings();
-          
-          saveStatus = messages.settingsResetSuccess;
+
+          saveStatus = i18n.t('config_reset_result_success');
           saveStatusClass = 'status success';
-          
+
           setTimeout(() => {
             saveStatus = '';
             saveStatusClass = 'status';
@@ -273,7 +212,7 @@
         }
       } catch (error) {
         console.error('An error occurred during reset process:', error);
-        saveStatus = messages.settingsResetError;
+        saveStatus = i18n.t('config_reset_result_error');
         saveStatusClass = 'status error';
       }
     }
@@ -284,14 +223,14 @@
    */
   async function loadRemoteConfig() {
     let urlPath = configUrl;
-    
+
     if (!urlPath) {
-      configStatus = messages.enterUrl;
+      configStatus = i18n.t('config_jsonc_status_enterUrl');
       configStatusClass = 'status error';
       return;
     }
-    
-    configStatus = messages.loading;
+
+    configStatus = i18n.t('config_load_status');
     configStatusClass = 'status';
     
     // GitHub URLを構築
@@ -323,16 +262,16 @@
       browser.storage.sync.set(currentSettings, () => {
         displaySites(currentSettings.sites);
 
-        configStatus = messages.settingsLoaded;
+        configStatus = i18n.t('config_load_result_success');
         configStatusClass = 'status success';
 
         saveStatus = '';
         saveStatusClass = 'status';
       });
-      
+
     } catch (error: any) {
       console.error('Configuration file loading error:', error);
-      configStatus = browser.i18n.getMessage('config_load_result_error', [error.message]);
+      configStatus = i18n.t('config_load_result_error', { ERROR: error.message });
       configStatusClass = 'status error';
     }
   }
@@ -364,7 +303,7 @@
 
         browser.storage.sync.set(currentSettings, () => {
           displaySites(currentSettings.sites);
-          saveStatus = messages.settingsLoaded;
+          saveStatus = i18n.t('config_load_result_success');
           saveStatusClass = 'status success';
 
           setTimeout(() => {
@@ -378,7 +317,7 @@
     } else if (configType === 'default-latest') {
       currentSettings.configUrl = BASE_URL + DEFAULT_LATEST_PATH;
       configUrl = "";
-      
+
       // default-latestの場合も自動でリモート設定をロード
       sitesLoading = true;
       try {
@@ -401,7 +340,7 @@
           // Chrome Storageに保存してからUIを更新
           browser.storage.sync.set(currentSettings, () => {
             displaySites(currentSettings.sites);
-            saveStatus = messages.settingsLoaded;
+            saveStatus = i18n.t('config_load_result_success');
             saveStatusClass = 'status success';
 
             setTimeout(() => {
@@ -415,7 +354,7 @@
       } catch (error) {
         console.error('Default-latest configuration loading error:', error);
         sitesLoading = false;
-        saveStatus = browser.i18n.getMessage('config_load_result_error', [(error as any).message]);
+        saveStatus = i18n.t('config_load_result_error', { ERROR: (error as any).message });
         saveStatusClass = 'status error';
       }
     } else if (configType === 'github') {
@@ -424,8 +363,8 @@
         configUrl = "";
         currentSettings.configUrl = "";
       }
-      
-      saveStatus = messages.enterUrl;
+
+      saveStatus = i18n.t('config_jsonc_status_enterUrl');
       saveStatusClass = 'status warning';
     }
   }
@@ -442,8 +381,8 @@
         currentSettings.configUrl = "";
       }
     }
-    
-    saveStatus = messages.unsavedChanges;
+
+    saveStatus = i18n.t('config_jsonc_status_unsavedChanges');
     saveStatusClass = 'status warning';
   }
 
@@ -497,24 +436,23 @@
 
     // ブラウザAPIが利用可能になるまで再帰的に待機
     const api = (globalThis as any).browser || chrome;
-    if (typeof api === 'undefined' || !api?.storage || !api?.i18n) {
-      return new Promise<void>(resolve => 
+    if (typeof api === 'undefined' || !api?.storage) {
+      return new Promise<void>(resolve =>
         optionsCtx.setTimeout(() => resolve(initializeWXT()), 10)
       );
     }
-    
+
     // 初期化実行
-    initializeI18n();
     loadSettings();
   }
-  
+
   // 即座に初期化開始
   initializeWXT();
 
   // フォールバック用のonMount
   onMount(() => {
     // 既に初期化されている場合はスキップ
-    if (extensionName === '' && optionsCtx.isValid) {
+    if (optionsCtx.isValid) {
       initializeWXT();
     }
 
@@ -526,43 +464,43 @@
 </script>
 
 <div class="container">
-  <h1>{extensionName} {options}</h1>
-  
+  <h1>{i18n.t('metadata_name')} {i18n.t('options')}</h1>
+
   <section class="section">
-    <h2>{messages.configFile}</h2>
+    <h2>{i18n.t('config_jsonc_title')}</h2>
     <div class="config-type-selection">
       <div class="radio-option">
-        <input 
-          type="radio" 
-          id="default-config" 
-          bind:group={configType} 
+        <input
+          type="radio"
+          id="default-config"
+          bind:group={configType}
           value="default"
           on:change={handleConfigTypeChange}
         >
-        <label for="default-config">{messages.useDefaultConfig}</label>
+        <label for="default-config">{i18n.t('config_jsonc_useDefaultStable')}</label>
       </div>
       <div class="radio-option">
-        <input 
-          type="radio" 
-          id="default-latest-config" 
-          bind:group={configType} 
+        <input
+          type="radio"
+          id="default-latest-config"
+          bind:group={configType}
           value="default-latest"
           on:change={handleConfigTypeChange}
         >
-        <label for="default-latest-config">{messages.useDefaultLatestConfig}</label>
+        <label for="default-latest-config">{i18n.t('config_jsonc_useDefaultLatest')}</label>
       </div>
       <div class="radio-option">
-        <input 
-          type="radio" 
-          id="github-config" 
-          bind:group={configType} 
+        <input
+          type="radio"
+          id="github-config"
+          bind:group={configType}
           value="github"
           on:change={handleConfigTypeChange}
         >
-        <label for="github-config">{messages.useGithubConfig}</label>
+        <label for="github-config">{i18n.t('config_jsonc_useGithub')}</label>
       </div>
     </div>
-    
+
     <div class="url-input-group">
       <span class="url-prefix" class:disabled={configType !== 'github'}>{BASE_URL}</span>
       <input
@@ -572,25 +510,25 @@
         disabled={configType !== 'github'}
         placeholder="user/repo/raw/main/creturn-config.jsonc"
       >
-      <button 
-        class="btn primary" 
+      <button
+        class="btn primary"
         disabled={configType === 'default'}
         on:click={loadRemoteConfig}
       >
-        {messages.load}
+        {i18n.t('config_load_button')}
       </button>
     </div>
     <div class="status-container">
       <span class={configStatusClass}>{configStatus}</span>
     </div>
   </section>
-  
+
   <section class="section">
-    <h2>{messages.supportedServices}</h2>
+    <h2>{i18n.t('site_title')}</h2>
     {#if sitesLoading}
-      <div class="loading-indicator">{messages.loading}</div>
+      <div class="loading-indicator">{i18n.t('config_load_status')}</div>
     {:else if Object.keys(sites).length === 0}
-      <p>{messages.noServices}</p>
+      <p>{i18n.t('site_noSites')}</p>
     {:else}
       <div class="sites-list">
         {#each Object.entries(sites) as [siteDomain, siteConfig]}
@@ -598,7 +536,7 @@
             <div class="site-info">
               <div class="site-name">{siteConfig.name}</div>
               <div class="site-domain">{siteDomain}</div>
-              <div class="site-selectors">{messages.selector ? browser.i18n.getMessage('ui_selector', [siteConfig.selectors.join(', ')]) : `Selector: ${siteConfig.selectors.join(', ')}`}</div>
+              <div class="site-selectors">{i18n.t('site_selector', { SELECTORS: siteConfig.selectors.join(', ') })}</div>
             </div>
             <label class="toggle">
               <input
@@ -613,9 +551,9 @@
       </div>
     {/if}
   </section>
-  
+
   <div class="footer">
     <span class={saveStatusClass}>{saveStatus}</span>
-    <button class="btn secondary" on:click={resetSettings}>{messages.resetToDefaults}</button>
+    <button class="btn secondary" on:click={resetSettings}>{i18n.t('config_reset_button')}</button>
   </div>
 </div>

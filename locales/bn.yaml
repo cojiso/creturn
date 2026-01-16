@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: লাইন ব্রেকের জন্য Enter, যেকোনো সাইটে পাঠাতে Ctrl+Enter। কাস্টম হোয়াইটলিস্ট সমর্থিত। IME রূপান্তরের সময় অনিচ্ছাকৃত পাঠানো রোধ করে।
+popup_unsupportedDomain: এই ডোমেইনটি সমর্থিত নয়।
+options: সেটিংস
+config_jsonc_title: কনফিগারেশন ফাইল
+config_jsonc_useDefaultStable: ডিফল্ট কনফিগারেশন ব্যবহার করুন (স্থিতিশীল)
+config_jsonc_useDefaultLatest: ডিফল্ট কনফিগারেশন ব্যবহার করুন (সর্বশেষ)
+config_jsonc_useGithub: GitHub কনফিগারেশন ব্যবহার করুন
+config_jsonc_status_enterUrl: অনুগ্রহ করে URL লিখুন
+config_jsonc_status_unsavedChanges: আপনার অসংরক্ষিত পরিবর্তন রয়েছে
+config_load_button: লোড করুন
+config_load_status: লোড হচ্ছে...
+config_load_result_success: সেটিংস প্রয়োগ হয়েছে
+config_load_result_error: "ত্রুটি: {ERROR}"
+config_reset_button: ডিফল্টে রিসেট করুন
+config_reset_dialogue: সব সেটিংস ডিফল্ট মানে রিসেট করবেন?
+config_reset_result_success: সেটিংস ডিফল্ট মানে রিসেট হয়েছে
+config_reset_result_error: সেটিংস রিসেট করতে ব্যর্থ
+site_title: সমর্থিত সাইটসমূহ
+site_noSites: কোনো সাইট কনফিগার করা নেই।
+site_selector: "সিলেক্টরগুলি: {SELECTORS}"
+site_result_saved: সাইট সেটিংস সংরক্ষিত হয়েছে

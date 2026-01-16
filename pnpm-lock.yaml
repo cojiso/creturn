@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@wxt-dev/i18n':
+        specifier: ^0.2.4
+        version: 0.2.4(wxt@0.19.29(@types/node@24.2.0)(rollup@4.46.2))
       jsonc-parser:
         specifier: ^3.3.1
         version: 3.3.1
@@ -448,6 +451,17 @@ packages:
 
   '@webext-core/match-patterns@1.0.3':
     resolution: {integrity: sha512-NY39ACqCxdKBmHgw361M9pfJma8e4AZo20w9AY+5ZjIj1W2dvXC8J31G5fjfOGbulW9w4WKpT8fPooi0mLkn9A==}
+
+  '@wxt-dev/browser@0.0.318':
+    resolution: {integrity: sha512-rVZBWikRK8tkVOmvR1gCSMvN5omsIAt4L1Je32I/wl4yJgAcu3xb3ZjJceRWiXUNPvjH1vWfQbEUQD7+nJ2cCg==}
+
+  '@wxt-dev/i18n@0.2.4':
+    resolution: {integrity: sha512-qYWCRlMcRY/fCcwYpPcZV55NHFlri8K+eJqS/0bhHnDClWkiYHyYnIzI0tMeNdXCCo8oyKQr+qhrVM/LKNRymw==}
+    peerDependencies:
+      wxt: '>=0.19.7'
+    peerDependenciesMeta:
+      wxt:
+        optional: true
 
   '@wxt-dev/module-svelte@1.0.1':
     resolution: {integrity: sha512-5siBHr82ycWXFxoxhtqu9LdOAU0y4dimdsaoCXcVgfZP8uRY4iC+QUOJIZz/IAcBof3qMHmCxtDYM6wV1Wne0Q==}
@@ -2367,6 +2381,20 @@ snapshots:
       is-potential-custom-element-name: 1.0.1
 
   '@webext-core/match-patterns@1.0.3': {}
+
+  '@wxt-dev/browser@0.0.318':
+    dependencies:
+      '@types/filesystem': 0.0.36
+      '@types/har-format': 1.2.16
+
+  '@wxt-dev/i18n@0.2.4(wxt@0.19.29(@types/node@24.2.0)(rollup@4.46.2))':
+    dependencies:
+      '@wxt-dev/browser': 0.0.318
+      chokidar: 4.0.3
+      confbox: 0.2.2
+      fast-glob: 3.3.3
+    optionalDependencies:
+      wxt: 0.19.29(@types/node@24.2.0)(rollup@4.46.2)
 
   '@wxt-dev/module-svelte@1.0.1(svelte@4.2.20)(vite@6.3.5(@types/node@24.2.0)(jiti@2.5.1))(wxt@0.19.29(@types/node@24.2.0)(rollup@4.46.2))':
     dependencies:

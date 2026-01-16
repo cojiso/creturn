@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter für Zeilenumbrüche, Strg+Enter zum Senden auf jeder Website. Benutzerdefinierte Whitelist wird unterstützt. Verhindert versehentliches Senden während der IME-Konvertierung.
+popup_unsupportedDomain: Diese Domain wird nicht unterstützt.
+options: Einstellungen
+config_jsonc_title: Konfigurationsdatei
+config_jsonc_useDefaultStable: Standardkonfiguration verwenden (stabil)
+config_jsonc_useDefaultLatest: Standardkonfiguration verwenden (aktuellste)
+config_jsonc_useGithub: GitHub-Konfiguration verwenden
+config_jsonc_status_enterUrl: Bitte URL eingeben
+config_jsonc_status_unsavedChanges: Sie haben ungespeicherte Änderungen
+config_load_button: Laden
+config_load_status: Wird geladen...
+config_load_result_success: Einstellungen angewendet
+config_load_result_error: "Fehler: {ERROR}"
+config_reset_button: Auf Standardwerte zurücksetzen
+config_reset_dialogue: Alle Einstellungen auf ihre Standardwerte zurücksetzen?
+config_reset_result_success: Einstellungen wurden auf Standardwerte zurückgesetzt
+config_reset_result_error: Zurücksetzen der Einstellungen fehlgeschlagen
+site_title: Unterstützte Websites
+site_noSites: Keine Websites konfiguriert.
+site_selector: "Selektoren: {SELECTORS}"
+site_result_saved: Website-Einstellungen gespeichert

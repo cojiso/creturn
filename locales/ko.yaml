@@ -1,0 +1,23 @@
+metadata_name: cReturn
+metadata_storeName: cReturn - Enter Key Switcher + Custom Site Whitelist
+metadata_description: Enter로 줄바꿈, Ctrl+Enter로 어떤 사이트에서든 전송. 사용자 지정 화이트리스트를 지원합니다. IME 변환 중 오발송을 방지합니다.
+popup_unsupportedDomain: 이 도메인은 지원되지 않습니다.
+options: 설정
+config_jsonc_title: 구성 파일
+config_jsonc_useDefaultStable: 기본 구성 사용 (안정판)
+config_jsonc_useDefaultLatest: 기본 구성 사용 (최신판)
+config_jsonc_useGithub: GitHub 구성 사용
+config_jsonc_status_enterUrl: URL을 입력하세요
+config_jsonc_status_unsavedChanges: 저장되지 않은 변경 사항이 있습니다
+config_load_button: 불러오기
+config_load_status: 불러오는 중...
+config_load_result_success: 설정이 적용되었습니다
+config_load_result_error: "오류: {ERROR}"
+config_reset_button: 기본값으로 재설정
+config_reset_dialogue: 모든 설정을 기본값으로 재설정할까요?
+config_reset_result_success: 설정이 기본값으로 재설정되었습니다
+config_reset_result_error: 설정 재설정에 실패했습니다
+site_title: 지원되는 사이트
+site_noSites: 구성된 사이트가 없습니다.
+site_selector: "선택자: {SELECTORS}"
+site_result_saved: 사이트 설정이 저장되었습니다
