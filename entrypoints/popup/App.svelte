@@ -95,79 +95,9 @@
     }
   }
 
-  // WXT スタイルのコンテキスト管理（ctx風）
-  class PopupContext {
-    private _isValid = true;
-    private _timeouts: number[] = [];
-    private _intervals: number[] = [];
-
-    get isValid() { return this._isValid; }
-    get isInvalid() { return !this._isValid; }
-
-    // WXT ctx風のsetTimeout
-    setTimeout(callback: Function, delay: number) {
-      if (this._isValid) {
-        const id = setTimeout(() => {
-          if (this._isValid) callback();
-        }, delay);
-        this._timeouts.push(id);
-        return id;
-      }
-    }
-
-    // WXT ctx風のsetInterval  
-    setInterval(callback: Function, delay: number) {
-      if (this._isValid) {
-        const id = setInterval(() => {
-          if (this._isValid) callback();
-        }, delay);
-        this._intervals.push(id);
-        return id;
-      }
-    }
-
-    // クリーンアップ
-    invalidate() {
-      this._isValid = false;
-      this._timeouts.forEach(id => clearTimeout(id));
-      this._intervals.forEach(id => clearInterval(id));
-      this._timeouts = [];
-      this._intervals = [];
-    }
-  }
-
-  // ポップアップ用のコンテキスト
-  const popupCtx = new PopupContext();
-
-  // WXT スタイルの初期化 - ブラウザAPI待機
-  async function initializeWXT(): Promise<void> {
-    if (popupCtx.isInvalid) return; // コンテキストが無効な場合は終了
-
-    // ブラウザAPIが利用可能になるまで再帰的に待機
-    const api = (globalThis as any).browser || chrome;
-    if (typeof api === 'undefined' || !api?.tabs) {
-      return new Promise<void>(resolve => 
-        popupCtx.setTimeout(() => resolve(initializeWXT()), 10)
-      );
-    }
-    
-    await initializeUI();
-  }
-  
-  // 即座に初期化開始
-  initializeWXT();
-  
-  // フォールバック用のonMount
+  // 初期化
   onMount(() => {
-    // 既に初期化されている場合はスキップ
-    if (domain === 'Loading...' && popupCtx.isValid) {
-      initializeWXT();
-    }
-
-    // クリーンアップ関数を返す
-    return () => {
-      popupCtx.invalidate();
-    };
+    initializeUI();
   });
 </script>
 

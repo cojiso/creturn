@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { i18n } from '#i18n';
   import {
     resetToDefaults,
@@ -30,6 +30,7 @@
   let saveStatusClass = '';
   let sitesLoading = true;
   let sites: SitesData = {};
+  const timeoutIds: Array<ReturnType<typeof setTimeout>> = [];
 
   /**
    * configUrlの値から設定タイプを判定する
@@ -95,6 +96,12 @@
   function displaySites(sitesData: SitesData) {
     sitesLoading = false;
     sites = sitesData;
+  }
+
+  function scheduleTimeout(callback: () => void, delay: number) {
+    const id = setTimeout(callback, delay);
+    timeoutIds.push(id);
+    return id;
   }
 
   /**
@@ -172,7 +179,7 @@
     saveStatus = i18n.t('site_result_saved');
     saveStatusClass = 'status success';
 
-    setTimeout(() => {
+    scheduleTimeout(() => {
       saveStatus = '';
       saveStatusClass = 'status';
     }, 1500);
@@ -193,7 +200,7 @@
           saveStatus = i18n.t('config_reset_result_success');
           saveStatusClass = 'status success';
 
-          setTimeout(() => {
+          scheduleTimeout(() => {
             saveStatus = '';
             saveStatusClass = 'status';
           }, 3000);
@@ -296,7 +303,7 @@
         saveStatus = i18n.t('config_load_result_success');
         saveStatusClass = 'status success';
 
-        setTimeout(() => {
+        scheduleTimeout(() => {
           saveStatus = '';
           saveStatusClass = 'status';
         }, 1500);
@@ -334,7 +341,7 @@
           saveStatus = i18n.t('config_load_result_success');
           saveStatusClass = 'status success';
 
-          setTimeout(() => {
+          scheduleTimeout(() => {
             saveStatus = '';
             saveStatusClass = 'status';
           }, 1500);
@@ -376,70 +383,14 @@
     saveStatusClass = 'status warning';
   }
 
-  // WXT スタイルのコンテキスト管理（ctx風）
-  class OptionsContext {
-    private _isValid = true;
-    private _timeouts: number[] = [];
-    private _intervals: number[] = [];
-
-    get isValid() { return this._isValid; }
-    get isInvalid() { return !this._isValid; }
-
-    // WXT ctx風のsetTimeout
-    setTimeout(callback: Function, delay: number) {
-      if (this._isValid) {
-        const id = setTimeout(() => {
-          if (this._isValid) callback();
-        }, delay);
-        this._timeouts.push(id);
-        return id;
-      }
-    }
-
-    // WXT ctx風のsetInterval  
-    setInterval(callback: Function, delay: number) {
-      if (this._isValid) {
-        const id = setInterval(() => {
-          if (this._isValid) callback();
-        }, delay);
-        this._intervals.push(id);
-        return id;
-      }
-    }
-
-    // クリーンアップ
-    invalidate() {
-      this._isValid = false;
-      this._timeouts.forEach(id => clearTimeout(id));
-      this._intervals.forEach(id => clearInterval(id));
-      this._timeouts = [];
-      this._intervals = [];
-    }
-  }
-
-  // オプション用のコンテキスト
-  const optionsCtx = new OptionsContext();
-
   // 初期化
-  async function initializeWXT(): Promise<void> {
-    if (optionsCtx.isInvalid) return;
-    await loadSettings();
-  }
-
-  // 即座に初期化開始
-  initializeWXT();
-
-  // フォールバック用のonMount
   onMount(() => {
-    // 既に初期化されている場合はスキップ
-    if (optionsCtx.isValid) {
-      initializeWXT();
-    }
+    loadSettings();
+  });
 
-    // クリーンアップ関数を返す
-    return () => {
-      optionsCtx.invalidate();
-    };
+  onDestroy(() => {
+    timeoutIds.forEach(id => clearTimeout(id));
+    timeoutIds.length = 0;
   });
 </script>
 
