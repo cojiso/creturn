@@ -16,11 +16,11 @@
   const BASE_URL = "https://raw.githubusercontent.com/";
   const DEFAULT_LATEST_PATH = "cojiso/creturn/main/public/creturn-config.jsonc";
 
-  const STATUS_BASE = 'inline-block rounded px-2 py-1 text-xs';
-  const STATUS_DEFAULT = `${STATUS_BASE} text-[var(--text-secondary)]`;
-  const STATUS_SUCCESS = `${STATUS_BASE} bg-[rgba(15,157,88,0.1)] text-[var(--success-color)]`;
-  const STATUS_WARNING = `${STATUS_BASE} bg-[rgba(244,180,0,0.1)] text-[var(--warning-color)]`;
-  const STATUS_ERROR = `${STATUS_BASE} bg-[rgba(217,48,37,0.1)] text-[var(--error-color)]`;
+  const STATUS_BASE = 'inline-block rounded-md px-2.5 py-1 text-[11px] leading-4';
+  const STATUS_DEFAULT = `${STATUS_BASE} text-(--text-secondary)`;
+  const STATUS_SUCCESS = `${STATUS_BASE} bg-(--success-bg) text-(--success-color)`;
+  const STATUS_WARNING = `${STATUS_BASE} bg-(--warning-bg) text-(--warning-color)`;
+  const STATUS_ERROR = `${STATUS_BASE} bg-(--error-bg) text-(--error-color)`;
 
   // State variables
   let currentSettings: any = {
@@ -37,6 +37,16 @@
   let sitesLoading = true;
   let sites: SitesData = {};
   const timeoutIds: Array<ReturnType<typeof setTimeout>> = [];
+
+  function clearActiveRing(event: MouseEvent) {
+    const target = event.currentTarget as HTMLElement | null;
+    target?.classList.remove('active');
+  }
+
+  function activateRing(event: Event) {
+    const input = event.currentTarget as HTMLInputElement | null;
+    input?.closest('label')?.classList.add('active');
+  }
 
   /**
    * configUrlの値から設定タイプを判定する
@@ -400,106 +410,120 @@
   });
 </script>
 
-<div class="mx-auto max-w-[800px] p-5 text-sm leading-[21px] text-[var(--text-color)]">
-  <h1 class="mb-5 border-b border-[var(--border-color)] pb-2.5 text-2xl font-medium">{i18n.t('metadata_name')} {i18n.t('options')}</h1>
+<div class="mx-auto max-w-[820px] px-8 py-10 text-[15px] leading-6 text-(--text-color)">
+  <h1 class="mb-4 text-[22px] font-semibold leading-[28px] tracking-[-0.01em]">{i18n.t('metadata_name')} {i18n.t('options')}</h1>
 
-  <section class="mb-5 rounded-lg border border-[var(--border-color)] bg-[var(--section-bg)] px-5 py-4">
-    <h2 class="mb-3.5 text-lg font-medium">{i18n.t('config_jsonc_title')}</h2>
-    <div class="mb-4 flex flex-col gap-2.5">
-      <div class="flex items-center gap-2">
+  <section class="mb-6">
+    <h2 class="mb-1 px-5 text-[15px] font-bold text-[#85858A]">{i18n.t('config_jsonc_title')}</h2>
+    <div class="rounded-[32px] bg-(--section-bg)">
+      <div class="relative flex min-h-[44px] items-center gap-3 px-5 py-4 after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-(--border-color) after:content-[''] last:after:hidden">
         <input
+          class="h-4 w-4 accent-(--primary-color)"
           type="radio"
           id="default-config"
           bind:group={configType}
           value="default"
           on:change={handleConfigTypeChange}
         >
-        <label for="default-config">{i18n.t('config_jsonc_useDefaultStable')}</label>
+        <label class="cursor-pointer" for="default-config">{i18n.t('config_jsonc_useDefaultStable')}</label>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="relative flex min-h-[44px] items-center gap-3 px-5 py-4 after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-(--border-color) after:content-[''] last:after:hidden">
         <input
+          class="h-4 w-4 accent-(--primary-color)"
           type="radio"
           id="default-latest-config"
           bind:group={configType}
           value="default-latest"
           on:change={handleConfigTypeChange}
         >
-        <label for="default-latest-config">{i18n.t('config_jsonc_useDefaultLatest')}</label>
+        <label class="cursor-pointer" for="default-latest-config">{i18n.t('config_jsonc_useDefaultLatest')}</label>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="relative flex min-h-[44px] items-center gap-3 px-5 py-4">
         <input
+          class="h-4 w-4 accent-(--primary-color)"
           type="radio"
           id="github-config"
           bind:group={configType}
           value="github"
           on:change={handleConfigTypeChange}
         >
-        <label for="github-config">{i18n.t('config_jsonc_useGithub')}</label>
+        <label class="cursor-pointer" for="github-config">{i18n.t('config_jsonc_useGithub')}</label>
       </div>
     </div>
 
-    <div class="mb-2.5 mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
-      <span
-        class="flex h-[34px] items-center whitespace-nowrap rounded border border-[var(--border-color)] bg-[var(--secondary-color)] px-2 font-mono text-[13px] leading-none text-[var(--text-secondary)] sm:rounded-l sm:rounded-r-none sm:border-r-0"
-        class:opacity-60={configType !== 'github'}
-        class:cursor-not-allowed={configType !== 'github'}
-      >
-        {BASE_URL}
-      </span>
-      <input
-        type="text"
-        bind:value={configUrl}
-        on:input={handleUrlChange}
-        disabled={configType !== 'github'}
-        placeholder="user/repo/raw/main/creturn-config.jsonc"
-        class="h-[34px] flex-1 rounded border border-[var(--border-color)] bg-transparent px-2 font-mono text-[13px] leading-none outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:rounded-none sm:border-x-0"
-      >
-      <button
-        class="h-[34px] w-full rounded border border-[var(--border-color)] bg-[var(--primary-color)] px-3 text-[13px] font-medium leading-none text-white transition-colors hover:bg-[var(--primary-hover)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:rounded-l-none sm:rounded-r sm:border-l-0"
-        disabled={configType === 'default'}
-        on:click={loadRemoteConfig}
-      >
-        {i18n.t('config_load_button')}
-      </button>
+    <div class="mt-4 overflow-hidden rounded-[32px] bg-(--section-bg)">
+      <fieldset class="contents" disabled={configType !== 'github'}>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:pr-1.5">
+        <span
+          class={`relative flex h-11 items-center whitespace-nowrap rounded-t-[32px] border border-(--border-color) bg-(--secondary-color) pl-5 pr-2 font-mono text-[13px] leading-none ${configType !== 'github' ? 'text-[#b0b0b0]' : 'text-(--text-secondary)'} after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-(--border-color) after:content-[''] sm:rounded-none sm:rounded-l-[32px] sm:border-r sm:after:hidden`}
+          class:cursor-not-allowed={configType !== 'github'}
+        >
+          {BASE_URL}
+        </span>
+        <input
+          class="relative h-11 flex-1 bg-white pl-3 pr-2 font-mono text-[13px] leading-none text-(--text-color) outline-none placeholder:text-[#b0b0b0] after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-(--border-color) after:content-[''] disabled:cursor-not-allowed sm:after:hidden"
+          type="text"
+          bind:value={configUrl}
+          on:input={handleUrlChange}
+            placeholder="user/repo/raw/main/creturn-config.jsonc"
+          >
+        <button
+          class="inline-flex h-8 w-full items-center justify-center rounded-[18px] bg-(--primary-color) px-5 text-[14px] font-medium leading-none text-white transition-colors hover:bg-(--primary-hover) disabled:cursor-not-allowed disabled:bg-(--secondary-color) disabled:text-(--text-secondary) sm:w-auto"
+          on:click={loadRemoteConfig}
+        >
+            {i18n.t('config_load_button')}
+          </button>
+        </div>
+      </fieldset>
     </div>
-    <div class="mt-2.5">
-      <span class={configStatusClass}>{configStatus}</span>
-    </div>
+    {#if configStatus}
+      <div class="mt-4">
+        <span class={configStatusClass}>{configStatus}</span>
+      </div>
+    {/if}
   </section>
 
-  <section class="mb-5 rounded-lg border border-[var(--border-color)] bg-[var(--section-bg)] px-5 py-4">
-    <h2 class="mb-3.5 text-lg font-medium">{i18n.t('site_title')}</h2>
-    {#if sitesLoading}
-      <div class="py-2.5 text-center text-[var(--text-secondary)]">{i18n.t('config_load_status')}</div>
-    {:else if Object.keys(sites).length === 0}
-      <p class="text-[var(--text-secondary)]">{i18n.t('site_noSites')}</p>
-    {:else}
-      <div class="mt-2.5">
+  <section class="mb-6">
+    <h2 class="mb-1 px-5 text-[15px] font-bold text-[#85858A]">{i18n.t('site_title')}</h2>
+    <div class="rounded-[32px] bg-(--section-bg)">
+      {#if sitesLoading}
+        <div class="px-5 py-4 text-[12px] text-(--text-secondary)">{i18n.t('config_load_status')}</div>
+      {:else if Object.keys(sites).length === 0}
+        <div class="px-5 py-4 text-[12px] text-(--text-secondary)">{i18n.t('site_noSites')}</div>
+      {:else}
         {#each Object.entries(sites) as [siteDomain, siteConfig]}
-          <div class="flex items-center justify-between border-b border-[var(--border-color)] py-2.5 last:border-b-0">
+          <div class="relative flex min-h-[44px] items-center justify-between gap-4 px-5 py-4 after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-(--border-color) after:content-[''] last:after:hidden">
             <div class="flex flex-col">
               <div class="font-medium">{siteConfig.name}</div>
-              <div class="text-xs text-[var(--text-secondary)]">{siteDomain}</div>
-              <div class="mt-1 text-xs text-[var(--text-secondary)]">{i18n.t('site_selector', [siteConfig.selectors.join(', ')])}</div>
+              <div class="text-[12px] leading-4 text-(--text-secondary)">{siteDomain}</div>
+              <div class="mt-1 text-[12px] leading-4 text-(--text-secondary)">{i18n.t('site_selector', [siteConfig.selectors.join(', ')])}</div>
             </div>
-            <label class="toggle">
+            <label
+              class="toggle"
+              on:mouseleave={clearActiveRing}
+            >
               <input
                 type="checkbox"
                 checked={siteConfig.enabled ?? true}
-                on:change={(e) => updateSiteStatus(siteDomain, e.currentTarget.checked)}
+                on:change={(e) => {
+                  updateSiteStatus(siteDomain, e.currentTarget.checked);
+                  activateRing(e);
+                }}
               >
               <span class="slider"></span>
             </label>
           </div>
         {/each}
-      </div>
-    {/if}
+      {/if}
+    </div>
   </section>
 
-  <div class="mt-5 flex items-center justify-between border-t border-[var(--border-color)] pt-4">
-    <span class={`flex-1 pr-5 ${saveStatusClass}`}>{saveStatus}</span>
+  <div class={`mt-8 flex items-center ${saveStatus ? 'justify-between' : 'justify-end'} pt-4`}>
+    {#if saveStatus}
+      <span class={`flex-1 pr-5 ${saveStatusClass}`}>{saveStatus}</span>
+    {/if}
     <button
-      class="min-w-[120px] rounded border border-[var(--border-color)] bg-[var(--secondary-color)] px-4 py-2 text-sm text-[var(--text-color)] transition-colors hover:bg-[var(--secondary-hover)]"
+      class="inline-flex h-11 min-w-[120px] items-center justify-center rounded-[20px] bg-(--secondary-color) px-6 text-[14px] font-medium text-(--text-color) transition-colors hover:bg-(--secondary-hover)"
       on:click={resetSettings}
     >
       {i18n.t('config_reset_button')}
