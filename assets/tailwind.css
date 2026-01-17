@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
-/* cReturn options styles - Tailwind base + custom toggle */
+/* cReturn shared styles - Tailwind base + common tokens and toggle */
 
 :root {
   --primary-color: #007aff;
-  --primary-hover: #0062cc;
-  --secondary-color: #f2f2f6;
-  --secondary-hover: #e5e5e5;
   --text-color: #171717;
   --text-secondary: #525252;
   --border-color: #e7e7e8;
+  --section-bg: #ffffff;
+  --secondary-color: #f2f2f6;
+  --primary-hover: #0062cc;
+  --secondary-hover: #e5e5e5;
   --success-color: #34c759;
   --warning-color: #ffcc00;
   --error-color: #ff3b30;
@@ -17,15 +18,12 @@
   --warning-bg: #fff8e1;
   --error-bg: #ffebee;
   --focus-ring: #add6ff;
-  --section-bg: #ffffff;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Hiragino Sans", "Yu Gothic", sans-serif;
   color: var(--text-color);
-  background-color: var(--secondary-color);
   margin: 0;
-  padding: 0;
 }
 
 /* Toggle switch */
@@ -52,8 +50,8 @@ body {
   right: 6px;
   bottom: 6px;
   background-color: var(--border-color);
-  transition: 0.4s;
   border-radius: 999px;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -64,18 +62,18 @@ body {
   left: 4px;
   bottom: 4px;
   background-color: #ffffff;
-  transition: 0.4s;
   border-radius: 50%;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
   background-color: var(--primary-color);
 }
 
-.toggle.active .slider {
-  box-shadow: 0 0 0 4px var(--focus-ring);
-}
-
 input:checked + .slider:before {
   transform: translateX(20px);
+}
+
+.toggle.active .slider {
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }

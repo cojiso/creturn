@@ -98,7 +98,7 @@
   initializeUI();
 </script>
 
-<div class="flex h-full w-full flex-col rounded-[32px] bg-(--section-bg) text-[15px] leading-6 text-(--text-color) overflow-hidden">
+<div class="flex h-full w-full flex-col rounded-4xl bg-(--section-bg) text-[15px] leading-6 text-(--text-color) overflow-hidden">
     <!-- Domain display -->
   <div class="shrink-0 px-5 py-4 text-center">
       <div class="flex items-center justify-center">
@@ -128,8 +128,8 @@
       {/if}
     </div>
 
-    <!-- Footer section -->
-  <div class="relative flex shrink-0 items-center justify-between px-5 pt-2 pb-3 before:absolute before:left-5 before:right-5 before:top-0 before:h-px before:bg-(--border-color) before:content-['']">
+  <!-- Footer section -->
+  <div class="relative flex shrink-0 items-center justify-between px-5 py-2 before:absolute before:left-5 before:right-5 before:top-0 before:h-px before:bg-(--border-color) before:content-['']">
       <div class="font-semibold">{i18n.t('metadata_name')}</div>
       <div class="flex items-center">
       <button
@@ -147,3 +147,16 @@
       </div>
     </div>
 </div>
+
+<style>
+  :global(html),
+  :global(body),
+  :global(#app) {
+    height: 100%;
+  }
+
+  :global(body) {
+    width: 300px;
+    height: 200px;
+  }
+</style>
