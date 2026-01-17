@@ -35,10 +35,26 @@
   let saveStatusClass = STATUS_DEFAULT;
   let sitesLoading = true;
   let sites: SitesData = {};
+  let isConfigMenuOpen = false;
 
   function clearActiveRing(event: MouseEvent) {
     const target = event.currentTarget as HTMLElement | null;
     target?.classList.remove('active');
+  }
+
+  function toggleConfigMenu(event: MouseEvent) {
+    event.stopPropagation();
+    isConfigMenuOpen = !isConfigMenuOpen;
+  }
+
+  function closeConfigMenu() {
+    isConfigMenuOpen = false;
+  }
+
+  function handleWindowKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      isConfigMenuOpen = false;
+    }
   }
 
   function activateRing(event: Event) {
@@ -368,9 +384,6 @@
         configUrl = "";
         currentSettings.configUrl = "";
       }
-
-      saveStatus = i18n.t('config_jsonc_status_enterUrl');
-      saveStatusClass = STATUS_WARNING;
     }
   }
 
@@ -387,17 +400,58 @@
       }
     }
 
-    saveStatus = i18n.t('config_jsonc_status_unsavedChanges');
-    saveStatusClass = STATUS_WARNING;
   }
 
   // 即座に初期化開始（WXTではonMountが呼ばれない場合があるため）
   loadSettings();
 </script>
 
-<div class="mx-auto max-w-205 px-8 py-10 text-[15px] leading-6 text-(--text-color)">
-  <h1 class="mb-4 text-[22px] font-semibold leading-7 tracking-[-0.01em]">{i18n.t('metadata_name')} {i18n.t('options')}</h1>
+<svelte:window
+  on:click={closeConfigMenu}
+  on:keydown={handleWindowKeydown}
+/>
 
+<div class="mx-auto max-w-205 px-8 py-10 text-[15px] leading-6 text-(--text-color)">
+  <div class="mb-4 flex items-center justify-between gap-3">
+    <h1 class="text-[22px] font-semibold leading-7 tracking-[-0.01em]">
+      {i18n.t('metadata_name')} {i18n.t('options')}
+    </h1>
+    <div class="relative">
+      <button
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-transparent text-(--text-secondary) transition-colors hover:bg-(--secondary-hover)"
+        type="button"
+        aria-haspopup="menu"
+        aria-label="More options"
+        on:click={toggleConfigMenu}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis-icon lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      </button>
+      {#if isConfigMenuOpen}
+        <div
+          id="config-menu"
+          class="config-menu-popover absolute right-0 top-full w-max overflow-hidden rounded-2xl border border-(--border-color) bg-(--section-bg) shadow-[0_8px_20px_rgba(0,0,0,0.12)]"
+          role="menu"
+          tabindex="0"
+          on:click|stopPropagation
+          on:keydown|stopPropagation
+        >
+          <button
+            class="flex w-full items-center gap-2 whitespace-nowrap px-5 py-4 text-left text-[14px] text-(--error-color) transition-colors hover:bg-(--secondary-color)"
+            type="button"
+            role="menuitem"
+            on:click={() => {
+              resetSettings();
+              isConfigMenuOpen = false;
+            }}
+          >
+            {i18n.t('config_reset_button')}
+          </button>
+        </div>
+      {/if}
+    </div>
+  </div>
+
+  <!-- 設定ファイル -->
   <section class="mb-6">
     <h2 class="mb-1 px-5 text-[15px] font-bold text-[#85858A]">{i18n.t('config_jsonc_title')}</h2>
     <div class="rounded-4xl bg-(--section-bg)">
@@ -436,11 +490,12 @@
       </div>
     </div>
 
+    <!-- Gihub URL -->
     <div class="mt-4 overflow-hidden rounded-4xl bg-(--section-bg)">
       <fieldset class="contents" disabled={configType !== 'github'}>
-        <div class="flex flex-col sm:flex-row sm:items-center sm:pr-1.5">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:pr-3">
           <span
-            class={`relative flex h-11 items-center whitespace-nowrap rounded-t-4xl border  pl-5 pr-2 font-mono text-[13px] leading-none ${configType !== 'github' ? 'text-[#b0b0b0] bg-white border-white' : 'text-(--text-secondary) bg-(--secondary-color) border-(--border-color)'} after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-(--border-color) after:content-[''] sm:rounded-none sm:rounded-l-4xl sm:border-r sm:after:hidden`}
+            class={`relative flex min-h-15 items-center whitespace-nowrap rounded-t-4xl border  pl-5 pr-2 py-4 font-mono text-[13px] leading-none ${configType !== 'github' ? 'text-[#b0b0b0] bg-white border-white' : 'text-(--text-secondary) bg-(--secondary-color) border-(--border-color)'} after:absolute after:bottom-0 after:left-5 after:right-5 after:h-px after:bg-(--border-color) after:content-[''] sm:rounded-none sm:rounded-l-4xl sm:border-r sm:after:hidden`}
             class:cursor-not-allowed={configType !== 'github'}
           >
             {BASE_URL}
@@ -453,7 +508,7 @@
               placeholder="user/repo/raw/main/creturn-config.jsonc"
             >
           <button
-            class="inline-flex h-8 w-full items-center justify-center rounded-[18px] bg-(--primary-color) px-5 text-[14px] font-medium leading-none disabled:text-[#b0b0b0] text-white transition-colors hover:bg-(--primary-hover) disabled:cursor-not-allowed disabled:bg-(--secondary-color) sm:w-auto"
+            class="inline-flex h-10 w-full items-center justify-center rounded-[20px] bg-(--primary-color) px-5 text-[14px] font-medium leading-none disabled:text-[#b0b0b0] text-white transition-colors hover:bg-(--primary-hover) disabled:cursor-not-allowed disabled:bg-(--secondary-color) sm:w-auto"
             on:click={loadRemoteConfig}
           >
             {i18n.t('config_load_button')}
@@ -468,6 +523,7 @@
     {/if}
   </section>
 
+  <!-- 対応サイト -->
   <section class="mb-6">
     <h2 class="mb-1 px-5 text-[15px] font-bold text-[#85858A]">{i18n.t('site_title')}</h2>
     <div class="rounded-4xl bg-(--section-bg)">
@@ -503,21 +559,19 @@
     </div>
   </section>
 
-  <div class={`mt-8 flex items-center ${saveStatus ? 'justify-between' : 'justify-end'} pt-4`}>
+  <div class="mt-8 flex items-center justify-end pt-4">
     {#if saveStatus}
-      <span class={`flex-1 pr-5 ${saveStatusClass}`}>{saveStatus}</span>
+      <span class={saveStatusClass}>{saveStatus}</span>
     {/if}
-    <button
-      class="inline-flex h-11 min-w-30 items-center justify-center rounded-[20px] bg-(--secondary-color) px-6 text-[14px] font-medium text-(--text-color) transition-colors hover:bg-(--secondary-hover)"
-      on:click={resetSettings}
-    >
-      {i18n.t('config_reset_button')}
-    </button>
   </div>
 </div>
 
 <style>
   :global(body) {
     background-color: var(--secondary-color);
+  }
+
+  .config-menu-popover {
+    z-index: 50;
   }
 </style>
