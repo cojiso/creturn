@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
   import { i18n } from '#i18n';
   import {
     resetToDefaults,
@@ -36,7 +35,6 @@
   let saveStatusClass = STATUS_DEFAULT;
   let sitesLoading = true;
   let sites: SitesData = {};
-  const timeoutIds: Array<ReturnType<typeof setTimeout>> = [];
 
   function clearActiveRing(event: MouseEvent) {
     const target = event.currentTarget as HTMLElement | null;
@@ -114,12 +112,6 @@
     sites = sitesData;
   }
 
-  function scheduleTimeout(callback: () => void, delay: number) {
-    const id = setTimeout(callback, delay);
-    timeoutIds.push(id);
-    return id;
-  }
-
   /**
    * 設定タイプに応じて自動的に設定をロード
    */
@@ -195,7 +187,7 @@
     saveStatus = i18n.t('site_result_saved');
     saveStatusClass = STATUS_SUCCESS;
 
-    scheduleTimeout(() => {
+    setTimeout(() => {
       saveStatus = '';
       saveStatusClass = STATUS_DEFAULT;
     }, 1500);
@@ -216,7 +208,7 @@
           saveStatus = i18n.t('config_reset_result_success');
           saveStatusClass = STATUS_SUCCESS;
 
-          scheduleTimeout(() => {
+          setTimeout(() => {
             saveStatus = '';
             saveStatusClass = STATUS_DEFAULT;
           }, 3000);
@@ -319,7 +311,7 @@
         saveStatus = i18n.t('config_load_result_success');
         saveStatusClass = STATUS_SUCCESS;
 
-        scheduleTimeout(() => {
+        setTimeout(() => {
           saveStatus = '';
           saveStatusClass = STATUS_DEFAULT;
         }, 1500);
@@ -357,7 +349,7 @@
           saveStatus = i18n.t('config_load_result_success');
           saveStatusClass = STATUS_SUCCESS;
 
-          scheduleTimeout(() => {
+          setTimeout(() => {
             saveStatus = '';
             saveStatusClass = STATUS_DEFAULT;
           }, 1500);
@@ -399,15 +391,8 @@
     saveStatusClass = STATUS_WARNING;
   }
 
-  // 初期化
-  onMount(() => {
-    loadSettings();
-  });
-
-  onDestroy(() => {
-    timeoutIds.forEach(id => clearTimeout(id));
-    timeoutIds.length = 0;
-  });
+  // 即座に初期化開始（WXTではonMountが呼ばれない場合があるため）
+  loadSettings();
 </script>
 
 <div class="mx-auto max-w-[820px] px-8 py-10 text-[15px] leading-6 text-(--text-color)">

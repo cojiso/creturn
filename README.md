@@ -103,6 +103,11 @@ pnpm build    # Build for production
 pnpm zip      # Create ZIP for store submission
 ```
 
+### References
+- [WXT Svelte Popup Template](https://github.com/wxt-dev/wxt/tree/main/templates/svelte/src/entrypoints/popup) - Official initialization pattern
+- [WXT Storage Documentation](https://wxt.dev/storage.html) - Storage API with watch/defineItem
+- [Reactive Extension Storage with WXT](https://www.sveltevietnam.dev/en/blog/20250425-mini-snippet-reactive-extension-storage-wxt) - Async IIFE pattern for Svelte
+
 ## Release & Branch Strategy
 
 This project uses simplified Trunk-Based Development for streamlined releases and configuration updates.

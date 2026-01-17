@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { browser } from 'wxt/browser';
   import type { Tabs } from 'wxt/browser';
   import { i18n } from '#i18n';
@@ -95,10 +94,8 @@
     }
   }
 
-  // 初期化
-  onMount(() => {
-    initializeUI();
-  });
+  // 即座に初期化開始（WXTではonMountが呼ばれない場合があるため）
+  initializeUI();
 </script>
 
 <div class="flex h-full w-full flex-col rounded-[32px] bg-(--section-bg) text-[15px] leading-6 text-(--text-color) overflow-hidden">
