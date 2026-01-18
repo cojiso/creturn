@@ -121,6 +121,13 @@
         "textarea"
       ]
     },
+    "www.figma.com": {
+      "name": "Figma Make",
+      "selectors": [
+        "textarea[data-testid=empty-state-chat-input]",
+        "textarea[data-testid=code-chat-chat-box]"
+      ]
+    },
 
     // Google Gemini Ecosystem
     "drive.google.com": {
@@ -181,7 +188,7 @@
 
     // Outdated Path
     "*.openai.com": {
-      "name": "ChatGPT",
+      "name": "ChatGPT (Former URL)",
       "selectors": [
         "#prompt-textarea"
       ]
