@@ -110,7 +110,7 @@
   <div class="relative flex flex-1 items-center justify-center px-5 py-4 before:absolute before:left-5 before:right-5 before:top-0 before:h-px before:bg-(--border-color) before:content-['']">
       {#if isSupported}
         <div>
-          <label class="toggle">
+          <label class="toggle toggle--popup">
             <input 
               type="checkbox" 
               bind:checked={isEnabled}
@@ -158,5 +158,10 @@
   :global(body) {
     width: 300px;
     height: 200px;
+  }
+
+  .toggle--popup {
+    transform: scale(1.6);
+    transform-origin: center;
   }
 </style>

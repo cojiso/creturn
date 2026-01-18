@@ -3,6 +3,13 @@
  * 共通的に使用される関数を提供
  */
 
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
 /**
  * ドメインマッチング（ワイルドカード対応）
  * @param {string} currentDomain - 現在のドメイン

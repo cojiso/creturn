@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 /* cReturn shared styles - Tailwind base + common tokens and toggle */
 

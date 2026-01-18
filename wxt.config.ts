@@ -1,3 +1,4 @@
+import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'wxt';
 
@@ -25,6 +26,11 @@ export default defineConfig({
   },
   vite: () => ({
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        $lib: path.resolve('./lib')
+      }
+    },
     build: {
       sourcemap: true
     }
