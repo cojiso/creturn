@@ -3,9 +3,9 @@
  * テキストエリアの検出、IME状態の監視、キーボードイベント処理を担当
  */
 
-import type { SiteConfig } from '~/lib/types';
-import { ensureSitesKey } from '~/lib/config';
-import { sites as sitesStorage } from '~/lib/storage';
+import type { SiteConfig } from '$lib/types';
+import { ensureSitesKey } from '$lib/config';
+import { sites as sitesStorage } from '$lib/storage';
 
 // ローカル型定義
 interface CustomKeyboardEvent extends KeyboardEvent {
